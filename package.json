@@ -1,0 +1,40 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Back-end Node.js + Express.js API",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MananDesai54/Crime-alert-app.git"
+  },
+  "keywords": [
+    "Node.js",
+    "Express.js",
+    "MongoDB"
+  ],
+  "author": "Manan Desai & Ridhdhish Desai",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MananDesai54/Crime-alert-app/issues"
+  },
+  "homepage": "https://github.com/MananDesai54/Crime-alert-app#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.9.0",
+    "helmet": "^4.3.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.11.8",
+    "morgan": "^1.10.0",
+    "uuid": "^8.3.2"
+  }
+}
