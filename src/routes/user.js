@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const requireLogin = require("../middlewares/requireLogin");
+const auth = require("../middlewares/auth");
 
 const { me } = require("../controllers/user");
 
@@ -9,6 +9,6 @@ const { me } = require("../controllers/user");
  * access : Private
  * desc: Get a user
  */
-router.get("/me", requireLogin, me);
+router.get("/me", auth, me);
 
 exports.userRouter = router;
