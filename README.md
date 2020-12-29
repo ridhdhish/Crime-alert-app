@@ -20,16 +20,16 @@
 ## DataBases
 
 - Total 5 DBs:
-  1. User
-  - First Name
-  - Last Name
-  - Email
-  - Address
-  - DOB
-  - Mobile NO.
-  - Password
-  - ID
-  2. Place
-  3. Relatives
-  4. PoliceStation
-  5. Crime
+  - User
+    - First Name
+    - Last Name
+    - Email
+    - Address
+    - DOB
+    - Mobile NO.
+    - Password
+    - ID
+  - Place
+  - Relatives
+  - PoliceStation
+  - Crime
