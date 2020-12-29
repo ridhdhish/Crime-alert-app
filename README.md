@@ -7,6 +7,7 @@
 - NODE_ENV = development
 - DB_URI = xxxxxxxxxx
 - DB_PASSWORD = xxxxxxxxxx
+- JWT_SECRET = xxxxx
 
 ## How To run Backend API
 
