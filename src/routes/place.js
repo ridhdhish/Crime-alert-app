@@ -2,8 +2,6 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../middlewares/auth");
 
-const { me } = require("../controllers/user");
-
 /**
  * route : GET /api/place/:id
  * access : Private
