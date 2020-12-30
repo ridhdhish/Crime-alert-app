@@ -11,12 +11,16 @@
 
 ## How To run Backend API
 
-- Clone the repo
-- Go to the folder
-- Run `npm install` to install all the dependencies
-- Add key value for [ENV file](#head1234).
-- Run npm start to start development server
-- That's it
+```
+git clone https://github.com/MananDesai54/Crime-alert-app.git
+cd Crime-alert-app
+
+cd server
+npm install
+
+npm start
+
+```
 
 ## DataBases
 
@@ -40,5 +44,11 @@
      - City
      - Address
   3. Relatives
+     - Id
+     - Firstname
+     - Lastname
+     - Mobile NO
+     - email
+     - userID
   4. PoliceStation
   5. Crime
