@@ -2,7 +2,12 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../middlewares/auth");
 
-const { me, updateMe, deleteMe } = require("../controllers/user");
+const {
+  me,
+  updateMe,
+  deleteMe,
+  changePassword,
+} = require("../controllers/user");
 
 /**
  * route : GET /api/user/me
@@ -24,5 +29,12 @@ router.put("/updateMe", auth, updateMe);
  * desc: Delete existing user
  */
 router.delete("/deleteMe", auth, deleteMe);
+
+/**
+ * route : PUT /api/user/changePassword
+ * access : Private
+ * desc: Change password
+ */
+router.put("/changePassword", auth, changePassword);
 
 exports.userRouter = router;
