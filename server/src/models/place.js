@@ -9,9 +9,14 @@ const PlaceSchema = new mongoose.Schema({
       type: String,
     },
   },
-  crimeLevel: {
-    type: Number,
-    default: 0,
+  crimeStatus: {
+    level: {
+      type: Number,
+    },
+    keyword: {
+      enum: ["critical", "high", "moderate", "low"],
+      type: String,
+    },
   },
   state: {
     type: String,
