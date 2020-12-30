@@ -3,13 +3,13 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const { validationResult } = require("express-validator");
 
-const showError = require("../config/showError");
+const sendResponse = require("../config/sendResponse");
 const generateToken = require("../config/generateToken");
 
 const signUp = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return showError(errors.array(), res, 400);
+    return sendResponse(errors.array(), res, 400);
   }
 
   const {
@@ -27,7 +27,7 @@ const signUp = async (req, res) => {
 
     //id user exists return error
     if (user) {
-      return showError("User with this email already exists", res, 400);
+      return sendResponse("User with this email already exists", res, 400);
     }
 
     //create new user
@@ -57,14 +57,14 @@ const signUp = async (req, res) => {
       token,
     });
   } catch (error) {
-    showError(error.message, res);
+    sendResponse(error.message, res);
   }
 };
 
 const login = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return showError(errors.array(), res, 400);
+    return sendResponse(errors.array(), res, 400);
   }
 
   const { email, password } = req.body;
@@ -76,12 +76,12 @@ const login = async (req, res) => {
     });
 
     if (!user) {
-      return showError("Invalid credentials", res, 422);
+      return sendResponse("Invalid credentials", res, 422);
     }
     //match hash password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return showError("Invalid credentials", res, 422);
+      return sendResponse("Invalid credentials", res, 422);
     }
     //generate token
     const token = generateToken(user, jwt);
@@ -94,7 +94,7 @@ const login = async (req, res) => {
       token,
     });
   } catch (error) {
-    showError(error.message, res);
+    sendResponse(error.message, res);
   }
 };
 

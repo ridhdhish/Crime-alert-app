@@ -1,5 +1,8 @@
 const User = require("../models/user");
-const showError = require("../config/showError");
+const sendResponse = require("../config/sendResponse");
+
+const bcrypt = require("bcryptjs");
+const { findByIdAndUpdate } = require("../models/user");
 
 // Get User
 const me = (req, res) => {
@@ -15,11 +18,11 @@ const updateMe = async (req, res) => {
     const user = await await User.findByIdAndUpdate(req.user.id, req.body);
     user.password = null;
     if (!user) {
-      return showError("Unable to update user", res, 404);
+      return sendResponse("Unable to update user", res, 404);
     }
     res.json({ ...user._doc, ...req.body });
   } catch (err) {
-    showError(err.message, res);
+    sendResponse(err.message, res);
   }
 };
 
@@ -29,11 +32,40 @@ const deleteMe = async (req, res) => {
     const user = await User.findByIdAndRemove(req.user.id);
 
     if (!user) {
-      return showError("Unable to delete user", res, 404);
+      return sendResponse("Unable to delete user", res, 404);
     }
     res.json({ message: "User deleted" });
   } catch (err) {
-    showError(err.message, res);
+    sendResponse(err.message, res);
+  }
+};
+
+// Change password
+const changePassword = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    let isMatch = await bcrypt.compare(req.body.currentPassword, user.password);
+
+    if (!isMatch) {
+      return sendResponse("Invalid current password!", res, 400);
+    }
+
+    isMatch = await bcrypt.compare(req.body.newPassword, user.password);
+
+    if (isMatch) {
+      return sendResponse("Please enter new password", res, 400);
+    }
+
+    const salt = await bcrypt.genSalt(12);
+    const password = await bcrypt.hash(req.body.newPassword, salt);
+
+    await User.findByIdAndUpdate(req.user.id, {
+      password,
+    });
+
+    return sendResponse("New password updated successfully", res, 200);
+  } catch (err) {
+    sendResponse(err.message, res);
   }
 };
 
@@ -41,4 +73,5 @@ module.exports = {
   me,
   updateMe,
   deleteMe,
+  changePassword,
 };
