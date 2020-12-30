@@ -2,7 +2,6 @@ const User = require("../models/user");
 const sendResponse = require("../config/sendResponse");
 
 const bcrypt = require("bcryptjs");
-const { findByIdAndUpdate } = require("../models/user");
 
 // Get User
 const me = (req, res) => {
