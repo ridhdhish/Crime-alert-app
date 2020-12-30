@@ -8,7 +8,7 @@ const { getDistanceFromLatLonInKm } = require("../utils");
  */
 const getAllPlaces = async (req, res) => {
   const {
-    params: { id },
+    params: { id, kms },
   } = req;
   let placeOfId;
   try {
@@ -18,7 +18,7 @@ const getAllPlaces = async (req, res) => {
     } else {
       placeOfId = await Place.findById(id);
       if (!placeOfId) {
-        sendResponse("No place found", res, 404);
+        return sendResponse("No place found", 404);
       }
       places = (await Place.find({})).filter(
         (place) =>
@@ -27,24 +27,36 @@ const getAllPlaces = async (req, res) => {
             long1: place.location.long,
             lat2: placeOfId.location.lat,
             long2: placeOfId.location.lat,
-          }) < 50
+          }) < +kms
       );
     }
 
-    sendResponse(
+    return sendResponse(
       {
         aroundPlaces: places,
         place: placeOfId,
       },
-      res,
       200
     );
   } catch (error) {
-    sendResponse(error.message, res);
+    sendResponse(error.message);
   }
 };
 
-const getOnePlace = async (req, res) => {};
+const getOnePlace = async (req, res) => {
+  const {
+    params: { id },
+  } = req;
+  try {
+    const place = await Place.findById(id);
+    if (!place) {
+      return sendResponse("Place not found", 404);
+    }
+    sendResponse({ place }, 200);
+  } catch (error) {
+    sendResponse(error.message);
+  }
+};
 
 module.exports = {
   getAllPlaces,

@@ -8,7 +8,7 @@ const auth = require("../middlewares/auth");
  * access : Public
  * desc: Get all places(use * as id) / get nearby Places(use particular place id)
  */
-router.get("/all/:id", getAllPlaces);
+router.get("/all/:id/:kms", getAllPlaces);
 
 /**
  * route : GET /api/place/:id
