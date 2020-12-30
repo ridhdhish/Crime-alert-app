@@ -5,7 +5,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 const helmet = require("helmet");
 
-const { authRouter, userRouter } = require("./src/routes");
+const { authRouter, userRouter, placeRoute } = require("./src/routes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -33,6 +33,7 @@ app.use(
 //router
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
+app.use("/api/place", placeRoute);
 
 app.use("/", (_, res) => {
   res.json({
