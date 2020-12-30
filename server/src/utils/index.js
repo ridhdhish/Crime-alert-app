@@ -13,6 +13,6 @@ exports.getDistanceFromLatLonInKm = ({ lat1, long1, lat2, long2 }) => {
   return distance;
 };
 
-exports.degree2Radian = (deg) => {
+function degree2Radian(deg) {
   return deg * (Math.PI / 180);
-};
+}

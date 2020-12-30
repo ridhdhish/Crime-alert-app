@@ -33,7 +33,7 @@ app.use(
 //router
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
-app.use("/api.place", placeRoute);
+app.use("/api/place", placeRoute);
 
 app.use("/", (_, res) => {
   res.json({
