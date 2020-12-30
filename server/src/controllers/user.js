@@ -5,10 +5,12 @@ const bcrypt = require("bcryptjs");
 
 // Get User
 const me = (req, res) => {
-  const user = req.user;
-  return res.status(200).json({
-    user,
-  });
+  try {
+    const user = req.user;
+    return sendResponse({ user }, res, 200);
+  } catch (error) {
+    sendResponse(error.message, res);
+  }
 };
 
 // Update User

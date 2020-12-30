@@ -3,27 +3,31 @@ const mongoose = require("mongoose");
 const PlaceSchema = new mongoose.Schema({
   location: {
     lat: {
-      type: String,
+      type: Number,
     },
     long: {
-      type: String,
+      type: Number,
     },
   },
-  crimeLevel: {
-    type: Number,
-    default: 0,
-  },
+  crimeStatus: [
+    {
+      level: {
+        type: Number,
+      },
+      keyword: {
+        enum: ["critical", "high", "moderate", "low"],
+        type: String,
+      },
+    },
+  ],
   state: {
     type: String,
-    required: true,
   },
   city: {
     type: String,
-    required: true,
   },
   address: {
     type: String,
-    required: true,
   },
 });
 

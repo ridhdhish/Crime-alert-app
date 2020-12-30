@@ -5,7 +5,12 @@ const morgan = require("morgan");
 const cors = require("cors");
 const helmet = require("helmet");
 
-const { authRouter, userRouter, relativeRouter } = require("./src/routes");
+const {
+  authRouter,
+  userRouter,
+  relativeRouter,
+  placeRoute,
+} = require("./src/routes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -34,6 +39,7 @@ app.use(
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/relative", relativeRouter);
+app.use("/api/place", placeRoute);
 
 app.use("/", (_, res) => {
   res.json({
