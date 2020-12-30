@@ -3,8 +3,8 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const { validationResult } = require("express-validator");
 
-const sendResponse = require("../config/sendResponse");
-const generateToken = require("../config/generateToken");
+const sendResponse = require("../utils/sendResponse");
+const generateToken = require("../utils/generateToken");
 
 const signUp = async (req, res) => {
   const errors = validationResult(req);
@@ -46,7 +46,7 @@ const signUp = async (req, res) => {
     newUser.password = await bcrypt.hash(newUser.password, sault);
 
     //generate jwt for user
-    const token = generateToken(newUser, jwt);
+    const token = generateToken(newUser.id, jwt);
     await newUser.save();
 
     return res.status(200).json({
@@ -84,7 +84,7 @@ const login = async (req, res) => {
       return sendResponse("Invalid credentials", res, 422);
     }
     //generate token
-    const token = generateToken(user, jwt);
+    const token = generateToken(user.id, jwt);
 
     return res.status(200).json({
       user: {

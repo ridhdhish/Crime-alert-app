@@ -1,6 +1,6 @@
 const Place = require("../models/place");
-const sendResponse = require("../config/sendResponse");
-const { getDistanceFromLatLonInKm } = require("../utils");
+const sendResponse = require("../utils/sendResponse");
+const { getDistanceFromLatLonInKm } = require("../utils/getLatLongDistance");
 const { validationResult } = require("express-validator");
 
 /**

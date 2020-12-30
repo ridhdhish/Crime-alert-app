@@ -1,7 +1,7 @@
-module.exports = (user, jwt) => {
+module.exports = (id, jwt) => {
   const payload = {
     user: {
-      id: user.id,
+      id,
     },
   };
   return jwt.sign(payload, process.env.JWT_SECRET, {
