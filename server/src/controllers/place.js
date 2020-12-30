@@ -60,6 +60,9 @@ const getOnePlace = async (req, res) => {
   }
 };
 
+/**
+ * Most probably for development only
+ */
 const addPlace = async (req, res) => {
   const {
     body: { location, state, city, address },
