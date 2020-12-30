@@ -9,9 +9,7 @@ const generateToken = require("../config/generateToken");
 const signUp = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({
-      message: errors.array(),
-    });
+    return showError(errors.array(), res, 400);
   }
 
   const {
@@ -29,9 +27,7 @@ const signUp = async (req, res) => {
 
     //id user exists return error
     if (user) {
-      return res.status(400).json({
-        message: "User with this email already exists",
-      });
+      return showError("User with this email already exists", res, 400);
     }
 
     //create new user
@@ -61,16 +57,14 @@ const signUp = async (req, res) => {
       token,
     });
   } catch (error) {
-    showError(error, res);
+    showError(error.message, res);
   }
 };
 
 const login = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({
-      message: errors.array(),
-    });
+    return showError(errors.array(), res, 400);
   }
 
   const { email, password } = req.body;
@@ -82,16 +76,12 @@ const login = async (req, res) => {
     });
 
     if (!user) {
-      return res.status(422).json({
-        message: "Invalid credentials",
-      });
+      return showError("Invalid credentials", res, 422);
     }
     //match hash password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(422).json({
-        message: "Invalid credentials",
-      });
+      return showError("Invalid credentials", res, 422);
     }
     //generate token
     const token = generateToken(user, jwt);
@@ -104,7 +94,7 @@ const login = async (req, res) => {
       token,
     });
   } catch (error) {
-    showError(error, res);
+    showError(error.message, res);
   }
 };
 

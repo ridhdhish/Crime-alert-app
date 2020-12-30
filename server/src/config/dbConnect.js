@@ -5,6 +5,7 @@ exports.connectWithDatabase = async () => {
     const connection = await mongoose.connect(process.env.DB_URI, {
       useUnifiedTopology: true,
       useNewUrlParser: true,
+      useFindAndModify: false,
     });
     console.log(`Connected with Database: ${connection.connection.host}`);
   } catch (error) {
