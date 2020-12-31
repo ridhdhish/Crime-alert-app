@@ -6,6 +6,7 @@ exports.connectWithDatabase = async () => {
       useUnifiedTopology: true,
       useNewUrlParser: true,
       useFindAndModify: false,
+      useCreateIndex: true,
     });
     console.log(`Connected with Database: ${connection.connection.host}`);
   } catch (error) {

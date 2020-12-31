@@ -1,22 +1,34 @@
 # Crime-alert-app
 
 - Under development
+- Main Goal
+  - Whenever someone is in panic condition he/she can immediately ask for help to near by police-station and also contacting family members by only one tap in app and with more additional [features](#features)
 
-## <a name="env"></a>.env file structure
+# Technology Stack
 
-- NODE_ENV = development
-- DB_URI = xxxxxxxxxx
-- DB_PASSWORD = xxxxxxxxxx
-- JWT_SECRET = xxxxx
+- Node.js
+- Express.js
+- MongoDB
+- React Native
+
+## Features
+
+- Coming soon
 
 ## How To run Backend API
 
-- Clone the repo
-- Go to the folder
-- Run `npm install` to install all the dependencies
-- Add key value for [ENV file](#head1234).
-- Run npm start to start development server
-- That's it
+- Install Node.js and mongoDB
+- Follow below [.env](#.envStructure) structure
+
+```
+$ git clone https://github.com/MananDesai54/Crime-alert-app.git
+$ cd Crime-alert-app
+
+$ cd server
+$ npm install
+
+$ npm start
+```
 
 ## DataBases
 
@@ -40,5 +52,20 @@
      - City
      - Address
   3. Relatives
+     - Id
+     - Firstname
+     - Lastname
+     - Mobile NO
+     - email
+     - userID
   4. PoliceStation
   5. Crime
+
+## .envStructure
+
+- NODE_ENV = development
+- DB_URI = xxxxxxxxxx
+- DB_PASSWORD = xxxxxxxxxx
+- JWT_SECRET = xxxxx
+- EMAIL_ID = xxxxx
+- EMAIL_PASSWORD = xxxxxxx

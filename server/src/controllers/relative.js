@@ -1,8 +1,6 @@
 const Relative = require("../models/relative");
-const sendResponse = require("../config/sendResponse");
-const { findByIdAndUpdate } = require("../models/relative");
+const sendResponse = require("../utils/sendResponse");
 
-// Fetch relatives
 const getRelatives = async (req, res) => {
   try {
     const relatives = await Relative.find({});
@@ -18,7 +16,6 @@ const getRelatives = async (req, res) => {
   }
 };
 
-// Add relative
 const addRelative = async (req, res) => {
   try {
     req.body.userId = req.user.id;
@@ -33,7 +30,6 @@ const addRelative = async (req, res) => {
   }
 };
 
-// Update relative
 const updateRelative = async (req, res) => {
   try {
     const relative = await Relative.findByIdAndUpdate(req.params.id, req.body);
@@ -77,7 +73,6 @@ const getRelative = async (req, res) => {
   }
 };
 
-// delete all relative
 const deleteAllRelative = async (req, res) => {
   try {
     const relative = await Relative.deleteMany({});
