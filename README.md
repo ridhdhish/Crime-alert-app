@@ -30,6 +30,20 @@ $ npm install
 $ npm start
 ```
 
+## How To run Front-end App
+
+- Install Node.js and expo-cli
+
+```
+$ git clone https://github.com/MananDesai54/Crime-alert-app.git
+$ cd Crime-alert-app
+
+$ cd app
+$ npm install
+
+$ npm start
+```
+
 ## DataBases
 
 - Total 5 DBs:
