@@ -83,3 +83,7 @@ $ npm start
 - JWT_SECRET = xxxxx
 - EMAIL_ID = xxxxx
 - EMAIL_PASSWORD = xxxxxxx
+
+## App Design
+
+![alt text](https://drive.google.com/file/d/1ky4lbvZP3lcbiJ-l3tgtU3ea9yg5_Qsl/view?usp=sharing)
