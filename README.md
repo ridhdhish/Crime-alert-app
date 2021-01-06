@@ -1,10 +1,20 @@
+# Content
+
+- [Details](#Crime-alert-app)
+- [Tech Stack](#Technology-Stack)
+- [Features](#features)
+- [How To Run App and API](#How_To_Run)
+- [Databases](#Databases)
+- [Env Structure](#.envStructure)
+- [App basic Design](#App_design)
+
 # Crime-alert-app
 
 - Under development
 - Main Goal
   - Whenever someone is in panic condition he/she can immediately ask for help to near by police-station and also contacting family members by only one tap in app and with more additional [features](#features)
 
-# Technology Stack
+# Technology-Stack
 
 - Node.js
 - Express.js
@@ -15,9 +25,12 @@
 
 - Coming soon
 
-## How To run Backend API
+# How_To_Run
 
 - Install Node.js and mongoDB
+
+- ## How To run backend API
+
 - Follow below [.env](#.envStructure) structure
 
 ```
@@ -30,7 +43,7 @@ $ npm install
 $ npm start
 ```
 
-## How To run Front-end App
+- ## How To run Front-end App
 
 - Install Node.js and expo-cli
 
@@ -84,6 +97,6 @@ $ npm start
 - EMAIL_ID = xxxxx
 - EMAIL_PASSWORD = xxxxxxx
 
-## App Design
+## App_Design
 
 ![alt text](/CrimeAppFlowImage.png)
