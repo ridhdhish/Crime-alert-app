@@ -86,4 +86,4 @@ $ npm start
 
 ## App Design
 
-![alt text](https://lh3.google.com/u/1/d/1zr79liBGkcSbzDQq-2_kkMfawDe9SI5H=w1817-h980-iv1)
+![alt text](/CrimeAppFlowImage.png)
