@@ -86,4 +86,4 @@ $ npm start
 
 ## App Design
 
-![alt text](https://drive.google.com/file/d/1ky4lbvZP3lcbiJ-l3tgtU3ea9yg5_Qsl/view?usp=sharing)
+![alt text](https://lh3.google.com/u/1/d/1zr79liBGkcSbzDQq-2_kkMfawDe9SI5H=w1817-h980-iv1)
