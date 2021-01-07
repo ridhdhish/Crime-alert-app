@@ -1,18 +1,18 @@
 import React from "react";
 import { StyleSheet, View, StatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import AppNavigator from "./navigation/AppNavigator";
+import AuthNavigator from "./navigation/AuthNavigator";
 
 export default function App() {
   return (
     <View style={styles.container}>
       <NavigationContainer>
-        <AppNavigator />
+        <AuthNavigator />
       </NavigationContainer>
       <StatusBar
         translucent={true}
-        barStyle="default"
-        backgroundColor="rgba(0, 0, 0, 0.3)"
+        barStyle="dark-content"
+        backgroundColor="rgba(0, 0, 0, 0.1)"
       />
     </View>
   );
