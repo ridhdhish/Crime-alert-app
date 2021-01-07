@@ -5,37 +5,38 @@ import LoginScreen from "../screens/auth/LoginScreen";
 import SignupScreen from "../screens/auth/SignupScreen";
 import { Ionicons } from "@expo/vector-icons";
 
-const AppNavigator = () => {
-  const Stack = createStackNavigator();
+const AuthNavigator = () => {
+  const AuthStack = createStackNavigator();
 
   return (
-    <Stack.Navigator
+    <AuthStack.Navigator
       screenOptions={{
         headerStyle: { backgroundColor: "black" },
         headerTintColor: "white",
+        headerShown: false,
       }}
     >
-      <Stack.Screen
+      <AuthStack.Screen
         name="Start"
         component={StartScreen}
         options={{
           title: "Crime Alert",
         }}
       />
-      <Stack.Screen
+      <AuthStack.Screen
         name="Login"
         component={LoginScreen}
         options={{
           title: "Login",
         }}
       />
-      <Stack.Screen
+      <AuthStack.Screen
         name="Signup"
         component={SignupScreen}
         options={{ title: "Register" }}
       />
-    </Stack.Navigator>
+    </AuthStack.Navigator>
   );
 };
 
-export default AppNavigator;
+export default AuthNavigator;
