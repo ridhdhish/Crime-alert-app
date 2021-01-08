@@ -4,7 +4,7 @@ import { Animated } from "react-native";
 const FadeAnimation = (props) => {
   const [visible, setVisible] = useState(props.visible);
   const [visibility] = useState(new Animated.Value(visible ? 1 : 0));
-
+  console.log(visible);
   useEffect(() => {
     if (props.visible) {
       setVisible(true);
@@ -14,7 +14,7 @@ const FadeAnimation = (props) => {
       duration: 300,
       useNativeDriver: true,
     }).start(() => {
-      setVisible(props.visible);
+      setVisible(!props.visible);
     });
   }, [props.visible]);
 

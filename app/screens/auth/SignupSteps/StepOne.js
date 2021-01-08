@@ -33,6 +33,7 @@ const StepOne = (props) => {
           name="ios-arrow-forward-circle"
           color={colors.backgroundPrimary}
           size={54}
+          onPress={props.nextStep}
         />
       </View>
     </Fragment>

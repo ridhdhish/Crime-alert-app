@@ -3,17 +3,19 @@ import {
   Button,
   Keyboard,
   StyleSheet,
+  Text,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
 import LogoText from "../../components/LogoText";
 import { Formik } from "formik";
 import StepOne from "./SignupSteps/StepOne";
+import StepTwo from "./SignupSteps/StepTwo";
 import FadeAnimation from "../../components/animations/FadeAnimation";
 
 const SignupScreen = (props) => {
   const [show, setShow] = useState(true);
-
+  const [step, setStep] = useState(1);
   return (
     <TouchableWithoutFeedback
       onPress={() => {
@@ -38,9 +40,22 @@ const SignupScreen = (props) => {
         >
           {({ values, handleChange, handleSubmit }) => (
             <Fragment>
-              <Button title="toggle show" onPress={() => setShow(!show)} />
-              <FadeAnimation visible={show}>
-                <StepOne values={values} handleChange={handleChange} />
+              <Button title="Show" onPress={() => setStep(2)} />
+              <Button title="Hide" onPress={() => setStep(1)} />
+              <FadeAnimation visible={step === 1}>
+                <StepOne
+                  values={values}
+                  handleChange={handleChange}
+                  nextStep={() => setStep(() => 1)}
+                />
+              </FadeAnimation>
+              <FadeAnimation visible={step === 2}>
+                <StepTwo
+                  values={values}
+                  handleChange={handleChange}
+                  nextStep={() => setStep(3)}
+                  previousStep={() => setStep(1)}
+                />
               </FadeAnimation>
             </Fragment>
           )}
