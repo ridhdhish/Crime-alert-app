@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform, TouchableOpacity, TouchableHighlight } from "react-native";
+import { Platform, TouchableOpacity } from "react-native";
 import { TouchableNativeFeedback } from "react-native-gesture-handler";
 
 const CustomTouchable = (props) => {
