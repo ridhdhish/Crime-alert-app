@@ -11,7 +11,7 @@ const LogoText = (props) => {
         resizeMode="cover"
         style={{ ...styles.image, ...props.style }}
       />
-      <TitleText style={{ marginVertical: 4 }}>{props.title}</TitleText>
+      <TitleText style={{ marginVertical: 16 }}>{props.title}</TitleText>
     </Fragment>
   );
 };
