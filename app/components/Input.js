@@ -9,32 +9,33 @@ const Input = (props) => {
     <TextInput
       value={props.value}
       onChangeText={props.handleChange}
-      placeholder={props.name}
+      placeholder={props.name.charAt(0).toUpperCase() + props.name.slice(1)}
       style={{
         ...styles.input,
         ...{
-          borderColor: focus ? colors.backgroundAccent : colors.textAccent,
+          borderBottomColor: focus
+            ? colors.backgroundAccent
+            : colors.textAccent,
         },
         ...props.style,
       }}
       spellCheck={false}
       onFocus={() => setFocus(true)}
       onBlur={() => setFocus(false)}
+      {...props.config}
     />
   );
 };
 
 const styles = StyleSheet.create({
   input: {
-    borderWidth: 2,
-    paddingHorizontal: 16,
+    borderBottomWidth: 2,
     paddingVertical: 8,
     width: 300,
     maxWidth: "90%",
     fontSize: 18,
     marginVertical: 16,
     borderRadius: 5,
-    elevation: 2,
   },
 });
 

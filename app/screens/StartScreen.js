@@ -5,7 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../colors";
 import NormalText from "../components/NormalText";
 import SVG from "../components/SVG";
-import { WAVE_SVG } from "./svg/index";
+import { WAVE_SVG } from "../utils/svg";
 import CustomButton from "../components/CustomButton";
 import LogoText from "../components/LogoText";
 

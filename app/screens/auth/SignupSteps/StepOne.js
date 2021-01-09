@@ -37,9 +37,25 @@ const StepOne = (props) => {
         />
       </View>
       <Text style={{ textAlign: "center", color: colors.textAccent }}>Or</Text>
-      <View>
-        <Ionicons name="ios-logo-google" size={30} />
-        <Ionicons name="ios-logo-facebook" size={30} />
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "center",
+          marginTop: 16,
+        }}
+      >
+        <Ionicons
+          style={{ marginHorizontal: 8 }}
+          name="ios-logo-google"
+          size={40}
+          color={colors.danger}
+        />
+        <Ionicons
+          style={{ marginHorizontal: 8 }}
+          name="ios-logo-facebook"
+          size={40}
+          color={colors.facebookBlue}
+        />
       </View>
     </Fragment>
   );

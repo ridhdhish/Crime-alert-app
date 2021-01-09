@@ -1,10 +1,8 @@
 import React, { Fragment, useState } from "react";
 import {
-  Button,
   Keyboard,
   ScrollView,
   StyleSheet,
-  Text,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
@@ -15,7 +13,6 @@ import StepTwo from "./SignupSteps/StepTwo";
 import FadeAnimation from "../../components/animations/FadeAnimation";
 
 const SignupScreen = (props) => {
-  const [show, setShow] = useState(true);
   const [step, setStep] = useState(1);
   return (
     <ScrollView>
@@ -31,7 +28,7 @@ const SignupScreen = (props) => {
               firstname: "",
               lastname: "",
               email: "",
-              DOB: "",
+              DOB: new Date(),
               mobileNumber: "",
               address: "",
               password: "",
@@ -42,14 +39,20 @@ const SignupScreen = (props) => {
           >
             {({ values, handleChange, handleSubmit }) => (
               <Fragment>
-                <FadeAnimation show={step === 1}>
+                <FadeAnimation
+                  style={step !== 1 ? { display: "none" } : {}}
+                  show={step === 1}
+                >
                   <StepOne
                     values={values}
                     handleChange={handleChange}
                     nextStep={() => setStep(() => 2)}
                   />
                 </FadeAnimation>
-                <FadeAnimation show={step === 2}>
+                <FadeAnimation
+                  style={step !== 2 ? { display: "none" } : {}}
+                  show={step === 2}
+                >
                   <StepTwo
                     values={values}
                     handleChange={handleChange}
@@ -71,11 +74,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     paddingTop: 16,
-  },
-  modal: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
   },
 });
 

@@ -7,4 +7,6 @@ export const colors = {
   textSecondary: "#fdfdfe",
   textTertiary: "#333c58",
   textAccent: "#abb0c1",
+  danger: "#db4a39",
+  facebookBlue: "#4267B2",
 };

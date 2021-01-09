@@ -4,7 +4,7 @@ import { Animated } from "react-native";
 const FadeAnimation = (props) => {
   const { show } = props;
   const [visible, setVisible] = useState(show);
-  const [visibility] = useState(new Animated.Value(visible ? 1 : 0));
+  const [visibility] = useState(new Animated.Value(visible ? 1 : 0.5));
   useEffect(() => {
     if (show) {
       setVisible(true);
@@ -18,7 +18,7 @@ const FadeAnimation = (props) => {
     });
   }, [show]);
 
-  const { children } = props;
+  const { children, style } = props;
 
   if (visibility) {
     const containerStyle = {
@@ -36,7 +36,11 @@ const FadeAnimation = (props) => {
       ],
     };
 
-    return <Animated.View style={containerStyle}>{children}</Animated.View>;
+    return (
+      <Animated.View style={{ ...containerStyle, ...style }}>
+        {children}
+      </Animated.View>
+    );
   }
   return <Fragment></Fragment>;
 };
