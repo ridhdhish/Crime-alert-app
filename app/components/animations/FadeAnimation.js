@@ -2,11 +2,11 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Animated } from "react-native";
 
 const FadeAnimation = (props) => {
-  const [visible, setVisible] = useState(props.visible);
+  const { show } = props;
+  const [visible, setVisible] = useState(show);
   const [visibility] = useState(new Animated.Value(visible ? 1 : 0));
-  console.log(visible);
   useEffect(() => {
-    if (props.visible) {
+    if (show) {
       setVisible(true);
     }
     Animated.timing(visibility, {
@@ -14,9 +14,9 @@ const FadeAnimation = (props) => {
       duration: 300,
       useNativeDriver: true,
     }).start(() => {
-      setVisible(!props.visible);
+      setVisible(!show);
     });
-  }, [props.visible]);
+  }, [show]);
 
   const { children } = props;
 

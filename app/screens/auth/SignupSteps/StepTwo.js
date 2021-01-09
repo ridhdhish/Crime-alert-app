@@ -5,7 +5,14 @@ import { colors } from "../../../colors";
 import Input from "../../../components/Input";
 
 const StepOne = (props) => {
-  return <Text>Step Two</Text>;
+  return (
+    <Ionicons
+      name="ios-arrow-back-circle"
+      color={colors.backgroundPrimary}
+      size={54}
+      onPress={props.previousStep}
+    />
+  );
 };
 
 export default StepOne;

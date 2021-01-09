@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import React, { Fragment } from "react";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import { colors } from "../../../colors";
 import Input from "../../../components/Input";
 
@@ -35,6 +35,11 @@ const StepOne = (props) => {
           size={54}
           onPress={props.nextStep}
         />
+      </View>
+      <Text style={{ textAlign: "center", color: colors.textAccent }}>Or</Text>
+      <View>
+        <Ionicons name="ios-logo-google" size={30} />
+        <Ionicons name="ios-logo-facebook" size={30} />
       </View>
     </Fragment>
   );

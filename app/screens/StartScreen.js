@@ -1,23 +1,16 @@
-import React, { Fragment } from "react";
-import {
-  Image,
-  View,
-  StyleSheet,
-  Text,
-  TouchableNativeFeedback,
-} from "react-native";
+import React from "react";
+import { View, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 import { colors } from "../colors";
-import TitleText from "../components/TitleText";
 import NormalText from "../components/NormalText";
-import WaveSvg from "../components/WaveSvg";
-import CustomTouchable from "../components/CustomTouchable";
+import SVG from "../components/SVG";
+import { WAVE_SVG } from "./svg/index";
 import CustomButton from "../components/CustomButton";
 import LogoText from "../components/LogoText";
 
 const StartScreen = (props) => {
-  const { navigation, route } = props;
+  const { navigation } = props;
 
   return (
     <View style={styles.screen}>
@@ -44,7 +37,7 @@ const StartScreen = (props) => {
           color={colors.textSecondary}
         />
       </CustomButton>
-      <WaveSvg />
+      <SVG svg={WAVE_SVG} />
     </View>
   );
 };
