@@ -8,7 +8,7 @@ import moment from "moment";
 
 const StepOne = (props) => {
   const [showDateDialogue, setShowDateDialogue] = useState(false);
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState();
 
   return (
     <Fragment>
@@ -35,7 +35,11 @@ const StepOne = (props) => {
           maxWidth: "90%",
         }}
       >
-        <Input value={moment(date).format("Do MMMM YYYY")} name="DOB" />
+        <Input
+          value={moment(date).format("Do MMMM YYYY")}
+          setValid={props.setValid}
+          name="DOB"
+        />
         <Ionicons
           name="ios-calendar"
           color={colors.textPrimary}
@@ -49,11 +53,13 @@ const StepOne = (props) => {
         handleChange={props.handleChange("mobileNumber")}
         name="mobileNumber"
         config={{ keyboardType: "number-pad" }}
+        setValid={props.setValid}
       />
       <Input
         value={props.values.address}
         handleChange={props.handleChange("address")}
         name="address"
+        setValid={props.setValid}
       />
       <View
         style={{
