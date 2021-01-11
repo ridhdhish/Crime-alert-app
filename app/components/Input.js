@@ -8,16 +8,16 @@ const Input = (props) => {
   const [isTouched, setIsTouched] = useState(false);
   const [isValid, setIsValid] = useState(false);
   useEffect(() => {
-    let isValid;
-    if (props.name === "confirmPassword") {
-      console.log(props.value, props.password);
-      isValid = validations[props.name]?.isValid(props.value, props.password);
-    } else {
-      isValid = validations[props.name]?.isValid(props.value);
-    }
-    props.setValid(props.name, isValid);
-    setIsValid(() => isValid);
-    if (isTouched) {
+    if (props.type !== "login") {
+      let isValid;
+      if (props.name === "confirmPassword") {
+        console.log(props.value, props.password);
+        isValid = validations[props.name]?.isValid(props.value, props.password);
+      } else {
+        isValid = validations[props.name]?.isValid(props.value);
+      }
+      props.setValid(props.name, isValid);
+      setIsValid(() => isValid);
     }
   }, [props.value, focus, props.name]);
   return (
@@ -43,7 +43,7 @@ const Input = (props) => {
         }}
         {...props.config}
       />
-      {isTouched && !isValid && (
+      {isTouched && !isValid && props.type !== "login" && (
         <Text style={styles.errorText}>
           {" "}
           {validations[props.name].message}{" "}
