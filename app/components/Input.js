@@ -8,7 +8,13 @@ const Input = (props) => {
   const [isTouched, setIsTouched] = useState(false);
   const [isValid, setIsValid] = useState(false);
   useEffect(() => {
-    const isValid = validations[props.name]?.isValid(props.value);
+    let isValid;
+    if (props.name === "confirmPassword") {
+      console.log(props.value, props.password);
+      isValid = validations[props.name]?.isValid(props.value, props.password);
+    } else {
+      isValid = validations[props.name]?.isValid(props.value);
+    }
     props.setValid(props.name, isValid);
     setIsValid(() => isValid);
     if (isTouched) {

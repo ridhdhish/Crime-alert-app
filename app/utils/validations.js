@@ -14,7 +14,7 @@ export const validations = {
     message: "Please Provide valid email",
   },
   DOB: {
-    isValid: (value) => validator.isDate(value),
+    isValid: (value) => validator.isLength(value, { min: 8, max: 10 }),
     message: "Please Provide valid date",
   },
   mobileNumber: {
@@ -27,6 +27,13 @@ export const validations = {
   },
   password: {
     isValid: (value) => validator.isLength(value, { min: 8, max: 32 }),
-    message: "Please Provide password, Password can be of length 8-32.",
+    message: "Password must be of length 8-32.",
+  },
+  confirmPassword: {
+    isValid: (value, password) => {
+      console.log(value === password);
+      return value === password;
+    },
+    message: "Passwords doesn't match.",
   },
 };

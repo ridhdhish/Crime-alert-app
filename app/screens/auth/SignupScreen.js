@@ -28,15 +28,17 @@ const SignupScreen = (props) => {
     mobileNumber: false,
     address: false,
     password: false,
-    confirmPassword: false,
   });
-  Keyboard.addListener("keyboardDidHide", () => {
-    console.log("hell");
-  });
-  const setValid = (field, value) =>
-    setIsDataValid({ ...dataValid, [field]: value });
+  const [isFormValid, setFormValid] = useState(false);
+  const setValid = (field, value) => {
+    setIsDataValid((prevValue) => ({ ...prevValue, [field]: value }));
+    let formValid = Object.values(dataValid).reduce((prev, cur) => prev && cur);
+
+    setFormValid(() => formValid);
+    console.log(isFormValid);
+  };
   return (
-    <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={1}>
+    <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={10}>
       <ScrollView>
         <TouchableWithoutFeedback
           onPress={() => {
@@ -55,7 +57,6 @@ const SignupScreen = (props) => {
                 mobileNumber: "",
                 address: "",
                 password: "",
-                confirmPassword: "",
               }}
               onSubmit={(values) => {
                 console.log(values);
@@ -91,6 +92,11 @@ const SignupScreen = (props) => {
                       nextStep={() => setStep(3)}
                       previousStep={() => setStep(1)}
                       setValid={(field, value) => setValid(field, value)}
+                      isAllFieldValid={
+                        dataValid.DOB &&
+                        dataValid.mobileNumber &&
+                        dataValid.address
+                      }
                     />
                   </FadeAnimation>
                   <FadeAnimation
@@ -114,7 +120,13 @@ const SignupScreen = (props) => {
                   <TouchableWithoutFeedback
                     onPress={() => props.navigation.navigate("Login")}
                   >
-                    <Text style={{ textAlign: "center", fontSize: 18 }}>
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        fontSize: 18,
+                        marginTop: 16,
+                      }}
+                    >
                       Already have an account ?{" "}
                       <Text style={{ color: colors.textAccent }}>Login</Text>
                     </Text>

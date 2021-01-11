@@ -27,12 +27,6 @@ const StepOne = (props) => {
         name="password"
         setValid={props.setValid}
       />
-      <Input
-        value={props.values.confirmPassword}
-        handleChange={props.handleChange("confirmPassword")}
-        name="confirmPassword"
-        setValid={props.setValid}
-      />
     </Fragment>
   );
 };

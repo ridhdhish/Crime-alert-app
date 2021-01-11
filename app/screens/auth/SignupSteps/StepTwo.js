@@ -7,12 +7,12 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
 
 const StepOne = (props) => {
-  const [showDateDialogue, setShowDateDialogue] = useState(false);
-  const [date, setDate] = useState();
+  // const [showDateDialogue, setShowDateDialogue] = useState(false);
+  // const [date, setDate] = useState("");
 
   return (
     <Fragment>
-      {showDateDialogue && (
+      {/* {showDateDialogue && (
         <DateTimePicker
           testID="DOB"
           value={date || new Date()}
@@ -25,29 +25,24 @@ const StepOne = (props) => {
             props.setFieldValue("DOB", date);
           }}
         />
-      )}
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          position: "relative",
-          width: 300,
-          maxWidth: "90%",
-        }}
-      >
-        <Input
-          value={moment(date).format("Do MMMM YYYY")}
-          setValid={props.setValid}
-          name="DOB"
-        />
-        <Ionicons
+      )} */}
+      {/* <Ionicons
           name="ios-calendar"
           color={colors.textPrimary}
           size={30}
           onPress={() => setShowDateDialogue(true)}
           style={{ position: "absolute", right: 0 }}
-        />
-      </View>
+        /> */}
+
+      <Input
+        value={props.values.DOB}
+        setValid={props.setValid}
+        handleChange={props.handleChange("DOB")}
+        name="DOB"
+        config={{
+          placeholder: "Date Of Birth (DD-MM-YYYY)",
+        }}
+      />
       <Input
         value={props.values.mobileNumber}
         handleChange={props.handleChange("mobileNumber")}
@@ -76,9 +71,13 @@ const StepOne = (props) => {
         />
         <Ionicons
           name="ios-arrow-forward-circle"
-          color={colors.backgroundSecondary}
+          color={
+            props.isAllFieldValid
+              ? colors.backgroundSecondary
+              : colors.textAccent
+          }
           size={54}
-          onPress={props.nextStep}
+          onPress={props.isAllFieldValid ? props.nextStep : () => {}}
         />
       </View>
     </Fragment>
