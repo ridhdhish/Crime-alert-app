@@ -35,7 +35,6 @@ const SignupScreen = (props) => {
     let formValid = Object.values(dataValid).reduce((prev, cur) => prev && cur);
 
     setFormValid(() => formValid);
-    console.log(isFormValid);
   };
   return (
     <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={10}>
@@ -128,7 +127,14 @@ const SignupScreen = (props) => {
                       }}
                     >
                       Already have an account ?{" "}
-                      <Text style={{ color: colors.textAccent }}>Login</Text>
+                      <Text
+                        style={{
+                          color: colors.textAccent,
+                          textDecorationLine: "underline",
+                        }}
+                      >
+                        Login
+                      </Text>
                     </Text>
                   </TouchableWithoutFeedback>
                 </Fragment>
@@ -149,7 +155,6 @@ const styles = StyleSheet.create({
   },
   registerBtn: {
     marginTop: 32,
-    width: 200,
   },
 });
 
