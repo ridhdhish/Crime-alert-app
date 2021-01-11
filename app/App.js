@@ -13,6 +13,7 @@ export default function App() {
         translucent={true}
         barStyle="dark-content"
         backgroundColor="rgba(0, 0, 0, 0.1)"
+        hidden
       />
     </View>
   );

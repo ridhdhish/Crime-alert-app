@@ -11,16 +11,19 @@ const StepOne = (props) => {
         value={props.values.firstname}
         handleChange={props.handleChange("firstname")}
         name="firstname"
+        setValid={props.setValid}
       />
       <Input
         value={props.values.lastname}
         handleChange={props.handleChange("lastname")}
         name="lastname"
+        setValid={props.setValid}
       />
       <Input
         value={props.values.email}
         handleChange={props.handleChange("email")}
         name="email"
+        setValid={props.setValid}
       />
       <View
         style={{
@@ -31,17 +34,24 @@ const StepOne = (props) => {
       >
         <Ionicons
           name="ios-arrow-forward-circle"
-          color={colors.backgroundPrimary}
+          color={
+            props.isAllFieldValid
+              ? colors.backgroundSecondary
+              : colors.textAccent
+          }
           size={54}
-          onPress={props.nextStep}
+          onPress={props.isAllFieldValid ? props.nextStep : () => {}}
         />
       </View>
-      <Text style={{ textAlign: "center", color: colors.textAccent }}>Or</Text>
+      <Text
+        style={{ textAlign: "center", color: colors.textAccent, marginTop: 16 }}
+      >
+        Or
+      </Text>
       <View
         style={{
           flexDirection: "row",
           justifyContent: "center",
-          marginTop: 16,
         }}
       >
         <Ionicons
