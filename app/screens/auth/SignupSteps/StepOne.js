@@ -31,7 +31,7 @@ const StepOne = (props) => {
       >
         <Ionicons
           name="ios-arrow-forward-circle"
-          color={colors.backgroundPrimary}
+          color={colors.backgroundSecondary}
           size={54}
           onPress={props.nextStep}
         />
@@ -41,7 +41,6 @@ const StepOne = (props) => {
         style={{
           flexDirection: "row",
           justifyContent: "center",
-          marginTop: 16,
         }}
       >
         <Ionicons
