@@ -21,7 +21,6 @@ const signUp = async (req, res) => {
     mobileNumber,
     address,
   } = req.body;
-
   try {
     const user = await User.findOne({ email });
 

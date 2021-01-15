@@ -9,10 +9,14 @@ export const authReducer = (state = initState, action) => {
   const { type, payload } = action;
 
   switch (type) {
-    case LOGIN:
-      return { ...state };
     case SIGNUP:
-      return { ...state };
+    case LOGIN:
+      console.log(payload);
+      return {
+        ...state,
+        user: payload.user,
+        token: payload.token,
+      };
     case LOGOUT:
       return { ...state };
     case AUTH_ERROR:

@@ -18,22 +18,55 @@ export const signup = ({
     mobileNumber,
     address,
   };
-  try {
-    const response = await fetch("http://127.0.0.1:5000/api/auth/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(authData),
-    });
-    if (!response.ok) {
-      throw new Error("Something went wrong");
-    }
-    const body = await response.json();
-    console.log(body);
-  } catch (error) {
+  const response = await fetch("http://10.0.2.2:5000/api/auth/signup", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(authData),
+  });
+  const body = await response.json();
+  if (!response.ok) {
+    console.log(body.message);
     dispatch({
       type: AUTH_ERROR,
     });
+    throw new Error(body.message);
   }
+  return dispatch({
+    type: SIGNUP,
+    payload: {
+      user: body.user,
+      token: body.token,
+    },
+  });
+};
+
+export const login = ({ email, password }) => async (dispatch) => {
+  const authData = {
+    email,
+    password,
+  };
+  const response = await fetch("http://10.0.2.2:5000/api/auth/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(authData),
+  });
+  const body = await response.json();
+  if (!response.ok) {
+    console.log(body.message);
+    dispatch({
+      type: AUTH_ERROR,
+    });
+    throw new Error(body.message);
+  }
+  return dispatch({
+    type: LOGIN,
+    payload: {
+      user: body.user,
+      token: body.token,
+    },
+  });
 };
