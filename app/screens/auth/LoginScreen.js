@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Keyboard,
@@ -8,16 +8,33 @@ import {
   TouchableWithoutFeedback,
   View,
   KeyboardAvoidingView,
+  ActivityIndicator,
+  Alert,
 } from "react-native";
 import LogoText from "../../components/LogoText";
 import { Formik } from "formik";
 import { colors } from "../../colors";
 import Input from "../../components/Input";
-import CheckBox from "@react-native-community/checkbox";
 import PasswordInput from "../../components/PasswordInput";
+import { useDispatch } from "react-redux";
+import { login } from "../../store/actions/auth";
 
 const LoginScreen = (props) => {
-  const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useDispatch();
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (error) {
+      Alert.alert("Error", error, [
+        {
+          text: "OK",
+        },
+      ]);
+    }
+  }, [error]);
+
   return (
     <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={10}>
       <ScrollView>
@@ -34,8 +51,17 @@ const LoginScreen = (props) => {
                 email: "",
                 password: "",
               }}
-              onSubmit={(values) => {
-                console.log(values);
+              onSubmit={async (values) => {
+                setError(null);
+                setIsLoading(true);
+                try {
+                  await dispatch(
+                    login({ email: values.email, password: values.password })
+                  );
+                } catch (error) {
+                  setError(error.message);
+                }
+                setIsLoading(false);
               }}
             >
               {({ values, handleChange, handleSubmit }) => (
@@ -53,11 +79,18 @@ const LoginScreen = (props) => {
                     setValid={() => {}}
                   />
                   <View style={{ marginTop: 30 }}>
-                    <Button
-                      title="Login"
-                      color={colors.backgroundPrimary}
-                      onPress={handleSubmit}
-                    />
+                    {isLoading ? (
+                      <ActivityIndicator
+                        size="large"
+                        color={colors.backgroundPrimary}
+                      />
+                    ) : (
+                      <Button
+                        title="Login"
+                        color={colors.backgroundPrimary}
+                        onPress={handleSubmit}
+                      />
+                    )}
                   </View>
                   <TouchableWithoutFeedback
                     onPress={() => props.navigation.navigate("Signup")}

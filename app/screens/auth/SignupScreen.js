@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import {
   Button,
   Keyboard,
@@ -8,6 +8,8 @@ import {
   TouchableWithoutFeedback,
   View,
   KeyboardAvoidingView,
+  Alert,
+  ActivityIndicator,
 } from "react-native";
 import LogoText from "../../components/LogoText";
 import { Formik } from "formik";
@@ -17,6 +19,8 @@ import StepThree from "./SignupSteps/StepThree";
 import FadeAnimation from "../../components/animations/FadeAnimation";
 import { colors } from "../../colors";
 import { validations } from "../../utils/validations";
+import { useDispatch } from "react-redux";
+import { signup } from "../../store/actions/auth";
 
 const SignupScreen = (props) => {
   const [step, setStep] = useState(1);
@@ -29,6 +33,12 @@ const SignupScreen = (props) => {
     address: false,
     password: false,
   });
+
+  const dispatch = useDispatch();
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
   const [isFormValid, setFormValid] = useState(false);
   const setValid = (field, value) => {
     setIsDataValid((prevValue) => ({ ...prevValue, [field]: value }));
@@ -36,6 +46,17 @@ const SignupScreen = (props) => {
 
     setFormValid(() => formValid);
   };
+
+  useEffect(() => {
+    if (error) {
+      Alert.alert("Error", error, [
+        {
+          text: "OK",
+        },
+      ]);
+    }
+  }, [error]);
+
   return (
     <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={10}>
       <ScrollView>
@@ -57,8 +78,28 @@ const SignupScreen = (props) => {
                 address: "",
                 password: "",
               }}
-              onSubmit={(values) => {
-                console.log(values);
+              onSubmit={async (values) => {
+                let splitData;
+                if (values.DOB.includes("/")) {
+                  splitData = values.DOB.split("/");
+                } else if (values.DOB.includes("-")) {
+                  splitData = values.DOB.split("-");
+                } else if (values.DOB.includes(".")) {
+                  splitData = values.DOB.split(".");
+                }
+                const transformedDOB = new Date(
+                  splitData[2],
+                  splitData[1],
+                  splitData[0]
+                );
+                setError(null);
+                setIsLoading(true);
+                try {
+                  await dispatch(signup({ ...values, DOB: transformedDOB }));
+                } catch (error) {
+                  setError(error.message);
+                }
+                setIsLoading(false);
               }}
             >
               {({ values, handleChange, handleSubmit, setFieldValue }) => (
@@ -109,11 +150,35 @@ const SignupScreen = (props) => {
                       setValid={(field, value) => setValid(field, value)}
                     />
                     <View style={styles.registerBtn}>
-                      <Button
-                        onPress={handleSubmit}
-                        title="Register"
-                        color={colors.backgroundPrimary}
-                      />
+                      {isLoading ? (
+                        <ActivityIndicator
+                          size="large"
+                          color={colors.backgroundPrimary}
+                        />
+                      ) : (
+                        <Button
+                          onPress={
+                            isFormValid
+                              ? handleSubmit
+                              : () =>
+                                  Alert.alert(
+                                    "Provide All Data",
+                                    "Please fill all the data before submitting",
+                                    [
+                                      {
+                                        text: "OK",
+                                      },
+                                    ]
+                                  )
+                          }
+                          title="Register"
+                          color={
+                            isFormValid
+                              ? colors.backgroundPrimary
+                              : colors.textAccent
+                          }
+                        />
+                      )}
                     </View>
                   </FadeAnimation>
                   <TouchableWithoutFeedback
