@@ -18,7 +18,6 @@ export const authReducer = (state = initState, action) => {
         token: payload.token,
       };
     case LOGOUT:
-      return { ...state };
     case AUTH_ERROR:
       return {
         ...state,

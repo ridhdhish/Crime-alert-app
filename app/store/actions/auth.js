@@ -1,4 +1,5 @@
-import { AUTH_ERROR, LOGIN, LOGOUT, SIGNUP } from "../types";
+import { AUTH_ERROR, AUTH_USER, LOGOUT } from "../types";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const signup = ({
   email,
@@ -26,20 +27,14 @@ export const signup = ({
     body: JSON.stringify(authData),
   });
   const body = await response.json();
-  if (!response.ok) {
-    console.log(body.message);
-    dispatch({
-      type: AUTH_ERROR,
-    });
-    throw new Error(body.message);
-  }
-  return dispatch({
-    type: SIGNUP,
-    payload: {
-      user: body.user,
-      token: body.token,
-    },
-  });
+  // if (!response.ok) {
+  //   console.log(body.message);
+  //   dispatch({
+  //     type: AUTH_ERROR,
+  //   });
+  //   throw new Error(body.message);
+  // }
+  dispatch(authUser(body, response));
 };
 
 export const login = ({ email, password }) => async (dispatch) => {
@@ -55,18 +50,39 @@ export const login = ({ email, password }) => async (dispatch) => {
     body: JSON.stringify(authData),
   });
   const body = await response.json();
+  dispatch(authUser(body, response));
+};
+
+const authUser = (body, response) => {
   if (!response.ok) {
     console.log(body.message);
-    dispatch({
-      type: AUTH_ERROR,
-    });
     throw new Error(body.message);
   }
-  return dispatch({
-    type: LOGIN,
+  await AsyncStorage.setItem('userData', body);
+  return {
+    type: AUTH_USER,
     payload: {
       user: body.user,
-      token: body.token,
-    },
-  });
-};
+      token: body.token
+    }
+  }
+}
+
+export const logout = () => {
+  return {
+    type: LOGOUT,
+  }
+}
+
+export const AutoLogin = () => async (dispatch) => {
+  try {
+    const userData = await AsyncStorage.getItem("userData");
+    if(!userData) {
+      return dispatch(logout());
+    }
+  } catch (error) {
+    dispatch({
+      type: AUTH_ERROR
+    })
+  }
+}
