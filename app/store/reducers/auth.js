@@ -1,4 +1,4 @@
-import { AUTH_ERROR, LOGIN, LOGOUT, SIGNUP } from "../types";
+import { AUTH_ERROR, AUTH_USER, LOGOUT } from "../types";
 
 const initState = {
   user: null,
@@ -9,8 +9,7 @@ export const authReducer = (state = initState, action) => {
   const { type, payload } = action;
 
   switch (type) {
-    case SIGNUP:
-    case LOGIN:
+    case AUTH_USER:
       console.log(payload);
       return {
         ...state,

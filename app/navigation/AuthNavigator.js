@@ -4,6 +4,7 @@ import StartScreen from "../screens/StartScreen";
 import LoginScreen from "../screens/auth/LoginScreen";
 import SignupScreen from "../screens/auth/SignupScreen";
 import { Ionicons } from "@expo/vector-icons";
+import LoadingScreen from "../screens/LoadingScreen";
 
 const AuthNavigator = () => {
   const AuthStack = createStackNavigator();
@@ -16,6 +17,13 @@ const AuthNavigator = () => {
         headerShown: false,
       }}
     >
+      <AuthStack.Screen
+        name="Loading"
+        component={LoadingScreen}
+        options={{
+          title: "Loading",
+        }}
+      />
       <AuthStack.Screen
         name="Start"
         component={StartScreen}

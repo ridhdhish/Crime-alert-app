@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -8,9 +8,14 @@ import SVG from "../components/SVG";
 import { WAVE_SVG } from "../utils/svg";
 import CustomButton from "../components/CustomButton";
 import LogoText from "../components/LogoText";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const StartScreen = (props) => {
   const { navigation } = props;
+
+  useEffect(() => {
+    AsyncStorage.setItem("userVisited", JSON.stringify({ userVisited: false }));
+  }, []);
 
   return (
     <View style={styles.screen}>
