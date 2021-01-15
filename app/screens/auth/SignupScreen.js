@@ -8,6 +8,7 @@ import {
   TouchableWithoutFeedback,
   View,
   KeyboardAvoidingView,
+  Alert,
 } from "react-native";
 import LogoText from "../../components/LogoText";
 import { Formik } from "formik";
@@ -58,7 +59,20 @@ const SignupScreen = (props) => {
                 password: "",
               }}
               onSubmit={(values) => {
-                console.log(values);
+                let splitData;
+                if (values.DOB.includes("/")) {
+                  splitData = values.DOB.split("/");
+                } else if (values.DOB.includes("-")) {
+                  splitData = values.DOB.split("-");
+                } else if (values.DOB.includes(".")) {
+                  splitData = values.DOB.split(".");
+                }
+                const transformedDOB = new Date(
+                  splitData[2],
+                  splitData[1],
+                  splitData[0]
+                );
+                console.log({ ...values, DOB: transformedDOB });
               }}
             >
               {({ values, handleChange, handleSubmit, setFieldValue }) => (
@@ -110,9 +124,30 @@ const SignupScreen = (props) => {
                     />
                     <View style={styles.registerBtn}>
                       <Button
-                        onPress={handleSubmit}
+                        onPress={
+                          isFormValid
+                            ? handleSubmit
+                            : () =>
+                                Alert.alert(
+                                  "Provide All Data",
+                                  "Please fill all the data before submitting",
+                                  [
+                                    {
+                                      text: "Cancel",
+                                      style: "cancel",
+                                    },
+                                    {
+                                      text: "OK",
+                                    },
+                                  ]
+                                )
+                        }
                         title="Register"
-                        color={colors.backgroundPrimary}
+                        color={
+                          isFormValid
+                            ? colors.backgroundPrimary
+                            : colors.textAccent
+                        }
                       />
                     </View>
                   </FadeAnimation>
