@@ -5,6 +5,6 @@ module.exports = (id, jwt) => {
     },
   };
   return jwt.sign(payload, process.env.JWT_SECRET, {
-    expiresIn: "730d",
+    expiresIn: "7300d",
   });
 };

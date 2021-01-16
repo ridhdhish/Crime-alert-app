@@ -1,5 +1,5 @@
-import React from "react";
-import { StyleSheet, View, StatusBar } from "react-native";
+import React, { useEffect } from "react";
+import { StyleSheet, View, StatusBar, LogBox } from "react-native";
 import AppNavigator from "./navigation/AppNavigator";
 import { createStore, applyMiddleware, combineReducers } from "redux";
 import { Provider } from "react-redux";
@@ -13,6 +13,10 @@ const rootReducer = combineReducers({
 const store = createStore(rootReducer, applyMiddleware(Thunk));
 
 export default function App() {
+  useEffect(() => {
+    LogBox.ignoreLogs(["Setting a timer"]);
+  }, []);
+
   return (
     <Provider store={store}>
       <View style={styles.container}>

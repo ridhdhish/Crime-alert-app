@@ -19,7 +19,7 @@ const HomeScreen = (props) => {
             title="Logout"
             onPress={() => {
               dispatch(logout());
-              props.navigation.navigate("Start");
+              // props.navigation.navigate("Start");
             }}
           />
         </View>

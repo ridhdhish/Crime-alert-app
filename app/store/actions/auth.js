@@ -87,7 +87,7 @@ const setLogoutTimer = (expirationTime) => (dispatch) => {
 };
 
 export const authUser = ({ user, token, expirationTime }) => (dispatch) => {
-  dispatch(setLogoutTimer(expirationTime));
+  // dispatch(setLogoutTimer(expirationTime));
   dispatch({
     type: AUTH_USER,
     payload: {

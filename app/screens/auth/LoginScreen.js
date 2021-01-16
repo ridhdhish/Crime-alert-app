@@ -58,7 +58,7 @@ const LoginScreen = (props) => {
                   await dispatch(
                     login({ email: values.email, password: values.password })
                   );
-                  props.navigation.navigate("Home");
+                  // props.navigation.navigate("Home");
                 } catch (error) {
                   setError(error.message);
 

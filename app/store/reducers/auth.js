@@ -28,6 +28,7 @@ export const authReducer = (state = initState, action) => {
         ...state,
         user: null,
         token: null,
+        tryAutoLogin: true,
       };
 
     default:
