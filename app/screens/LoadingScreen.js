@@ -3,18 +3,17 @@ import React, { useEffect } from "react";
 import { View, ActivityIndicator } from "react-native";
 import { colors } from "../colors";
 import { useDispatch } from "react-redux";
-import { authUser } from "../store/actions/auth";
+import { authUser, tryAutoLogin } from "../store/actions/auth";
 
 const LoadingScreen = (props) => {
   const dispatch = useDispatch();
-  // AsyncStorage.clear();
   useEffect(() => {
     const tryLogin = async () => {
       const userData = await AsyncStorage.getItem("userData");
 
       if (!userData) {
         console.log("Navigate to Start");
-        props.navigation.navigate("Start");
+        dispatch(tryAutoLogin());
         return;
       }
 
@@ -25,13 +24,13 @@ const LoadingScreen = (props) => {
         !token ||
         !user
       ) {
-        props.navigation.navigate("Start");
+        dispatch(tryAutoLogin());
         return;
       }
       console.log("Navigate to Home");
-      const expireIn = expirationTime.getTime() - new Date().getTime();
+      const expireIn =
+        new Date(expirationTime).getTime() - new Date().getTime();
       dispatch(authUser({ user, token, expirationTime: expireIn }));
-      props.navigation.navigate("Home");
     };
     tryLogin();
   }, []);

@@ -19,13 +19,6 @@ const AuthNavigator = () => {
       }}
     >
       <AuthStack.Screen
-        name="Loading"
-        component={LoadingScreen}
-        options={{
-          title: "Loading",
-        }}
-      />
-      <AuthStack.Screen
         name="Start"
         component={StartScreen}
         options={{
@@ -43,11 +36,6 @@ const AuthNavigator = () => {
         name="Signup"
         component={SignupScreen}
         options={{ title: "Register" }}
-      />
-      <AuthStack.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{ title: "Home" }}
       />
     </AuthStack.Navigator>
   );

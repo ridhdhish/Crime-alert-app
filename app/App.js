@@ -1,7 +1,6 @@
 import React from "react";
 import { StyleSheet, View, StatusBar } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import AuthNavigator from "./navigation/AuthNavigator";
+import AppNavigator from "./navigation/AppNavigator";
 import { createStore, applyMiddleware, combineReducers } from "redux";
 import { Provider } from "react-redux";
 import { authReducer } from "./store/reducers/auth";
@@ -17,9 +16,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <View style={styles.container}>
-        <NavigationContainer>
-          <AuthNavigator />
-        </NavigationContainer>
+        <AppNavigator />
         <StatusBar
           translucent={true}
           barStyle="dark-content"

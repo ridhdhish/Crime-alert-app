@@ -1,4 +1,4 @@
-import { AUTH_ERROR, AUTH_USER, LOGOUT } from "../types";
+import { AUTH_ERROR, AUTH_USER, LOGOUT, TRY_AUTO_LOGIN } from "../types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 let timer;
@@ -83,7 +83,7 @@ const setLogoutTimer = (expirationTime) => (dispatch) => {
   timer = setTimeout(() => {
     console.log("Logout");
     dispatch(logout());
-  }, 5000);
+  }, expirationTime);
 };
 
 export const authUser = ({ user, token, expirationTime }) => (dispatch) => {
@@ -95,4 +95,10 @@ export const authUser = ({ user, token, expirationTime }) => (dispatch) => {
       token,
     },
   });
+};
+
+export const tryAutoLogin = () => {
+  return {
+    type: TRY_AUTO_LOGIN,
+  };
 };
