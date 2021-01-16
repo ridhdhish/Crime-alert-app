@@ -4,6 +4,8 @@ import StartScreen from "../screens/StartScreen";
 import LoginScreen from "../screens/auth/LoginScreen";
 import SignupScreen from "../screens/auth/SignupScreen";
 import { Ionicons } from "@expo/vector-icons";
+import LoadingScreen from "../screens/LoadingScreen";
+import HomeScreen from "../screens/HomeScreen";
 
 const AuthNavigator = () => {
   const AuthStack = createStackNavigator();

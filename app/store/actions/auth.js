@@ -1,4 +1,7 @@
-import { AUTH_ERROR, LOGIN, LOGOUT, SIGNUP } from "../types";
+import { AUTH_ERROR, AUTH_USER, LOGOUT, TRY_AUTO_LOGIN } from "../types";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+let timer;
 
 export const signup = ({
   email,
@@ -26,20 +29,19 @@ export const signup = ({
     body: JSON.stringify(authData),
   });
   const body = await response.json();
+  const expirationTime = new Date(
+    new Date().getTime() + 1000 * 60 * 60 * 24 * 730
+  );
+
   if (!response.ok) {
     console.log(body.message);
-    dispatch({
-      type: AUTH_ERROR,
-    });
     throw new Error(body.message);
   }
-  return dispatch({
-    type: SIGNUP,
-    payload: {
-      user: body.user,
-      token: body.token,
-    },
-  });
+  await AsyncStorage.setItem(
+    "userData",
+    JSON.stringify({ ...body, expirationTime })
+  );
+  dispatch(authUser({ ...body, expirationTime }));
 };
 
 export const login = ({ email, password }) => async (dispatch) => {
@@ -55,18 +57,48 @@ export const login = ({ email, password }) => async (dispatch) => {
     body: JSON.stringify(authData),
   });
   const body = await response.json();
+  const expirationTime = new Date(
+    new Date().getTime() + 1000 * 60 * 60 * 24 * 730
+  );
+
   if (!response.ok) {
     console.log(body.message);
-    dispatch({
-      type: AUTH_ERROR,
-    });
     throw new Error(body.message);
   }
-  return dispatch({
-    type: LOGIN,
+  await AsyncStorage.setItem(
+    "userData",
+    JSON.stringify({ ...body, expirationTime })
+  );
+  dispatch(authUser({ ...body, expirationTime }));
+};
+
+export const logout = () => {
+  AsyncStorage.removeItem("userData");
+  return {
+    type: LOGOUT,
+  };
+};
+
+const setLogoutTimer = (expirationTime) => (dispatch) => {
+  timer = setTimeout(() => {
+    console.log("Logout");
+    dispatch(logout());
+  }, expirationTime);
+};
+
+export const authUser = ({ user, token, expirationTime }) => (dispatch) => {
+  // dispatch(setLogoutTimer(expirationTime));
+  dispatch({
+    type: AUTH_USER,
     payload: {
-      user: body.user,
-      token: body.token,
+      user,
+      token,
     },
   });
+};
+
+export const tryAutoLogin = () => {
+  return {
+    type: TRY_AUTO_LOGIN,
+  };
 };

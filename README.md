@@ -5,7 +5,7 @@
 - [Features](#features)
 - [How To Run App and API](#How_To_Run)
 - [Databases](#Databases)
-- [Env Structure](#.envStructure)
+- [Env Structure](#env)
 - [App basic Design](#App_design)
 
 # Crime-alert-app
@@ -31,7 +31,7 @@
 
 - ## How To run backend API
 
-- Follow below [.env](#.envStructure) structure
+- Follow below [.env](#env) structure
 
 ```
 $ git clone https://github.com/MananDesai54/Crime-alert-app.git
@@ -88,7 +88,7 @@ $ npm start
   4. PoliceStation
   5. Crime
 
-## .envStructure
+## env
 
 - NODE_ENV = development
 - DB_URI = xxxxxxxxxx
