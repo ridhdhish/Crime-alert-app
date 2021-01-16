@@ -49,6 +49,9 @@ const StepOne = (props) => {
         name="mobileNumber"
         config={{ keyboardType: "number-pad" }}
         setValid={props.setValid}
+        config={{
+          placeholder: "(+91) Mobile Number",
+        }}
       />
       <Input
         value={props.values.address}

@@ -7,16 +7,14 @@ import { authUser } from "../store/actions/auth";
 
 const LoadingScreen = (props) => {
   const dispatch = useDispatch();
+  AsyncStorage.clear();
   useEffect(() => {
     const tryLogin = async () => {
       const userData = await AsyncStorage.getItem("userData");
-      const userVisited = await AsyncStorage.getItem("userVisited");
 
       if (!userData) {
-        if (!userData && !userVisited) {
-          props.navigation.navigate("Start");
-        }
-        props.navigation.navigate("Login");
+        console.log("Navigate to Start");
+        props.navigation.navigate("Start");
         return;
       }
 
@@ -31,7 +29,7 @@ const LoadingScreen = (props) => {
         return;
       }
       console.log("Navigate to Home");
-      props.navigation.navigate("Start");
+      props.navigation.navigate("Home");
       dispatch(authUser({ user, token }));
     };
     tryLogin();

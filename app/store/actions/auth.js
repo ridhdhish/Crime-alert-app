@@ -27,6 +27,7 @@ export const signup = ({
     body: JSON.stringify(authData),
   });
   const body = await response.json();
+  const expirationTime = new Date(new Date().getTime() + 1000 * 60 * 60 * 23);
 
   if (!response.ok) {
     console.log(body.message);

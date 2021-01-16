@@ -96,10 +96,11 @@ const SignupScreen = (props) => {
                 setIsLoading(true);
                 try {
                   await dispatch(signup({ ...values, DOB: transformedDOB }));
+                  props.navigation.navigate("Home");
                 } catch (error) {
                   setError(error.message);
+                  setIsLoading(false);
                 }
-                setIsLoading(false);
               }}
             >
               {({ values, handleChange, handleSubmit, setFieldValue }) => (
