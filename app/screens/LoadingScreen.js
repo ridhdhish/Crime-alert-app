@@ -7,7 +7,7 @@ import { authUser } from "../store/actions/auth";
 
 const LoadingScreen = (props) => {
   const dispatch = useDispatch();
-  AsyncStorage.clear();
+  // AsyncStorage.clear();
   useEffect(() => {
     const tryLogin = async () => {
       const userData = await AsyncStorage.getItem("userData");
@@ -25,12 +25,13 @@ const LoadingScreen = (props) => {
         !token ||
         !user
       ) {
-        props.navigation.navigate("Login");
+        props.navigation.navigate("Start");
         return;
       }
       console.log("Navigate to Home");
+      const expireIn = expirationTime.getTime() - new Date().getTime();
+      dispatch(authUser({ user, token, expirationTime: expireIn }));
       props.navigation.navigate("Home");
-      dispatch(authUser({ user, token }));
     };
     tryLogin();
   }, []);

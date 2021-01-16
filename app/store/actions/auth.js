@@ -1,6 +1,8 @@
 import { AUTH_ERROR, AUTH_USER, LOGOUT } from "../types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+let timer;
+
 export const signup = ({
   email,
   password,
@@ -27,7 +29,9 @@ export const signup = ({
     body: JSON.stringify(authData),
   });
   const body = await response.json();
-  const expirationTime = new Date(new Date().getTime() + 1000 * 60 * 60 * 23);
+  const expirationTime = new Date(
+    new Date().getTime() + 1000 * 60 * 60 * 24 * 730
+  );
 
   if (!response.ok) {
     console.log(body.message);
@@ -37,7 +41,7 @@ export const signup = ({
     "userData",
     JSON.stringify({ ...body, expirationTime })
   );
-  dispatch(authUser(body));
+  dispatch(authUser({ ...body, expirationTime }));
 };
 
 export const login = ({ email, password }) => async (dispatch) => {
@@ -53,7 +57,9 @@ export const login = ({ email, password }) => async (dispatch) => {
     body: JSON.stringify(authData),
   });
   const body = await response.json();
-  const expirationTime = new Date(new Date().getTime() + 1000 * 60 * 60 * 23);
+  const expirationTime = new Date(
+    new Date().getTime() + 1000 * 60 * 60 * 24 * 730
+  );
 
   if (!response.ok) {
     console.log(body.message);
@@ -63,21 +69,30 @@ export const login = ({ email, password }) => async (dispatch) => {
     "userData",
     JSON.stringify({ ...body, expirationTime })
   );
-  dispatch(authUser(body));
+  dispatch(authUser({ ...body, expirationTime }));
 };
 
 export const logout = () => {
+  AsyncStorage.removeItem("userData");
   return {
     type: LOGOUT,
   };
 };
 
-export const authUser = ({ user, token }) => {
-  return {
+const setLogoutTimer = (expirationTime) => (dispatch) => {
+  timer = setTimeout(() => {
+    console.log("Logout");
+    dispatch(logout());
+  }, 5000);
+};
+
+export const authUser = ({ user, token, expirationTime }) => (dispatch) => {
+  dispatch(setLogoutTimer(expirationTime));
+  dispatch({
     type: AUTH_USER,
     payload: {
       user,
       token,
     },
-  };
+  });
 };
