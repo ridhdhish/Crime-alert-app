@@ -1,3 +1,5 @@
+- Under development
+
 # Content
 
 - [Details](#Crime-alert-app)
@@ -10,7 +12,6 @@
 
 # Crime-alert-app
 
-- Under development
 - Main Goal
   - Whenever someone is in panic condition he/she can immediately ask for help to near by police-station and also contacting family members by only one tap in app and with more additional [features](#features)
 
@@ -99,4 +100,5 @@ $ npm start
 
 ## App_Design
 
-![alt text](/CrimeAppFlowImage.png)
+- Updating...
+  ![alt text](/CrimeAppFlowImage.png)
