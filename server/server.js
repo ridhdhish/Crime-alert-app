@@ -10,6 +10,7 @@ const {
   userRouter,
   relativeRouter,
   placeRoute,
+  crimeRoute,
 } = require("./src/routes");
 
 const app = express();
@@ -40,6 +41,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/relative", relativeRouter);
 app.use("/api/place", placeRoute);
+app.use("/api/crime", crimeRoute);
 
 app.use("/", (_, res) => {
   res.json({
