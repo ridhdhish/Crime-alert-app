@@ -31,7 +31,7 @@ const Input = (props) => {
           ...{
             borderBottomColor: focus
               ? colors.backgroundAccent
-              : colors.textAccent,
+              : colors.textPrimary,
           },
           ...props.style,
         }}
