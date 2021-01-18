@@ -3,7 +3,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import LoadingScreen from "../screens/LoadingScreen";
 import AuthNavigator from "./AuthNavigator";
-import HomeNavigator from "./HomeNavigator";
+import RootHomeNavigator from "./RootHomeNavigator";
 
 const AppNavigator = (props) => {
   const isAuth = useSelector((state) => !!state.auth.token);
@@ -13,7 +13,7 @@ const AppNavigator = (props) => {
     <NavigationContainer>
       {!isAuth && !tryAutoLogin && <LoadingScreen />}
       {!isAuth && tryAutoLogin && <AuthNavigator />}
-      {isAuth && <HomeNavigator />}
+      {isAuth && <RootHomeNavigator />}
     </NavigationContainer>
   );
 };
