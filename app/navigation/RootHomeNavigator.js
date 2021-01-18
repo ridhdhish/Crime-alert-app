@@ -8,7 +8,7 @@ import AddRelativeScreenStack from "./SubStackNavigators/AddRelativeScreenStack"
 import HistoryScreenStack from "./SubStackNavigators/HistoryScreenStack";
 import SettingScreenStack from "./SubStackNavigators/SettingScreenStack";
 import { colors } from "../colors";
-import { Button, Dimensions, SafeAreaView, Text, View } from "react-native";
+import { Button, SafeAreaView, Text, View } from "react-native";
 import { logout } from "../store/actions/auth";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -41,7 +41,6 @@ const RootHomeNavigator = () => {
                 color={colors.backgroundTertiary}
                 onPress={() => {
                   dispatch(logout());
-                  // props.navigation.navigate('Auth');
                 }}
               />
             </View>
