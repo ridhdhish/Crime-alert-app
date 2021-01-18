@@ -6,10 +6,6 @@ const getRelatives = async (req, res) => {
   try {
     const relatives = await Relative.find({ userId: req.user.id });
 
-    if (relatives.length === 0) {
-      return sendResponse("No relatives found", res, 404);
-    }
-
     res.status(200).json({ relatives });
   } catch (err) {
     return sendResponse(err.message, res);
@@ -37,13 +33,24 @@ const addRelative = async (req, res) => {
 
 const updateRelative = async (req, res) => {
   try {
-    const relative = await Relative.findByIdAndUpdate(req.params.id, req.body);
+    const relative = await Relative.findOne({
+      _id: req.params.id,
+      userId: req.user.id,
+    });
 
     if (!relative) {
       return sendResponse("Unable to update relative", res, 404);
     }
 
-    res.json({ ...relative._doc, ...req.body });
+    const { firstName, lastName, email, mobileNumber } = req.body;
+    if (firstName) relative.firstName = firstName;
+    if (lastName) relative.lastName = lastName;
+    if (email) relative.email = email;
+    if (mobileNumber) relative.mobileNumber = mobileNumber;
+
+    await relative.save();
+
+    res.json({ relative });
   } catch (err) {
     return sendResponse(err.message, res);
   }
@@ -51,11 +58,16 @@ const updateRelative = async (req, res) => {
 
 const deleteRelative = async (req, res) => {
   try {
-    const relative = await Relative.findByIdAndDelete(req.params.id);
+    const relative = await Relative.findOne({
+      _id: req.params.id,
+      userId: req.user.id,
+    });
 
     if (!relative) {
       return sendResponse("Unable to delete relative", res, 404);
     }
+
+    await relative.delete();
     sendResponse("Relative deleted", res, 200);
   } catch (err) {
     return sendResponse(err.message, res);
@@ -64,7 +76,10 @@ const deleteRelative = async (req, res) => {
 
 const getRelative = async (req, res) => {
   try {
-    const relative = await Relative.findById(req.params.id);
+    const relative = await Relative.findOne({
+      _id: req.params.id,
+      userId: req.user.id,
+    });
 
     if (!relative) {
       return sendResponse("No relative found", res, 404);
