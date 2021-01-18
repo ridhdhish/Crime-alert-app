@@ -102,3 +102,9 @@ $ npm start
 
 - Updating...
   ![alt text](/CrimeAppFlowImage.png)
+
+## Improvements
+
+- user exist with same mobile number or check otp verification
+- change styles for IOS
+- redundant for sub-stack
