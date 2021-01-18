@@ -6,7 +6,11 @@ import { stackCommonOption } from "../NavigationOptions";
 const HomeStack = createStackNavigator();
 
 const HomeScreenStack = () => (
-  <HomeStack.Navigator screenOptions={{ ...stackCommonOption }}>
+  <HomeStack.Navigator
+    screenOptions={({ navigation }) => ({
+      ...stackCommonOption(navigation),
+    })}
+  >
     <HomeStack.Screen
       name="Home"
       component={HomeScreen}

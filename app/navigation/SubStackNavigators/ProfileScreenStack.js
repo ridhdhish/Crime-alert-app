@@ -6,7 +6,11 @@ import { stackCommonOption } from "../NavigationOptions";
 const ProfileStack = createStackNavigator();
 
 const ProfileScreenStack = () => (
-  <ProfileStack.Navigator screenOptions={{ ...stackCommonOption }}>
+  <ProfileStack.Navigator
+    screenOptions={({ navigation }) => ({
+      ...stackCommonOption(navigation),
+    })}
+  >
     <ProfileStack.Screen
       name="Profile"
       component={ProfileScreen}

@@ -6,7 +6,11 @@ import { stackCommonOption } from "../NavigationOptions";
 const PlaceStack = createStackNavigator();
 
 const PlaceScreenStack = () => (
-  <PlaceStack.Navigator screenOptions={{ ...stackCommonOption }}>
+  <PlaceStack.Navigator
+    screenOptions={({ navigation }) => ({
+      ...stackCommonOption(navigation),
+    })}
+  >
     <PlaceStack.Screen
       name="Place"
       component={PlacesScreen}

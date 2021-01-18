@@ -6,7 +6,11 @@ import { stackCommonOption } from "../NavigationOptions";
 const RelativeStack = createStackNavigator();
 
 const RelativeScreenStack = () => (
-  <RelativeStack.Navigator screenOptions={{ ...stackCommonOption }}>
+  <RelativeStack.Navigator
+    screenOptions={({ navigation }) => ({
+      ...stackCommonOption(navigation),
+    })}
+  >
     <RelativeStack.Screen
       name="Relative"
       component={RelativesScreen}
