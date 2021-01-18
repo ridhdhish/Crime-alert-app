@@ -108,3 +108,4 @@ $ npm start
 - user exist with same mobile number or check otp verification
 - change styles for IOS
 - redundant for sub-stack
+- If two person add same relative then what ?
