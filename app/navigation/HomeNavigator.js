@@ -1,36 +1,61 @@
 import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import HomeScreen from "../screens/HomeScreen";
+import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../colors";
-import PlacesScreen from "../screens/PlacesScreen";
-import RelativesScreen from "../screens/RelativesScreen";
-import ProfileScreen from "../screens/ProfileScreen";
+import { Platform } from "react-native";
+import HomeScreenStack from "./SubStackNavigators/HomeScreenStack";
+import PlaceScreenStack from "./SubStackNavigators/PlaceScreenStack";
+import RelativeScreenStack from "./SubStackNavigators/RelativeScreenStack";
+import ProfileScreenStack from "./SubStackNavigators/ProfileScreenStack";
 
 const HomeNavigator = () => {
   const HomeTabs = createMaterialBottomTabNavigator();
-  const HomeStack = createStackNavigator();
 
   return (
-    <HomeTabs.Navigator screenOptions={{}} shifting={false}>
-      <HomeStack.Screen
+    <HomeTabs.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused }) => {
+          let iconName;
+          if (route.name === "Home") {
+            iconName = "home";
+          } else if (route.name === "Places") {
+            iconName = "location";
+          } else if (route.name === "Relatives") {
+            iconName = "people";
+          } else if (route.name === "Profile") {
+            iconName = "person";
+          }
+          return (
+            <Ionicons
+              size={23}
+              color={focused ? colors.textSecondary : "#dddddd"}
+              name={`${Platform.OS === "ios" ? "ios-" : "md-"}${iconName}${
+                focused ? "" : "-outline"
+              }`}
+            />
+          );
+        },
+        tabBarColor: colors.backgroundPrimary,
+      })}
+    >
+      <HomeTabs.Screen
         name="Home"
-        component={HomeScreen}
+        component={HomeScreenStack}
         options={{ title: "Home" }}
       />
-      <HomeStack.Screen
+      <HomeTabs.Screen
         name="Places"
-        component={PlacesScreen}
+        component={PlaceScreenStack}
         options={{ title: "Places" }}
       />
-      <HomeStack.Screen
+      <HomeTabs.Screen
         name="Relatives"
-        component={RelativesScreen}
+        component={RelativeScreenStack}
         options={{ title: "Relatives" }}
       />
-      <HomeStack.Screen
+      <HomeTabs.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={ProfileScreenStack}
         options={{ title: "Profile" }}
       />
     </HomeTabs.Navigator>

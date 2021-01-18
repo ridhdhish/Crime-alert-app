@@ -1,12 +1,12 @@
 import React from "react";
 import { View, Text } from "react-native";
 
-const RelativesScreen = () => {
+const SettingScreen = () => {
   return (
     <View>
-      <Text>Relatives & Friends</Text>
+      <Text>Settings</Text>
     </View>
   );
 };
 
-export default RelativesScreen;
+export default SettingScreen;

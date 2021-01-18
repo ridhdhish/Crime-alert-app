@@ -1,12 +1,12 @@
 import React from "react";
 import { View, Text } from "react-native";
 
-const RelativesScreen = () => {
+const HistoryScreen = () => {
   return (
     <View>
-      <Text>Relatives & Friends</Text>
+      <Text>HistoryScreen</Text>
     </View>
   );
 };
 
-export default RelativesScreen;
+export default HistoryScreen;

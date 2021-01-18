@@ -14,7 +14,6 @@ const HomeScreen = (props) => {
       ) : (
         <View>
           <Text>Home</Text>
-          <Text>{auth.user.firstname}</Text>
           <Button
             title="Logout"
             onPress={() => {
