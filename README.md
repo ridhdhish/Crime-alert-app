@@ -75,7 +75,9 @@ $ npm start
        - Lat
        - Long
      - PlaceId
-     - CrimeLevel
+     - CrimeStatus
+       - Level
+       - keyword
      - State
      - City
      - Address
@@ -86,8 +88,17 @@ $ npm start
      - Mobile NO
      - email
      - userID
-  4. PoliceStation
-  5. Crime
+  4. Crime
+     - UserId
+     - UserData
+     - PlaceId
+     - CrimeStatus
+       - Level
+       - keyword
+       - Type
+     - CrimeId
+     - Date
+  5. PoliceStation
 
 ## env
 
