@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const auth = require("../middlewares/auth");
+const { check } = require("express-validator");
 
 const {
   getRelatives,
@@ -14,7 +15,7 @@ const {
 /**
  * route : GET /api/relative/view
  * access : Private
- * desc: fetch all relatives
+ * desc: fetch all relatives of current user
  */
 router.get("/view", auth, getRelatives);
 
@@ -23,7 +24,20 @@ router.get("/view", auth, getRelatives);
  * access : Private
  * desc: Add new relative
  */
-router.post("/add", auth, addRelative);
+router.post(
+  "/add",
+  [
+    check("firstName", "firstName is required").not().isEmpty(),
+    check("lastName", "lastName is required").not().isEmpty(),
+    check("email", "valid email is required").isEmail(),
+    check("mobileNumber", "valid mobileNumber is required").isLength({
+      max: 10,
+      min: 10,
+    }),
+  ],
+  auth,
+  addRelative
+);
 
 /**
  * route : PUT /api/relative/update/:id
@@ -42,7 +56,7 @@ router.delete("/delete/:id", auth, deleteRelative);
 /**
  * route : DELETE /api/relative/delete
  * access : Private
- * desc: delete all relatives
+ * desc: delete all relatives of current user
  */
 router.delete("/delete", auth, deleteAllRelative);
 
