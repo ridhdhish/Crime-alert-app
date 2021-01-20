@@ -1,7 +1,10 @@
 const { validationResult } = require("express-validator");
 const Crime = require("../models/crime");
 const Place = require("../models/place");
+const Relative = require("../models/relative");
 const sendResponse = require("../utils/sendResponse");
+const jwt = require("jsonwebtoken");
+const { sendMail } = require("../utils/sendMail");
 
 const registerCrime = async (req, res) => {
   const errors = validationResult(req);
@@ -50,10 +53,41 @@ const registerCrime = async (req, res) => {
        * @Doubt
        */
       if (!token) {
-        return sendResponse("You need to be loggedIn", res, 401);
+        return sendResponse("Don't try to make fake alerts", res, 401);
       }
-      const { location, city, state, address, userId } = req.body;
-      res.send("Hello");
+      const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+      if (!decodedToken) {
+        return res.status(401).json({
+          message: "Don't try to make fake alerts",
+        });
+      }
+      const { location, city, state, address } = req.body;
+      const place = new Place({
+        location,
+        city,
+        state,
+        address,
+      });
+      // await place.save();
+
+      const crime = new Crime({
+        userId: decodedToken.user.id,
+        placeId: place.id,
+      });
+
+      /**
+       * @Todo
+       * Send notification to relative, bluetooth near by
+       * Send crime to police
+       * send message, mail, call to relative
+       */
+
+      const relatives = await Relative.find({ userId: decodedToken.user.id });
+
+      relatives.forEach(async (rel) => {
+        await sendMail(rel.email, `Mail sent`);
+      });
+      sendResponse("Crime reported successfully", res, 200);
     }
   } catch (error) {
     sendResponse(error.message, res);
