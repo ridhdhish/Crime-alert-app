@@ -1,0 +1,148 @@
+/* Color Theme Swatches in Hex */
+.Color-Theme-7-1-hex { color: #E176AC; }
+.Color-Theme-7-2-hex { color: #CA3790; }
+.Color-Theme-7-3-hex { color: #9D2B82; }
+.Color-Theme-7-4-hex { color: #5F148A; }
+.Color-Theme-7-5-hex { color: #1D0537; }
+
+/* Color Theme Swatches in RGBA */
+.Color-Theme-7-1-rgba { color: rgba(225, 118, 172, 1); }
+.Color-Theme-7-2-rgba { color: rgba(202, 55, 144, 1); }
+.Color-Theme-7-3-rgba { color: rgba(157, 43, 130, 1); }
+.Color-Theme-7-4-rgba { color: rgba(95, 20, 138, 1); }
+.Color-Theme-7-5-rgba { color: rgba(29, 5, 55, 1); }
+
+/* Color Theme Swatches in HSLA */
+.Color-Theme-7-1-hsla { color: hsla(329, 64, 67, 1); }
+.Color-Theme-7-2-hsla { color: hsla(323, 58, 50, 1); }
+.Color-Theme-7-3-hsla { color: hsla(314, 56, 39, 1); }
+.Color-Theme-7-4-hsla { color: hsla(278, 74, 30, 1); }
+.Color-Theme-7-5-hsla { color: hsla(268, 83, 11, 1); }
+
+
+
+
+
+/* Color Theme Swatches in Hex */
+.yellow-1-hex { color: #E7E84C; }
+.yellow-2-hex { color: #FBFF87; }
+.yellow-3-hex { color: #FFDF00; }
+.yellow-4-hex { color: #E8D051; }
+.yellow-5-hex { color: #FFF249; }
+
+/* Color Theme Swatches in RGBA */
+.yellow-1-rgba { color: rgba(231, 232, 76, 1); }
+.yellow-2-rgba { color: rgba(251, 255, 134, 1); }
+.yellow-3-rgba { color: rgba(255, 223, 0, 1); }
+.yellow-4-rgba { color: rgba(232, 208, 81, 1); }
+.yellow-5-rgba { color: rgba(255, 241, 72, 1); }
+
+/* Color Theme Swatches in HSLA */
+.yellow-1-hsla { color: hsla(60, 77, 60, 1); }
+.yellow-2-hsla { color: hsla(61, 100, 76, 1); }
+.yellow-3-hsla { color: hsla(52, 100, 50, 1); }
+.yellow-4-hsla { color: hsla(50, 76, 61, 1); }
+.yellow-5-hsla { color: hsla(55, 100, 64, 1); }
+
+
+
+//yellow-green
+#28BD6B
+#37B047
+#54B838
+#7FAB3E
+#C3C431
+
+
+/* Color Theme Swatches in Hex */
+.Wilderness-1-hex { color: #485922; }
+.Wilderness-2-hex { color: #798C35; }
+.Wilderness-3-hex { color: #B4BF5E; }
+.Wilderness-4-hex { color: #242614; }
+.Wilderness-5-hex { color: #F2F2F2; }
+
+/* Color Theme Swatches in RGBA */
+.Wilderness-1-rgba { color: rgba(71, 89, 33, 1); }
+.Wilderness-2-rgba { color: rgba(121, 140, 53, 1); }
+.Wilderness-3-rgba { color: rgba(179, 191, 93, 1); }
+.Wilderness-4-rgba { color: rgba(36, 38, 19, 1); }
+.Wilderness-5-rgba { color: rgba(242, 242, 242, 1); }
+
+/* Color Theme Swatches in HSLA */
+.Wilderness-1-hsla { color: hsla(78, 44, 24, 1); }
+.Wilderness-2-hsla { color: hsla(73, 44, 37, 1); }
+.Wilderness-3-hsla { color: hsla(67, 43, 55, 1); }
+.Wilderness-4-hsla { color: hsla(67, 31, 11, 1); }
+.Wilderness-5-hsla { color: hsla(0, 0, 95, 1); }
+
+
+
+
+/* Color Theme Swatches in Hex */
+.Flavour-1-hex { color: #F2F2F2; }
+.Flavour-2-hex { color: #F2B705; }
+.Flavour-3-hex { color: #F29F05; }
+.Flavour-4-hex { color: #F28705; }
+.Flavour-5-hex { color: #D96704; }
+
+/* Color Theme Swatches in RGBA */
+.Flavour-1-rgba { color: rgba(242, 242, 242, 1); }
+.Flavour-2-rgba { color: rgba(242, 182, 4, 1); }
+.Flavour-3-rgba { color: rgba(242, 159, 4, 1); }
+.Flavour-4-rgba { color: rgba(242, 135, 4, 1); }
+.Flavour-5-rgba { color: rgba(216, 103, 4, 1); }
+
+/* Color Theme Swatches in HSLA */
+.Flavour-1-hsla { color: hsla(0, 0, 95, 1); }
+.Flavour-2-hsla { color: hsla(45, 96, 48, 1); }
+.Flavour-3-hsla { color: hsla(39, 96, 48, 1); }
+.Flavour-4-hsla { color: hsla(33, 96, 48, 1); }
+.Flavour-5-hsla { color: hsla(28, 96, 43, 1); }
+
+
+
+
+/* Color Theme Swatches in Hex */
+.Blume-kämpft-sich-durch-trockene-Erde-1-hex { color: #3B590E; }
+.Blume-kämpft-sich-durch-trockene-Erde-2-hex { color: #76A60F; }
+.Blume-kämpft-sich-durch-trockene-Erde-3-hex { color: #F2E750; }
+.Blume-kämpft-sich-durch-trockene-Erde-4-hex { color: #261B14; }
+.Blume-kämpft-sich-durch-trockene-Erde-5-hex { color: #8C8C8C; }
+
+/* Color Theme Swatches in RGBA */
+.Blume-kämpft-sich-durch-trockene-Erde-1-rgba { color: rgba(59, 89, 14, 1); }
+.Blume-kämpft-sich-durch-trockene-Erde-2-rgba { color: rgba(117, 165, 14, 1); }
+.Blume-kämpft-sich-durch-trockene-Erde-3-rgba { color: rgba(242, 231, 79, 1); }
+.Blume-kämpft-sich-durch-trockene-Erde-4-rgba { color: rgba(38, 26, 20, 1); }
+.Blume-kämpft-sich-durch-trockene-Erde-5-rgba { color: rgba(140, 140, 140, 1); }
+
+/* Color Theme Swatches in HSLA */
+.Blume-kämpft-sich-durch-trockene-Erde-1-hsla { color: hsla(84, 72, 20, 1); }
+.Blume-kämpft-sich-durch-trockene-Erde-2-hsla { color: hsla(78, 83, 35, 1); }
+.Blume-kämpft-sich-durch-trockene-Erde-3-hsla { color: hsla(56, 86, 63, 1); }
+.Blume-kämpft-sich-durch-trockene-Erde-4-hsla { color: hsla(22, 30, 11, 1); }
+.Blume-kämpft-sich-durch-trockene-Erde-5-hsla { color: hsla(0, 0, 55, 1); }
+
+
+
+
+/* Color Theme Swatches in Hex */
+.Straße-über-Hügel-1-hex { color: #403527; }
+.Straße-über-Hügel-2-hex { color: #F2913D; }
+.Straße-über-Hügel-3-hex { color: #F2AB6D; }
+.Straße-über-Hügel-4-hex { color: #D96E30; }
+.Straße-über-Hügel-5-hex { color: #BF755A; }
+
+/* Color Theme Swatches in RGBA */
+.Straße-über-Hügel-1-rgba { color: rgba(63, 52, 38, 1); }
+.Straße-über-Hügel-2-rgba { color: rgba(242, 145, 60, 1); }
+.Straße-über-Hügel-3-rgba { color: rgba(242, 171, 109, 1); }
+.Straße-über-Hügel-4-rgba { color: rgba(216, 109, 47, 1); }
+.Straße-über-Hügel-5-rgba { color: rgba(191, 116, 89, 1); }
+
+/* Color Theme Swatches in HSLA */
+.Straße-über-Hügel-1-hsla { color: hsla(33, 24, 20, 1); }
+.Straße-über-Hügel-2-hsla { color: hsla(28, 87, 59, 1); }
+.Straße-über-Hügel-3-hsla { color: hsla(28, 83, 68, 1); }
+.Straße-über-Hügel-4-hsla { color: hsla(22, 68, 51, 1); }
+.Straße-über-Hügel-5-hsla { color: hsla(16, 44, 55, 1); }

@@ -21,7 +21,7 @@ const RootHomeNavigator = () => {
   return (
     <RootDrawer.Navigator
       drawerContentOptions={{
-        activeBackgroundColor: colors.backgroundTertiary,
+        activeBackgroundColor: colors.backgroundSecondary,
         activeTintColor: colors.textSecondary,
       }}
       drawerContent={(props) => (
