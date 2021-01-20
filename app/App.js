@@ -13,9 +13,9 @@ const rootReducer = combineReducers({
 const store = createStore(rootReducer, applyMiddleware(Thunk));
 
 export default function App() {
-  useEffect(() => {
-    LogBox.ignoreLogs(["Setting a timer"]);
-  }, []);
+  // useEffect(() => {
+  //   LogBox.ignoreLogs(["Setting a timer"]);
+  // }, []);
 
   return (
     <Provider store={store}>

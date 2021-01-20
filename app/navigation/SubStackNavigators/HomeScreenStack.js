@@ -9,12 +9,13 @@ const HomeScreenStack = () => (
   <HomeStack.Navigator
     screenOptions={({ navigation }) => ({
       ...stackCommonOption(navigation),
+      headerShown: false,
     })}
   >
     <HomeStack.Screen
       name="Home"
       component={HomeScreen}
-      options={{ title: "Home" }}
+      options={{ title: "Map" }}
     />
   </HomeStack.Navigator>
 );

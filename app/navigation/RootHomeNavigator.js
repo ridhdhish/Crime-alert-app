@@ -38,7 +38,7 @@ const RootHomeNavigator = () => {
             >
               <Button
                 title="Logout"
-                color={colors.backgroundTertiary}
+                color={colors.backgroundSecondary}
                 onPress={() => {
                   dispatch(logout());
                 }}
