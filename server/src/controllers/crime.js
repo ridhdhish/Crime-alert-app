@@ -68,12 +68,14 @@ const registerCrime = async (req, res) => {
         state,
         address,
       });
-      // await place.save();
+      await place.save();
 
       const crime = new Crime({
         userId: decodedToken.user.id,
         placeId: place.id,
       });
+
+      await crime.save();
 
       /**
        * @Todo
@@ -87,7 +89,15 @@ const registerCrime = async (req, res) => {
       relatives.forEach(async (rel) => {
         await sendMail(rel.email, `Mail sent`);
       });
-      sendResponse("Crime reported successfully", res, 200);
+      sendResponse(
+        {
+          message: "Crime reported successfully",
+          crime,
+          place,
+        },
+        res,
+        200
+      );
     }
   } catch (error) {
     sendResponse(error.message, res);

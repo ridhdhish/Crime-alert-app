@@ -21,7 +21,7 @@ const RootHomeNavigator = () => {
   return (
     <RootDrawer.Navigator
       drawerContentOptions={{
-        activeBackgroundColor: colors.backgroundTertiary,
+        activeBackgroundColor: colors.backgroundSecondary,
         activeTintColor: colors.textSecondary,
       }}
       drawerContent={(props) => (
@@ -38,7 +38,7 @@ const RootHomeNavigator = () => {
             >
               <Button
                 title="Logout"
-                color={colors.backgroundTertiary}
+                color={colors.backgroundSecondary}
                 onPress={() => {
                   dispatch(logout());
                 }}

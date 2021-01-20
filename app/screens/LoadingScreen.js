@@ -5,6 +5,7 @@ import { colors } from "../colors";
 import { useDispatch } from "react-redux";
 import { authUser, tryAutoLogin } from "../store/actions/auth";
 import LogoText from "../components/LogoText";
+import { LinearGradient } from "expo-linear-gradient";
 
 const LoadingScreen = (props) => {
   const dispatch = useDispatch();
@@ -37,10 +38,13 @@ const LoadingScreen = (props) => {
   }, []);
 
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <LinearGradient
+      colors={[colors.backgroundSecondary, colors.backgroundAccent]}
+      style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+    >
       <LogoText title="Crime Alert" />
       <ActivityIndicator size="large" color={colors.backgroundPrimary} />
-    </View>
+    </LinearGradient>
   );
 };
 

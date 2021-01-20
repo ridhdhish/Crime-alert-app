@@ -17,7 +17,7 @@ const HomeNavigator = () => {
         tabBarIcon: ({ focused }) => {
           let iconName;
           if (route.name === "Home") {
-            iconName = "home";
+            iconName = "map";
           } else if (route.name === "Places") {
             iconName = "location";
           } else if (route.name === "Relatives") {
@@ -41,7 +41,7 @@ const HomeNavigator = () => {
       <HomeTabs.Screen
         name="Home"
         component={HomeScreenStack}
-        options={{ title: "Home" }}
+        options={{ title: "Map" }}
       />
       <HomeTabs.Screen
         name="Places"
