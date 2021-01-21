@@ -3,13 +3,13 @@ import {
   ActivityIndicator,
   Dimensions,
   Platform,
-  Text,
   TouchableOpacity,
 } from "react-native";
 import { useSelector } from "react-redux";
 import { colors } from "../colors";
 import MapView, { Marker } from "react-native-maps";
 import { Ionicons } from "@expo/vector-icons";
+import FloatingButton from "../components/FloatingButton";
 
 const HomeScreen = (props) => {
   const auth = useSelector((state) => state.auth);
@@ -19,25 +19,18 @@ const HomeScreen = (props) => {
         <ActivityIndicator size="large" color={colors.backgroundPrimary} />
       ) : (
         <Fragment>
-          <TouchableOpacity
+          <FloatingButton
             style={{
-              position: "absolute",
               top: 25,
               left: 20,
               zIndex: 1000,
               padding: 10,
               backgroundColor: colors.backgroundPrimary,
-              borderRadius: 100,
             }}
-            activeOpacity={0.8}
             onPress={() => props.navigation.toggleDrawer()}
-          >
-            <Ionicons
-              size={30}
-              name={Platform.OS === "android" ? "md-menu" : "ios-menu"}
-              color={colors.textSecondary}
-            />
-          </TouchableOpacity>
+            size={30}
+            name={Platform.OS === "android" ? "md-menu" : "ios-menu"}
+          />
           <MapView
             style={{ flex: 1 }}
             region={{
@@ -59,27 +52,17 @@ const HomeScreen = (props) => {
               description="The city of Sun"
             />
           </MapView>
-          <TouchableOpacity
+          <FloatingButton
             style={{
-              position: "absolute",
               bottom: 50,
               left: Dimensions.get("window").width / 2 - 40,
-              zIndex: 1000,
               padding: 30,
               backgroundColor: colors.backgroundSecondary,
-              borderRadius: 100,
             }}
-            activeOpacity={0.8}
             onPress={() => {}}
-          >
-            <Ionicons
-              size={30}
-              name={
-                Platform.OS === "android" ? "md-megaphone" : "ios-megaphone"
-              }
-              color={colors.textSecondary}
-            />
-          </TouchableOpacity>
+            size={30}
+            name={Platform.OS === "android" ? "md-megaphone" : "ios-megaphone"}
+          />
         </Fragment>
       )}
     </Fragment>
