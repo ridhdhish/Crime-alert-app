@@ -17,11 +17,7 @@ const FloatingButton = (props) => {
       activeOpacity={0.8}
       onPress={props.onPress}
     >
-      <Ionicons
-        size={props.size}
-        name={props.name}
-        color={props.color || colors.textSecondary}
-      />
+      {props.children}
     </TouchableOpacity>
   );
 };
