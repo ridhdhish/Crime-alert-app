@@ -6,6 +6,7 @@ import { colors } from "../colors";
 import FloatingButton from "../components/FloatingButton";
 import { reportCrime } from "../store/actions/crime";
 import * as Location from "expo-location";
+import env from "../environment";
 
 const HomeScreen = (props) => {
   const auth = useSelector((state) => state.auth);
@@ -14,9 +15,12 @@ const HomeScreen = (props) => {
   const reportCrimeData = async () => {
     try {
       const location = await Location.getCurrentPositionAsync();
-      console.log(location);
-      console.log(process.env);
-      // fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key${process.env.GOOGLE_MAPS_API_KEY}`)
+      const result = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.coords.latitude},${location.coords.longitude}&key=${env.GOOGLE_MAPS_API_KEY}`
+      );
+      const data = await result.json();
+      console.log(data.results[0].formatted_address);
+      console.log(data.results[0].address_components);
       // dispatch(reportCrime())
     } catch (error) {
       console.log(error.message);
