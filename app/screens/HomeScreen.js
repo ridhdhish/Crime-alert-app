@@ -1,43 +1,46 @@
 import React, { Fragment } from "react";
-import {
-  ActivityIndicator,
-  Dimensions,
-  Platform,
-  Text,
-  TouchableOpacity,
-} from "react-native";
-import { useSelector } from "react-redux";
-import { colors } from "../colors";
+import { ActivityIndicator, Dimensions, Platform } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import { Ionicons } from "@expo/vector-icons";
+import { useSelector, useDispatch } from "react-redux";
+import { colors } from "../colors";
+import FloatingButton from "../components/FloatingButton";
+import { reportCrime } from "../store/actions/crime";
+import * as Location from "expo-location";
 
 const HomeScreen = (props) => {
   const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  const reportCrimeData = async () => {
+    try {
+      const location = await Location.getCurrentPositionAsync();
+      console.log(location);
+      console.log(process.env);
+      // fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key${process.env.GOOGLE_MAPS_API_KEY}`)
+      // dispatch(reportCrime())
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <Fragment>
       {!auth.user ? (
         <ActivityIndicator size="large" color={colors.backgroundPrimary} />
       ) : (
         <Fragment>
-          <TouchableOpacity
+          <FloatingButton
             style={{
-              position: "absolute",
               top: 25,
               left: 20,
               zIndex: 1000,
               padding: 10,
               backgroundColor: colors.backgroundPrimary,
-              borderRadius: 100,
             }}
-            activeOpacity={0.8}
             onPress={() => props.navigation.toggleDrawer()}
-          >
-            <Ionicons
-              size={30}
-              name={Platform.OS === "android" ? "md-menu" : "ios-menu"}
-              color={colors.textSecondary}
-            />
-          </TouchableOpacity>
+            size={30}
+            name={Platform.OS === "android" ? "md-menu" : "ios-menu"}
+          />
           <MapView
             style={{ flex: 1 }}
             region={{
@@ -59,27 +62,17 @@ const HomeScreen = (props) => {
               description="The city of Sun"
             />
           </MapView>
-          <TouchableOpacity
+          <FloatingButton
             style={{
-              position: "absolute",
               bottom: 50,
               left: Dimensions.get("window").width / 2 - 40,
-              zIndex: 1000,
               padding: 30,
               backgroundColor: colors.backgroundSecondary,
-              borderRadius: 100,
             }}
-            activeOpacity={0.8}
-            onPress={() => {}}
-          >
-            <Ionicons
-              size={30}
-              name={
-                Platform.OS === "android" ? "md-megaphone" : "ios-megaphone"
-              }
-              color={colors.textSecondary}
-            />
-          </TouchableOpacity>
+            onPress={reportCrimeData}
+            size={30}
+            name={Platform.OS === "android" ? "md-megaphone" : "ios-megaphone"}
+          />
         </Fragment>
       )}
     </Fragment>
