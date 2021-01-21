@@ -43,7 +43,7 @@ const LoadingScreen = (props) => {
       style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
     >
       <LogoText title="Crime Alert" />
-      <ActivityIndicator size="large" color={colors.backgroundAccent} />
+      <ActivityIndicator size="large" color={colors.backgroundPrimary} />
     </LinearGradient>
   );
 };

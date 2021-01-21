@@ -1,18 +1,28 @@
 import React, { Fragment } from "react";
-import {
-  ActivityIndicator,
-  Dimensions,
-  Platform,
-  TouchableOpacity,
-} from "react-native";
-import { useSelector } from "react-redux";
-import { colors } from "../colors";
+import { ActivityIndicator, Dimensions, Platform } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import { Ionicons } from "@expo/vector-icons";
+import { useSelector, useDispatch } from "react-redux";
+import { colors } from "../colors";
 import FloatingButton from "../components/FloatingButton";
+import { reportCrime } from "../store/actions/crime";
+import * as Location from "expo-location";
 
 const HomeScreen = (props) => {
   const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  const reportCrimeData = async () => {
+    try {
+      const location = await Location.getCurrentPositionAsync();
+      console.log(location);
+      console.log(process.env);
+      // fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key${process.env.GOOGLE_MAPS_API_KEY}`)
+      // dispatch(reportCrime())
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <Fragment>
       {!auth.user ? (
@@ -59,7 +69,7 @@ const HomeScreen = (props) => {
               padding: 30,
               backgroundColor: colors.backgroundSecondary,
             }}
-            onPress={() => {}}
+            onPress={reportCrimeData}
             size={30}
             name={Platform.OS === "android" ? "md-megaphone" : "ios-megaphone"}
           />
