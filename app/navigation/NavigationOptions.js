@@ -1,4 +1,5 @@
 import React from "react";
+import { Platform } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { colors } from "../colors";
 import CustomHeaderButton from "../components/CustomHeaderButton";
