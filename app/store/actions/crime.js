@@ -9,7 +9,12 @@ export const reportCrime = (crimeData) => async (dispatch, getState) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${auth.token}`,
       },
-      body: JSON.stringify({}),
+      body: JSON.stringify(crimeData),
+    });
+    const data = await response.json();
+    dispatch({
+      type: REPORT_CRIME,
+      payload: data,
     });
   } catch (error) {
     dispatch(reportCrimeError(crimeData));

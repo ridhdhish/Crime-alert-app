@@ -10,6 +10,7 @@ npm-debug.*
 web-build/
 package-lock.json
 assets/svg
+environment
 
 # macOS
 .DS_Store
