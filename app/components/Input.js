@@ -7,6 +7,8 @@ const Input = (props) => {
   const [focus, setFocus] = useState(false);
   const [isTouched, setIsTouched] = useState(false);
   const [isValid, setIsValid] = useState(false);
+  const [editedData, setEditedData] = useState(props.value);
+
   useEffect(() => {
     if (props.type !== "login") {
       let isValid;
@@ -20,6 +22,7 @@ const Input = (props) => {
       setIsValid(() => isValid);
     }
   }, [props.value, focus, props.name]);
+
   return (
     <Fragment>
       <TextInput

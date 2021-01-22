@@ -1,4 +1,10 @@
-import { AUTH_ERROR, AUTH_USER, LOGOUT, TRY_AUTO_LOGIN } from "../types";
+import {
+  AUTH_ERROR,
+  AUTH_USER,
+  LOGOUT,
+  TRY_AUTO_LOGIN,
+  UPDATE_USER,
+} from "../types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 let timer;
@@ -101,4 +107,44 @@ export const tryAutoLogin = () => {
   return {
     type: TRY_AUTO_LOGIN,
   };
+};
+
+export const updateProfile = (user, expirationTime) => async (
+  dispatch,
+  getState
+) => {
+  console.log("user ", user);
+  const { auth } = getState();
+  try {
+    const response = await fetch("http://10.0.2.2:5000/api/user/updateMe", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${auth.token}`,
+      },
+      body: JSON.stringify(user),
+    });
+    const body = await response.json();
+
+    console.log("BODY: \n", body);
+
+    if (!response.ok) {
+      console.log(body.message);
+      throw new Error(body.message);
+    }
+
+    await AsyncStorage.setItem(
+      "userData",
+      JSON.stringify({ user: body, token: auth.token, expirationTime })
+    );
+
+    dispatch({
+      type: UPDATE_USER,
+      payload: {
+        user: body,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+  }
 };
