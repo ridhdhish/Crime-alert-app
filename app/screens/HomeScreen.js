@@ -8,36 +8,52 @@ import { reportCrime } from "../store/actions/crime";
 import * as Location from "expo-location";
 import env from "../environment";
 import { Ionicons } from "@expo/vector-icons";
+import * as Notifications from "expo-notifications";
 
 const HomeScreen = (props) => {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
+  const sendNotification = async () => {
+    Notifications.scheduleNotificationAsync({
+      content: {
+        title: "Alert sent",
+        body: "The crime has been reported successfully",
+        color: colors.backgroundPrimary,
+        vibrate: [200, 100, 200],
+      },
+      trigger: {
+        seconds: 10,
+      },
+    });
+  };
+
   const reportCrimeData = async () => {
     setIsLoading(true);
     try {
-      const location = await Location.getCurrentPositionAsync();
-      const result = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.coords.latitude},${location.coords.longitude}&key=${env.GOOGLE_MAPS_API_KEY}`
-      );
+      // const location = await Location.getCurrentPositionAsync();
+      // const result = await fetch(
+      //   `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.coords.latitude},${location.coords.longitude}&key=${env.GOOGLE_MAPS_API_KEY}`
+      // );
 
-      const data = await result.json();
-      const crimeData = {
-        location: {
-          lat: location.coords.latitude,
-          long: location.coords.longitude,
-        },
-        city: data.results[0].address_components.find(
-          (field) => field.types[0] === "administrative_area_level_2"
-        ).long_name,
-        state: data.results[0].address_components.find(
-          (field) => field.types[0] === "administrative_area_level_1"
-        ).long_name,
-        address: data.results[0].formatted_address,
-      };
-      dispatch(reportCrime(crimeData));
+      // const data = await result.json();
+      // const crimeData = {
+      //   location: {
+      //     lat: location.coords.latitude,
+      //     long: location.coords.longitude,
+      //   },
+      //   city: data.results[0].address_components.find(
+      //     (field) => field.types[0] === "administrative_area_level_2"
+      //   ).long_name,
+      //   state: data.results[0].address_components.find(
+      //     (field) => field.types[0] === "administrative_area_level_1"
+      //   ).long_name,
+      //   address: data.results[0].formatted_address,
+      // };
+      // dispatch(reportCrime(crimeData));
       setIsLoading(false);
+      sendNotification();
     } catch (error) {
       console.log(error.message);
       setIsLoading(false);
