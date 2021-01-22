@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import { ActivityIndicator, Dimensions, Platform } from "react-native";
+import { ActivityIndicator, Alert, Dimensions, Platform } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { useSelector, useDispatch } from "react-redux";
 import { colors } from "../colors";
@@ -24,7 +24,7 @@ const HomeScreen = (props) => {
         vibrate: [200, 100, 200],
       },
       trigger: {
-        seconds: 10,
+        seconds: 5,
       },
     });
   };
@@ -32,30 +32,31 @@ const HomeScreen = (props) => {
   const reportCrimeData = async () => {
     setIsLoading(true);
     try {
-      // const location = await Location.getCurrentPositionAsync();
-      // const result = await fetch(
-      //   `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.coords.latitude},${location.coords.longitude}&key=${env.GOOGLE_MAPS_API_KEY}`
-      // );
+      const location = await Location.getCurrentPositionAsync();
+      const result = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.coords.latitude},${location.coords.longitude}&key=${env.GOOGLE_MAPS_API_KEY}`
+      );
 
-      // const data = await result.json();
-      // const crimeData = {
-      //   location: {
-      //     lat: location.coords.latitude,
-      //     long: location.coords.longitude,
-      //   },
-      //   city: data.results[0].address_components.find(
-      //     (field) => field.types[0] === "administrative_area_level_2"
-      //   ).long_name,
-      //   state: data.results[0].address_components.find(
-      //     (field) => field.types[0] === "administrative_area_level_1"
-      //   ).long_name,
-      //   address: data.results[0].formatted_address,
-      // };
-      // dispatch(reportCrime(crimeData));
+      const data = await result.json();
+      const crimeData = {
+        location: {
+          lat: location.coords.latitude,
+          long: location.coords.longitude,
+        },
+        city: data.results[0].address_components.find(
+          (field) => field.types[0] === "administrative_area_level_2"
+        ).long_name,
+        state: data.results[0].address_components.find(
+          (field) => field.types[0] === "administrative_area_level_1"
+        ).long_name,
+        address: data.results[0].formatted_address,
+      };
+      dispatch(reportCrime(crimeData));
       setIsLoading(false);
       sendNotification();
     } catch (error) {
       console.log(error.message);
+      Alert.alert("Error", error.message, [{ text: "Okay" }]);
       setIsLoading(false);
     }
   };
