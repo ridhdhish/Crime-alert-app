@@ -1,4 +1,10 @@
-import { AUTH_ERROR, AUTH_USER, LOGOUT, TRY_AUTO_LOGIN } from "../types";
+import {
+  AUTH_ERROR,
+  AUTH_USER,
+  LOGOUT,
+  TRY_AUTO_LOGIN,
+  UPDATE_USER,
+} from "../types";
 
 const initState = {
   user: null,
@@ -31,6 +37,11 @@ export const authReducer = (state = initState, action) => {
         tryAutoLogin: true,
       };
 
+    case UPDATE_USER:
+      return {
+        ...state,
+        user: payload.user,
+      };
     default:
       return state;
   }
