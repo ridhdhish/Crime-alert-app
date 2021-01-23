@@ -38,7 +38,6 @@
 $ git clone https://github.com/MananDesai54/Crime-alert-app.git
 $ cd Crime-alert-app
 
-$ cd server
 $ npm install
 
 $ npm start
