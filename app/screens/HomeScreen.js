@@ -43,7 +43,7 @@ const HomeScreen = (props) => {
         vibrate: [200, 100, 200],
       },
       trigger: {
-        seconds: 5,
+        seconds: 3,
       },
     });
   };

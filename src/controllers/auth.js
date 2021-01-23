@@ -1,10 +1,13 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
+const KeyValueDB = require("../models/keyValueDb");
 const { validationResult } = require("express-validator");
+const { v4: generateId } = require("uuid");
 
 const sendResponse = require("../utils/sendResponse");
 const generateToken = require("../utils/generateToken");
+const { SECRET_TOKEN_PREFIX } = require("../config/constant");
 
 const signUp = async (req, res) => {
   const errors = validationResult(req);
@@ -46,12 +49,22 @@ const signUp = async (req, res) => {
     const token = generateToken(newUser.id, jwt);
     await newUser.save();
 
+    const secretToken = generateId();
+
+    const userKeyValue = new KeyValueDB({
+      key: `${SECRET_TOKEN_PREFIX}${secretToken}`,
+      value: newUser,
+    });
+
+    await userKeyValue.save();
+
     return res.status(200).json({
       user: {
         ...newUser._doc,
         password: null,
       },
       token,
+      secretToken,
     });
   } catch (error) {
     sendResponse(error.message, res);

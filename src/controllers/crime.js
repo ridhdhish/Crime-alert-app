@@ -15,6 +15,7 @@ const registerCrime = async (req, res) => {
   const authHeader = req.get("Authorization");
   try {
     //user is not authenticated but need help
+    // need to get one token to report spam
     if (!authHeader) {
       const { firstName, lastName, mobileNumber, address } = req.body;
       const { location, city, state, address: area } = req.body;
