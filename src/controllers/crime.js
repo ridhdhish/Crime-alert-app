@@ -31,7 +31,7 @@ const registerCrime = async (req, res) => {
       if (!user) {
         return sendResponse("Don't try to make fake alerts", res, 401);
       }
-      userId = user.value.id;
+      userId = user.value._id;
 
       /**
        * user is authenticated and need help

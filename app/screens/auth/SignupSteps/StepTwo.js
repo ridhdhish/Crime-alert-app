@@ -11,10 +11,10 @@ const StepOne = (props) => {
         value={props.values.mobileNumber}
         handleChange={props.handleChange("mobileNumber")}
         name="mobileNumber"
-        config={{ keyboardType: "number-pad" }}
         setValid={props.setValid}
         config={{
           placeholder: "(+91) Mobile Number",
+          keyboardType: "number-pad",
         }}
       />
       <Input

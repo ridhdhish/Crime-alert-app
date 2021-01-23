@@ -71,7 +71,7 @@ const StartScreen = (props) => {
         }}
         textStyle={styles.startBtnText}
         onPress={() => {
-          navigation.navigate(onceRegistered ? "Login" : "Register");
+          navigation.navigate(onceRegistered ? "Login" : "Signup");
         }}
       >
         <Ionicons
