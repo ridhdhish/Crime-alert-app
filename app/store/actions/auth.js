@@ -71,6 +71,7 @@ export const login = ({ email, password }) => async (dispatch) => {
     "userData",
     JSON.stringify({ ...body, expirationTime })
   );
+  await AsyncStorage.setItem("secretToken", JSON.stringify(body.secretToken));
   dispatch(authUser({ ...body, expirationTime }));
 };
 

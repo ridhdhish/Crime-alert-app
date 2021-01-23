@@ -9,7 +9,6 @@ import { LinearGradient } from "expo-linear-gradient";
 
 const LoadingScreen = () => {
   const dispatch = useDispatch();
-  AsyncStorage.clear();
   useEffect(() => {
     const tryLogin = async () => {
       const userData = await AsyncStorage.getItem("userData");
