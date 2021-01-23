@@ -1,6 +1,6 @@
 require("dotenv").config();
 const express = require("express");
-const { connectWithDatabase } = require("./src/config/dbConnect");
+const { connectWithDatabase } = require("./config/dbConnect");
 const morgan = require("morgan");
 const cors = require("cors");
 const helmet = require("helmet");
@@ -11,7 +11,7 @@ const {
   relativeRouter,
   placeRoute,
   crimeRoute,
-} = require("./src/routes");
+} = require("./routes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
