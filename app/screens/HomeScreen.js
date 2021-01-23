@@ -22,6 +22,8 @@ const HomeScreen = (props) => {
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.coords.latitude},${location.coords.longitude}&key=${env.GOOGLE_MAPS_API_KEY}`
       );
 
+      console.log(location);
+
       const data = await result.json();
       const crimeData = {
         location: {

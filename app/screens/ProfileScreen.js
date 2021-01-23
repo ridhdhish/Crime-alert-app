@@ -158,6 +158,7 @@ const ProfileScreen = (props) => {
                             value={values[field]}
                             setValid={setValid}
                             handleChange={handleChange(field)}
+                            styleError={styles.error}
                           />
                         ))}
                       </View>
@@ -244,6 +245,12 @@ const styles = StyleSheet.create({
     marginTop: 4,
     fontSize: 18,
     color: "#403527",
+  },
+  error: {
+    marginTop: -15,
+    marginLeft: 55,
+    fontSize: 15,
+    color: "red",
   },
 });
 
