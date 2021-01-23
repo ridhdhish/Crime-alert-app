@@ -16,7 +16,7 @@ export const crimeReducer = (state = initState, action) => {
         place: payload.place,
       };
     case REPORT_CRIME_ERROR:
-      console.log("Do Background Sync");
+      console.log("Do Background Sync", payload);
       return {
         ...state,
       };

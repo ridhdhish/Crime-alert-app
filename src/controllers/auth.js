@@ -96,12 +96,22 @@ const login = async (req, res) => {
     //generate token
     const token = generateToken(user.id, jwt);
 
+    const secretToken = generateId();
+
+    const userKeyValue = new KeyValueDB({
+      key: `${SECRET_TOKEN_PREFIX}${secretToken}`,
+      value: user,
+    });
+
+    await userKeyValue.save();
+
     return res.status(200).json({
       user: {
         ...user._doc,
         password: null,
       },
       token,
+      secretToken,
     });
   } catch (error) {
     sendResponse(error.message, res);

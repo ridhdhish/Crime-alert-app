@@ -18,7 +18,10 @@ export const reportCrime = (crimeData) => async (dispatch, getState) => {
       body: JSON.stringify(isAuth ? crimeData : { ...crimeData, secretToken }),
     });
     const data = await response.json();
-    console.log(data);
+
+    if (!response.ok) {
+      throw new Error(data.message);
+    }
     dispatch({
       type: REPORT_CRIME,
       payload: data,

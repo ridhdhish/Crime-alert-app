@@ -47,7 +47,7 @@ const Input = (props) => {
         {...props.config}
       />
       {isTouched && !isValid && props.type !== "login" && (
-        <Text style={styles.errorText}>
+        <Text style={props.styleError ? props.styleError : styles.errorText}>
           {" "}
           {validations[props.name].message}{" "}
         </Text>

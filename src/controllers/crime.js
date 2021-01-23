@@ -31,7 +31,7 @@ const registerCrime = async (req, res) => {
       if (!user) {
         return sendResponse("Don't try to make fake alerts", res, 401);
       }
-      userId = user.value.id;
+      userId = user.value._id;
 
       /**
        * user is authenticated and need help
@@ -49,6 +49,11 @@ const registerCrime = async (req, res) => {
       }
       userId = decodedToken.user.id;
     }
+
+    if (!userId) {
+      return sendResponse("Unable to send crime report", res);
+    }
+
     const { location, city, state, address } = req.body;
     const place = new Place({
       location,
@@ -72,7 +77,7 @@ const registerCrime = async (req, res) => {
      * send message, mail, call to relative
      */
 
-    const relatives = await Relative.find({ userId: decodedToken.user.id });
+    const relatives = await Relative.find({ userId });
 
     relatives.forEach(async (rel) => {
       await sendMail(rel.email, `Mail sent`);
