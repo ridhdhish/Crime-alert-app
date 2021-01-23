@@ -1,81 +1,37 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { ActivityIndicator, Alert, Dimensions, Platform } from "react-native";
+import { ActivityIndicator, Alert, Platform } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { useSelector, useDispatch } from "react-redux";
 import { colors } from "../colors";
 import FloatingButton from "../components/FloatingButton";
 import { reportCrime } from "../store/actions/crime";
-import * as Location from "expo-location";
-import env from "../environment";
 import { Ionicons } from "@expo/vector-icons";
 import * as Notifications from "expo-notifications";
+import { getCrimeData } from "../utils/getCrimeData";
+import { sendNotification } from "../utils/sendNotification";
+import AlertButton from "../components/AlertButton";
+import { useNotification } from "../hooks/useNotification";
 
 const HomeScreen = (props) => {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    const foregroundSubscription = Notifications.addNotificationReceivedListener(
-      (notification) => {
-        console.log(notification);
-      }
-    );
-
-    const backgroundSubscription = Notifications.addNotificationResponseReceivedListener(
-      (response) => {
-        console.log(response);
-      }
-    );
-
-    return () => {
-      foregroundSubscription.remove();
-      backgroundSubscription.remove();
-    };
-  }, []);
-
-  const sendNotification = async () => {
-    Notifications.scheduleNotificationAsync({
-      content: {
-        title: "Alert sent",
-        body: "The crime has been reported successfully",
-        color: colors.backgroundPrimary,
-        vibrate: [200, 100, 200],
-      },
-      trigger: {
-        seconds: 3,
-      },
-    });
-  };
+  useNotification();
 
   const reportCrimeData = async () => {
     setIsLoading(true);
     try {
-      const location = await Location.getCurrentPositionAsync();
-      const result = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.coords.latitude},${location.coords.longitude}&key=${env.GOOGLE_MAPS_API_KEY}`
-      );
-
-      const data = await result.json();
-      const crimeData = {
-        location: {
-          lat: location.coords.latitude,
-          long: location.coords.longitude,
-        },
-        city: data.results[0].address_components.find(
-          (field) => field.types[0] === "administrative_area_level_2"
-        ).long_name,
-        state: data.results[0].address_components.find(
-          (field) => field.types[0] === "administrative_area_level_1"
-        ).long_name,
-        address: data.results[0].formatted_address,
-      };
+      const crimeData = await getCrimeData();
       dispatch(reportCrime(crimeData));
-      setIsLoading(false);
-      sendNotification();
+      sendNotification({
+        title: "Sent Notification",
+        body: "Alert has be reported successfully",
+      });
     } catch (error) {
       console.log(error.message);
       Alert.alert("Error", error.message, [{ text: "Okay" }]);
+    } finally {
       setIsLoading(false);
     }
   };
@@ -123,30 +79,7 @@ const HomeScreen = (props) => {
               description="The city of Sun"
             />
           </MapView>
-          <FloatingButton
-            style={{
-              bottom: 50,
-              left: Dimensions.get("window").width / 2 - 40,
-              padding: 30,
-              backgroundColor: colors.backgroundSecondary,
-            }}
-            onPress={isLoading ? () => {} : reportCrimeData}
-          >
-            {isLoading ? (
-              <ActivityIndicator
-                size="large"
-                color={colors.backgroundPrimary}
-              />
-            ) : (
-              <Ionicons
-                size={30}
-                name={
-                  Platform.OS === "android" ? "md-megaphone" : "ios-megaphone"
-                }
-                color={colors.textSecondary}
-              />
-            )}
-          </FloatingButton>
+          <AlertButton loading={isLoading} reportCrimeData={reportCrimeData} />
         </Fragment>
       )}
     </Fragment>

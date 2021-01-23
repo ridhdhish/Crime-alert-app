@@ -6,7 +6,7 @@ const KeyValueDb = new mongoose.Schema({
     required: true,
   },
   value: {
-    type: String,
+    type: Object,
     required: true,
   },
   createdDate: {
