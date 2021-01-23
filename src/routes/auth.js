@@ -20,7 +20,6 @@ router.post(
       .isEmpty()
       .isLength({ max: 32, min: 8 }),
     check("email", "email is required").isEmail(),
-    check("DOB", "DOB is required").not().isEmpty(),
     check("mobileNumber", "mobileNumber is required and of 10 digits")
       .not()
       .isEmpty()
