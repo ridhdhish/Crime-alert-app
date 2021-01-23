@@ -17,7 +17,6 @@ const signUp = async (req, res) => {
     lastname,
     password,
     email,
-    DOB,
     mobileNumber,
     address,
   } = req.body;
@@ -35,7 +34,6 @@ const signUp = async (req, res) => {
       lastname,
       password,
       email,
-      DOB,
       mobileNumber,
       address,
     });

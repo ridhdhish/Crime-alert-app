@@ -26,10 +26,6 @@ const UserSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    DOB: {
-      type: Date,
-      required: true,
-    },
   },
   {
     timestamps: true,

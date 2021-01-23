@@ -28,7 +28,6 @@ const SignupScreen = (props) => {
     firstname: false,
     lastname: false,
     email: false,
-    DOB: false,
     mobileNumber: false,
     address: false,
     password: false,
@@ -73,29 +72,15 @@ const SignupScreen = (props) => {
                 firstname: "",
                 lastname: "",
                 email: "",
-                DOB: "",
                 mobileNumber: "",
                 address: "",
                 password: "",
               }}
               onSubmit={async (values) => {
-                let splitData;
-                if (values.DOB.includes("/")) {
-                  splitData = values.DOB.split("/");
-                } else if (values.DOB.includes("-")) {
-                  splitData = values.DOB.split("-");
-                } else if (values.DOB.includes(".")) {
-                  splitData = values.DOB.split(".");
-                }
-                const transformedDOB = new Date(
-                  splitData[2],
-                  splitData[1],
-                  splitData[0]
-                );
                 setError(null);
                 setIsLoading(true);
                 try {
-                  await dispatch(signup({ ...values, DOB: transformedDOB }));
+                  await dispatch(signup(values));
                   // props.navigation.navigate("Home");
                 } catch (error) {
                   setError(error.message);
@@ -134,9 +119,7 @@ const SignupScreen = (props) => {
                       previousStep={() => setStep(1)}
                       setValid={(field, value) => setValid(field, value)}
                       isAllFieldValid={
-                        dataValid.DOB &&
-                        dataValid.mobileNumber &&
-                        dataValid.address
+                        dataValid.mobileNumber && dataValid.address
                       }
                     />
                   </FadeAnimation>
