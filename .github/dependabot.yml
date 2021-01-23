@@ -3,16 +3,16 @@
 # Please see the documentation for all configuration options:
 # https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
 
-version: 2
-updates:
-  - package-ecosystem: "npm"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-      day: "sunday"
+# version: 2
+# updates:
+#   - package-ecosystem: "yarn"
+#     directory: "/"
+#     schedule:
+#       interval: "monthly"
+#       day: "sunday"
 
-  - package-ecosystem: "npm"
-    directory: "/app"
-    schedule:
-      interval: "weekly"
-      day: "sunday"
+#   - package-ecosystem: "yarn"
+#     directory: "/app"
+#     schedule:
+#       interval: "monthly"
+#       day: "sunday"
