@@ -77,7 +77,7 @@ const registerCrime = async (req, res) => {
      * send message, mail, call to relative
      */
 
-    const relatives = await Relative.find({ userId: decodedToken.user.id });
+    const relatives = await Relative.find({ userId });
 
     relatives.forEach(async (rel) => {
       await sendMail(rel.email, `Mail sent`);
