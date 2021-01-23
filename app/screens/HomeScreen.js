@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import { ActivityIndicator, Dimensions, Platform } from "react-native";
+import { ActivityIndicator, Alert, Dimensions, Platform } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { useSelector, useDispatch } from "react-redux";
 import { colors } from "../colors";
@@ -8,11 +8,26 @@ import { reportCrime } from "../store/actions/crime";
 import * as Location from "expo-location";
 import env from "../environment";
 import { Ionicons } from "@expo/vector-icons";
+import * as Notifications from "expo-notifications";
 
 const HomeScreen = (props) => {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
+
+  const sendNotification = async () => {
+    Notifications.scheduleNotificationAsync({
+      content: {
+        title: "Alert sent",
+        body: "The crime has been reported successfully",
+        color: colors.backgroundPrimary,
+        vibrate: [200, 100, 200],
+      },
+      trigger: {
+        seconds: 5,
+      },
+    });
+  };
 
   const reportCrimeData = async () => {
     setIsLoading(true);
@@ -40,8 +55,10 @@ const HomeScreen = (props) => {
       };
       dispatch(reportCrime(crimeData));
       setIsLoading(false);
+      sendNotification();
     } catch (error) {
       console.log(error.message);
+      Alert.alert("Error", error.message, [{ text: "Okay" }]);
       setIsLoading(false);
     }
   };

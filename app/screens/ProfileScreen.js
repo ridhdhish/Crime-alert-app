@@ -125,7 +125,7 @@ const ProfileScreen = (props) => {
               </CustomTouchable>
             </View>
           </View>
-          <View style={styles.profileSaperator}></View>
+          <View style={styles.profileSeparator}></View>
 
           {isLoading ? (
             <View style={{ marginVertical: "40%" }}>
@@ -166,7 +166,7 @@ const ProfileScreen = (props) => {
                   </Fragment>
                 ) : (
                   <Fragment>
-                    <View style={{ marginTop: 10 }}>
+                    <View style={{ marginTop: 10, alignItems: "center" }}>
                       {fields.map((field) => (
                         <View style={styles.detailsContainer} key={field}>
                           <Text style={styles.titleText}>
@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     textAlign: "center",
   },
-  profileSaperator: {
+  profileSeparator: {
     width: "92%",
     borderBottomColor: "#403527",
     borderBottomWidth: 1,
@@ -229,11 +229,11 @@ const styles = StyleSheet.create({
     marginHorizontal: "13%",
   },
   detailsContainer: {
-    width: 250,
+    width: 300,
+    maxWidth: "90%",
     paddingVertical: 10,
     paddingLeft: 15,
     margin: 10,
-    marginHorizontal: "19%",
     backgroundColor: "#fad9bb",
     borderRadius: 10,
   },

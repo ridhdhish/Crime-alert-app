@@ -7,6 +7,16 @@ import AppNavigator from "./navigation/AppNavigator";
 import { authReducer } from "./store/reducers/auth";
 import { crimeReducer } from "./store/reducers/crime";
 import * as Permissions from "expo-permissions";
+import * as Notifications from "expo-notifications";
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => {
+    return {
+      shouldShowAlert: true,
+      priority: Notifications.AndroidNotificationPriority.MAX,
+    };
+  },
+});
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -19,18 +29,26 @@ export default function App() {
   useEffect(() => {
     // LogBox.ignoreLogs(["Setting a timer"]);
     (async function askPermissions() {
-      const result = await Permissions.askAsync(Permissions.LOCATION);
-      console.log(result.status);
-      if (result.status !== "granted") {
-        Alert.alert(
-          "Permission Required",
-          "To report crime you need to provide the location Permission",
-          [
-            {
-              text: "Okay",
-            },
-          ]
-        );
+      const permissions = [Permissions.LOCATION, Permissions.NOTIFICATIONS];
+      try {
+        const statusData = await Permissions.getAsync(...permissions);
+        if (statusData.status !== "granted") {
+          const result = await Permissions.askAsync(...permissions);
+          console.log(result.status);
+          if (result.status !== "granted") {
+            Alert.alert(
+              "Permission Required",
+              "To report crime you need to provide the location & notification Permission, you can do it by going to App settings",
+              [
+                {
+                  text: "Okay",
+                },
+              ]
+            );
+          }
+        }
+      } catch (error) {
+        console.log(error.message);
       }
     })();
   }, []);
