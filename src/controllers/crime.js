@@ -49,6 +49,11 @@ const registerCrime = async (req, res) => {
       }
       userId = decodedToken.user.id;
     }
+
+    if (!userId) {
+      return sendResponse("Unable to send crime report", res);
+    }
+
     const { location, city, state, address } = req.body;
     const place = new Place({
       location,
