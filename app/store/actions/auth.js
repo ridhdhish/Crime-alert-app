@@ -1,11 +1,6 @@
-import {
-  AUTH_ERROR,
-  AUTH_USER,
-  LOGOUT,
-  TRY_AUTO_LOGIN,
-  UPDATE_USER,
-} from "../types";
+import { AUTH_USER, LOGOUT, TRY_AUTO_LOGIN, UPDATE_USER } from "../types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import env from "../../environment";
 
 let timer;
 
@@ -27,7 +22,7 @@ export const signup = ({
     mobileNumber,
     address,
   };
-  const response = await fetch("http://10.0.2.2:5000/api/auth/signup", {
+  const response = await fetch(`${env.API_URL}/auth/signup`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -55,7 +50,7 @@ export const login = ({ email, password }) => async (dispatch) => {
     email,
     password,
   };
-  const response = await fetch("http://10.0.2.2:5000/api/auth/login", {
+  const response = await fetch(`${env.API_URL}/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -80,6 +75,7 @@ export const login = ({ email, password }) => async (dispatch) => {
 
 export const logout = () => {
   AsyncStorage.removeItem("userData");
+  clearTimeout(timer);
   return {
     type: LOGOUT,
   };
@@ -116,7 +112,7 @@ export const updateProfile = (user, expirationTime) => async (
   console.log("user ", user);
   const { auth } = getState();
   try {
-    const response = await fetch("http://10.0.2.2:5000/api/user/updateMe", {
+    const response = await fetch(`${env.API_URL}/user/updateMe`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
