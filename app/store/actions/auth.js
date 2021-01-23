@@ -42,6 +42,7 @@ export const signup = ({
     "userData",
     JSON.stringify({ ...body, expirationTime })
   );
+  await AsyncStorage.setItem("secretToken", JSON.stringify(body.secretToken));
   dispatch(authUser({ ...body, expirationTime }));
 };
 
@@ -109,7 +110,6 @@ export const updateProfile = (user, expirationTime) => async (
   dispatch,
   getState
 ) => {
-  console.log("user ", user);
   const { auth } = getState();
   try {
     const response = await fetch(`${env.API_URL}/user/updateMe`, {
@@ -121,8 +121,6 @@ export const updateProfile = (user, expirationTime) => async (
       body: JSON.stringify(user),
     });
     const body = await response.json();
-
-    console.log("BODY: \n", body);
 
     if (!response.ok) {
       console.log(body.message);
