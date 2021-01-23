@@ -6,7 +6,6 @@ import { colors } from "../colors";
 import FloatingButton from "../components/FloatingButton";
 import { reportCrime } from "../store/actions/crime";
 import { Ionicons } from "@expo/vector-icons";
-import * as Notifications from "expo-notifications";
 import { getCrimeData } from "../utils/getCrimeData";
 import { sendNotification } from "../utils/sendNotification";
 import AlertButton from "../components/AlertButton";
