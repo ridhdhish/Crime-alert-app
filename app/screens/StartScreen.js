@@ -1,16 +1,49 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { Fragment, useEffect, useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { useDispatch } from "react-redux";
 import { colors } from "../colors";
+import CustomButton from "../components/CustomButton";
+import AlertButton from "../components/AlertButton";
+import LogoText from "../components/LogoText";
 import NormalText from "../components/NormalText";
 import SVG from "../components/SVG";
+import { reportCrime } from "../store/actions/crime";
+import { getCrimeData } from "../utils/getCrimeData";
+import { sendNotification } from "../utils/sendNotification";
 import { WAVE_SVG } from "../utils/svg";
-import CustomButton from "../components/CustomButton";
-import LogoText from "../components/LogoText";
-
+import { useNotification } from "../hooks/useNotification";
 const StartScreen = (props) => {
   const { navigation } = props;
+  const [onceRegistered, setOnceRegistered] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+
+  useNotification();
+
+  useEffect(() => {
+    AsyncStorage.getItem("secretToken").then((data) => {
+      setOnceRegistered(!!data);
+    });
+  }, []);
+
+  const sendAlert = async () => {
+    setLoading(true);
+    try {
+      const crimeData = await getCrimeData();
+      dispatch(reportCrime(crimeData));
+      sendNotification({
+        title: "Sent Notification",
+        body: "Alert has be reported successfully",
+      });
+    } catch (error) {
+      console.log(error.message);
+      Alert.alert("Error", error.message, [{ text: "Okay" }]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <View style={styles.screen}>
@@ -18,8 +51,18 @@ const StartScreen = (props) => {
         <LogoText title="Crime Alert" />
         <NormalText style={{ fontSize: 14 }}>Welcome to Crime Alert</NormalText>
       </View>
+      {onceRegistered ? (
+        <AlertButton
+          loading={loading}
+          style={{ bottom: 100 }}
+          reportCrimeData={sendAlert}
+          color={colors.backgroundPrimary}
+        />
+      ) : (
+        <Fragment></Fragment>
+      )}
       <CustomButton
-        text="Register"
+        text={onceRegistered ? "Login" : "Register"}
         style={styles.startBtn}
         touchableStyle={{
           padding: 8,
@@ -28,7 +71,7 @@ const StartScreen = (props) => {
         }}
         textStyle={styles.startBtnText}
         onPress={() => {
-          navigation.navigate("Signup");
+          navigation.navigate(onceRegistered ? "Login" : "Register");
         }}
       >
         <Ionicons

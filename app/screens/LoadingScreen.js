@@ -1,14 +1,15 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect } from "react";
-import { View, ActivityIndicator } from "react-native";
+import { ActivityIndicator } from "react-native";
 import { colors } from "../colors";
 import { useDispatch } from "react-redux";
 import { authUser, tryAutoLogin } from "../store/actions/auth";
 import LogoText from "../components/LogoText";
 import { LinearGradient } from "expo-linear-gradient";
 
-const LoadingScreen = (props) => {
+const LoadingScreen = () => {
   const dispatch = useDispatch();
+  AsyncStorage.clear();
   useEffect(() => {
     const tryLogin = async () => {
       const userData = await AsyncStorage.getItem("userData");
