@@ -100,7 +100,7 @@ const login = async (req, res) => {
 
     const userKeyValue = new KeyValueDB({
       key: `${SECRET_TOKEN_PREFIX}${secretToken}`,
-      value: newUser,
+      value: user,
     });
 
     await userKeyValue.save();
