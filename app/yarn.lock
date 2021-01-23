@@ -2642,10 +2642,10 @@ expo-asset@~8.2.1:
     path-browserify "^1.0.0"
     url-parse "^1.4.4"
 
-expo-blur@~8.2.2:
-  version "8.2.2"
-  resolved "https://registry.yarnpkg.com/expo-blur/-/expo-blur-8.2.2.tgz#a7643d893afb7aed5512b25d5df22ee6083832c1"
-  integrity sha512-Xiklw60RUPIchHKzfvLTIuccVDTIQEAIPv02yJY2xFDujQKjE0NU0/Z5Z+zsEI9QOi82jX9NbR8gQ+8Mm3hDhA==
+expo-blur@~9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/expo-blur/-/expo-blur-9.0.0.tgz#6447a65dba3f14532406d9c5227622b3e7d1abf7"
+  integrity sha512-zqZENclTYBtVAZOsnDROT5PQ9MbMxa5A36J+aU2NiV6MqLYlUh/b/FnR0JPAuY4F6jS6U7sYiAlStzIXpLd7XQ==
 
 expo-constants@9.3.1:
   version "9.3.1"
