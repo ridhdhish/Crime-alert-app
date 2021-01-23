@@ -4,9 +4,8 @@ const CrimeSchema = new mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-    },
-    userData: {
-      type: Object,
+      ref: "User",
+      required: true,
     },
     placeId: {
       type: mongoose.Schema.Types.ObjectId,
