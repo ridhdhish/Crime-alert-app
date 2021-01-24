@@ -8,6 +8,7 @@ import { authReducer } from "./store/reducers/auth";
 import { crimeReducer } from "./store/reducers/crime";
 import * as Permissions from "expo-permissions";
 import * as Notifications from "expo-notifications";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => {
@@ -45,8 +46,15 @@ export default function App() {
                 },
               ]
             );
+            return;
           }
         }
+        /**
+         * Get push token
+         */
+        const token = await Notifications.getExpoPushTokenAsync();
+        AsyncStorage.setItem("pushToken", JSON.stringify(token.data));
+        console.log(token);
       } catch (error) {
         console.log(error.message);
       }

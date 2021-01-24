@@ -2,6 +2,7 @@ const { validationResult } = require("express-validator");
 const Crime = require("../models/crime");
 const Place = require("../models/place");
 const Relative = require("../models/relative");
+const User = require("../models/user");
 const sendResponse = require("../utils/sendResponse");
 const jwt = require("jsonwebtoken");
 const { sendMail } = require("../utils/sendMail");
@@ -79,9 +80,17 @@ const registerCrime = async (req, res) => {
 
     const relatives = await Relative.find({ userId });
 
-    relatives.forEach(async (rel) => {
-      await sendMail(rel.email, `Mail sent`);
-    });
+    await Promise.all(
+      relatives.map(async (rel) => {
+        await sendMail(rel.email, `Mail sent`);
+        const user = await User.findOne({
+          $or: [{ mobileNumber: rel.mobileNumber }, { email: rel.email }],
+        });
+        console.log(user);
+        return rel;
+      })
+    );
+
     sendResponse(
       {
         message: "Crime reported successfully",

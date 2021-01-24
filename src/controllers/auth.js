@@ -22,6 +22,7 @@ const signUp = async (req, res) => {
     email,
     mobileNumber,
     address,
+    pushToken,
   } = req.body;
   try {
     const user = await User.findOne({ email });
@@ -39,6 +40,7 @@ const signUp = async (req, res) => {
       email,
       mobileNumber,
       address,
+      pushToken,
     });
 
     // encrypt the password
