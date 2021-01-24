@@ -79,27 +79,30 @@ const registerCrime = async (req, res) => {
      */
 
     const relatives = await Relative.find({ userId });
-
-    await Promise.all(
+    Promise.all(
       relatives.map(async (rel) => {
         await sendMail(rel.email, `Mail sent`);
         const user = await User.findOne({
           $or: [{ mobileNumber: rel.mobileNumber }, { email: rel.email }],
         });
         console.log(user);
-        return rel;
+        return user;
       })
-    );
-
-    sendResponse(
-      {
-        message: "Crime reported successfully",
-        crime,
-        place,
-      },
-      res,
-      200
-    );
+    )
+      .then(() => {
+        sendResponse(
+          {
+            message: "Crime reported successfully",
+            crime,
+            place,
+          },
+          res,
+          200
+        );
+      })
+      .catch((error) => {
+        sendResponse(error.message, res, 400);
+      });
   } catch (error) {
     sendResponse(error.message, res);
   }
