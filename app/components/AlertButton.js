@@ -9,6 +9,8 @@ const AlertButton = (props) => {
     <FloatingButton
       style={{
         ...{
+          width: 90,
+          height: 90,
           bottom: 50,
           left: Dimensions.get("window").width / 2 - 40,
           padding: 30,

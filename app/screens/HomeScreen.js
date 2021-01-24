@@ -43,6 +43,8 @@ const HomeScreen = (props) => {
         <Fragment>
           <FloatingButton
             style={{
+              width: 50,
+              height: 50,
               top: 25,
               left: 20,
               zIndex: 1000,
