@@ -54,7 +54,7 @@ const StartScreen = (props) => {
       {onceRegistered ? (
         <AlertButton
           loading={loading}
-          style={{ bottom: 100 }}
+          style={{ bottom: 100, marginBottom: 20 }}
           reportCrimeData={sendAlert}
           color={colors.backgroundPrimary}
         />

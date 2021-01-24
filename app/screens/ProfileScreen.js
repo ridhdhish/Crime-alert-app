@@ -129,7 +129,10 @@ const ProfileScreen = (props) => {
 
           {isLoading ? (
             <View style={{ marginVertical: "40%" }}>
-              <ActivityIndicator size="large" color="#403527" />
+              <ActivityIndicator
+                size="large"
+                color={colors.backgroundPrimary}
+              />
             </View>
           ) : (
             <Formik
@@ -191,7 +194,7 @@ const styles = StyleSheet.create({
   profilePic: {
     width: 115,
     height: 115,
-    backgroundColor: "#BF755A",
+    backgroundColor: colors.backgroundExtra,
     borderRadius: 57.5,
     alignItems: "center",
   },
@@ -211,14 +214,14 @@ const styles = StyleSheet.create({
   btnEdit: {
     paddingVertical: 10,
     paddingHorizontal: 25,
-    backgroundColor: "#F2913D",
+    backgroundColor: colors.backgroundTertiary,
     fontSize: 16,
     fontWeight: "600",
     textAlign: "center",
   },
   profileSeparator: {
     width: "92%",
-    borderBottomColor: "#403527",
+    borderBottomColor: colors.backgroundPrimary,
     borderBottomWidth: 1,
     marginTop: 35,
     marginLeft: "4%",
@@ -244,7 +247,7 @@ const styles = StyleSheet.create({
   text: {
     marginTop: 4,
     fontSize: 18,
-    color: "#403527",
+    color: colors.backgroundPrimary,
   },
   error: {
     marginTop: -15,
