@@ -22,7 +22,7 @@ export const signup = ({
     mobileNumber,
     address,
   };
-  const pushToken = await JSON.parse(AsyncStorage.getItem("pushToken"));
+  const pushToken = await JSON.parse(await AsyncStorage.getItem("pushToken"));
   const response = await fetch(`${env.API_URL}/auth/signup`, {
     method: "POST",
     headers: {

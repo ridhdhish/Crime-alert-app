@@ -109,10 +109,15 @@ const ProfileScreen = (props) => {
             }}
           >
             <View style={styles.profilePic}>
-              <Text style={styles.profilePicText}>RD</Text>
+              <Text style={styles.profilePicText}>
+                {userData.firstname[0]}
+                {userData.lastname[0]}
+              </Text>
             </View>
             <View style={{ paddingLeft: 35, paddingTop: 12 }}>
-              <Text style={styles.profileName}>Ridhdhish Desai</Text>
+              <Text style={styles.profileName}>
+                {userData.firstname} {userData.lastname}
+              </Text>
               <CustomTouchable
                 onPress={() => {
                   setIsEdit((prevEdit) => !prevEdit);
