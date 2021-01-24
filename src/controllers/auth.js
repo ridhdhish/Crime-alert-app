@@ -64,6 +64,7 @@ const signUp = async (req, res) => {
       user: {
         ...newUser._doc,
         password: null,
+        pushToken: null,
       },
       token,
       secretToken,
@@ -111,6 +112,7 @@ const login = async (req, res) => {
       user: {
         ...user._doc,
         password: null,
+        pushToken: null,
       },
       token,
       secretToken,
