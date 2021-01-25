@@ -39,11 +39,6 @@ const HomeNavigator = () => {
       })}
     >
       <HomeTabs.Screen
-        name="Home"
-        component={HomeScreenStack}
-        options={{ title: "Map" }}
-      />
-      <HomeTabs.Screen
         name="Places"
         component={PlaceScreenStack}
         options={{ title: "Places" }}
@@ -57,6 +52,11 @@ const HomeNavigator = () => {
         name="Profile"
         component={ProfileScreenStack}
         options={{ title: "Profile" }}
+      />
+      <HomeTabs.Screen
+        name="Home"
+        component={HomeScreenStack}
+        options={{ title: "Map" }}
       />
     </HomeTabs.Navigator>
   );
