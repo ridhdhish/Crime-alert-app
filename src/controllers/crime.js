@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken");
 const { sendMail } = require("../utils/sendMail");
 const keyValueDb = require("../models/keyValueDb");
 const { SECRET_TOKEN_PREFIX } = require("../config/constant");
+const { Expo } = require("expo-server-sdk");
 
 const registerCrime = async (req, res) => {
   const errors = validationResult(req);
@@ -79,30 +80,38 @@ const registerCrime = async (req, res) => {
      */
 
     const relatives = await Relative.find({ userId });
-    Promise.all(
+    await Promise.all(
       relatives.map(async (rel) => {
         await sendMail(rel.email, `Mail sent`);
         const user = await User.findOne({
           $or: [{ mobileNumber: rel.mobileNumber }, { email: rel.email }],
         });
-        console.log(user);
+        if (user?.pushToken && Expo.isExpoPushToken(user.pushToken)) {
+          const expo = new Expo({ accessToken: process.env.EXPO_ACCESS_TOKEN });
+          await expo.sendPushNotificationsAsync([
+            {
+              to: user.pushToken,
+              sound: "default",
+              body: "Alert has been received",
+              data: {
+                username: "User's name who sent the alert",
+              },
+            },
+          ]);
+        }
         return user;
       })
-    )
-      .then(() => {
-        sendResponse(
-          {
-            message: "Crime reported successfully",
-            crime,
-            place,
-          },
-          res,
-          200
-        );
-      })
-      .catch((error) => {
-        sendResponse(error.message, res, 400);
-      });
+    );
+    sendResponse(
+      {
+        message: "Crime reported successfully",
+        crime,
+        place,
+      },
+      res,
+      200,
+      false
+    );
   } catch (error) {
     sendResponse(error.message, res);
   }

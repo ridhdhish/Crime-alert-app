@@ -25,11 +25,22 @@ const signUp = async (req, res) => {
     pushToken,
   } = req.body;
   try {
-    const user = await User.findOne({ email });
+    let user = await User.findOne({ email });
 
     //id user exists return error
     if (user) {
       return sendResponse("User with this email already exists", res, 400);
+    }
+
+    user = await User.findOne({ mobileNumber });
+
+    //id user exists return error
+    if (user) {
+      return sendResponse(
+        "User with this mobileNumber already exists",
+        res,
+        400
+      );
     }
 
     //create new user

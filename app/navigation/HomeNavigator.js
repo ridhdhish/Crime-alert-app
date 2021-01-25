@@ -37,6 +37,7 @@ const HomeNavigator = () => {
         },
         tabBarColor: colors.backgroundPrimary,
       })}
+      initialRouteName="Profile"
     >
       <HomeTabs.Screen
         name="Places"
