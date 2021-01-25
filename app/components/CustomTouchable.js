@@ -10,7 +10,13 @@ const CustomTouchable = (props) => {
   }
 
   return (
-    <TouchableComponent style={{ ...props.style }} onPress={props.onPress}>
+    <TouchableComponent
+      // background={TouchableNativeFeedback.SelectableBackground(
+      //   props.rippleRadius
+      // )}
+      style={{ ...props.style }}
+      onPress={props.onPress}
+    >
       {props.children}
     </TouchableComponent>
   );
