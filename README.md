@@ -107,11 +107,7 @@ $ npm start
 - JWT_SECRET = xxxxx
 - EMAIL_ID = xxxxx
 - EMAIL_PASSWORD = xxxxxxx
-- TWILIO_ACCOUNT_SID = xxxxxxxxx
-- TWILIO_AUTH_TOKEN = xxxxxxxxx
-- TWILIO_MOBILE_NUMBER = +123456789
-- NEXMO_API_KEY = xxxxxxx
-- NEXMO_API_SECRET = xxxxxxxxxxxxxxx
+- EXPO_ACCESS_TOKEN = xxxxxxxxx
 
 ## App_Design
 

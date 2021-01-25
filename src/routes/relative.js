@@ -28,8 +28,6 @@ router.post(
   "/add",
   [
     check("firstName", "firstName is required").not().isEmpty(),
-    check("lastName", "lastName is required").not().isEmpty(),
-    check("email", "valid email is required").isEmail(),
     check("mobileNumber", "valid mobileNumber is required").isLength({
       max: 10,
       min: 10,
