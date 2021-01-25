@@ -74,7 +74,7 @@ const RelativesScreen = () => {
             <FontAwesome name="user" size={27} color="white" />
           </View>
           <View style={styles.cardInfo}>
-            <Text style={styles.cardName}>Ridhdhish Desai</Text>
+            <Text style={styles.cardName}>Manan madarchod Desai</Text>
             <Text
               style={{
                 fontSize: 12,
@@ -83,7 +83,7 @@ const RelativesScreen = () => {
                 marginBottom: 3,
               }}
             >
-              9876567768
+              8574521669
             </Text>
             <Text
               style={{
@@ -93,7 +93,7 @@ const RelativesScreen = () => {
                 marginBottom: 3,
               }}
             >
-              ridhdhishdesai@gmail.com
+              manan@gmail.com
             </Text>
           </View>
           <View style={{ marginLeft: 40 }}>
@@ -197,7 +197,8 @@ const styles = StyleSheet.create({
   //   fontSize: 22,
   // },
   card: {
-    width: 300,
+    width: 400,
+    maxWidth: "90%",
     height: 100,
     marginTop: 20,
     paddingHorizontal: 10,
@@ -209,6 +210,7 @@ const styles = StyleSheet.create({
   },
   cardInfo: {
     marginLeft: 15,
+    flex: 1,
   },
   cardName: {
     fontWeight: "bold",

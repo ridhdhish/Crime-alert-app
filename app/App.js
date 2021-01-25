@@ -54,7 +54,6 @@ export default function App() {
          */
         const token = await Notifications.getExpoPushTokenAsync();
         AsyncStorage.setItem("pushToken", JSON.stringify(token.data));
-        console.log(token);
       } catch (error) {
         console.log(error.message);
       }
