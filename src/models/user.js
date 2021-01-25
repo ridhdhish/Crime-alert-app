@@ -17,6 +17,7 @@ const UserSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
+      unique: true,
     },
     address: {
       type: String,
@@ -25,6 +26,7 @@ const UserSchema = new mongoose.Schema(
     mobileNumber: {
       type: Number,
       required: true,
+      unique: true,
     },
     pushToken: {
       type: String,

@@ -15,7 +15,6 @@ const relativeSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      required: true,
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
