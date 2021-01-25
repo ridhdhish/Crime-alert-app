@@ -15,14 +15,33 @@ const HomeScreen = (props) => {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
+  const [currentLocation, setCurrentLocation] = useState({
+    latitude: 21.1702,
+    longitude: 72.8311,
+  });
 
   useNotification();
+
+  useEffect(() => {
+    async function setLocation() {
+      const crimeData = await getCrimeData();
+      setCurrentLocation({
+        latitude: crimeData.location.lat,
+        longitude: crimeData.location.long,
+      });
+    }
+    setLocation();
+  }, []);
 
   const reportCrimeData = async () => {
     setIsLoading(true);
     try {
       const crimeData = await getCrimeData();
       dispatch(reportCrime(crimeData));
+      setCurrentLocation({
+        latitude: crimeData.location.lat,
+        longitude: crimeData.location.long,
+      });
       sendNotification({
         title: "Sent Notification",
         body: "Alert has be reported successfully",
@@ -62,17 +81,17 @@ const HomeScreen = (props) => {
           <MapView
             style={{ flex: 1 }}
             region={{
-              latitude: 21.1702,
-              longitude: 72.8311,
+              ...currentLocation,
               latitudeDelta: 0.0922,
               longitudeDelta: 0.0421,
             }}
-            maxZoomLevel={13}
+            minZoomLevel={2}
+            maxZoomLevel={20}
+            zoomEnabled
           >
             <Marker
               coordinate={{
-                latitude: 21.1702,
-                longitude: 72.8311,
+                ...currentLocation,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
               }}
