@@ -4,7 +4,6 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 import HomeNavigator from "./HomeNavigator";
-import AddRelativeScreenStack from "./SubStackNavigators/AddRelativeScreenStack";
 import HistoryScreenStack from "./SubStackNavigators/HistoryScreenStack";
 import SettingScreenStack from "./SubStackNavigators/SettingScreenStack";
 import { colors } from "../colors";
@@ -52,11 +51,6 @@ const RootHomeNavigator = () => {
         name="Home"
         component={HomeNavigator}
         options={{ title: "Home" }}
-      />
-      <RootDrawer.Screen
-        name="AddRelative"
-        component={AddRelativeScreenStack}
-        options={{ title: "Add Relative" }}
       />
       <RootDrawer.Screen
         name="History"
