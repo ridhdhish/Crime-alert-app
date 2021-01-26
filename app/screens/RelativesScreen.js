@@ -174,7 +174,6 @@ const RelativesScreen = () => {
                       await dispatch(addRelative(values));
                     } catch (error) {
                       setError(error.message);
-                    } finally {
                       setIsLoading(false);
                     }
                   }}
@@ -256,5 +255,119 @@ const RelativesScreen = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: "center",
+    flex: 1,
+  },
+  btnWrap: {
+    paddingVertical: 7,
+    paddingHorizontal: 60,
+    backgroundColor: colors.backgroundAccent,
+    borderRadius: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.5,
+    shadowRadius: 20,
+    elevation: 5,
+  },
+  btnAdd: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: colors.backgroundPrimary,
+  },
+
+  cardIcon: {
+    width: 60,
+    height: 60,
+    borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  card: {
+    width: 400,
+    maxWidth: "90%",
+    height: 100,
+    marginTop: 20,
+    paddingHorizontal: 10,
+    alignItems: "center",
+    borderRadius: 20,
+    flexDirection: "row",
+    backgroundColor: "white",
+    elevation: 5,
+    zIndex: -1,
+  },
+  cardInfo: {
+    marginLeft: 15,
+    flex: 1,
+  },
+  cardName: {
+    fontWeight: "bold",
+    fontSize: 16,
+    color: "#666767",
+    marginBottom: 3,
+  },
+  modal: {
+    position: "absolute",
+    backgroundColor: "black",
+    opacity: 0.5,
+    width: "100%",
+    height: "100%",
+    zIndex: 20,
+  },
+  modalView: {
+    margin: 20,
+    marginTop: "30%",
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 10,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  openButton: {
+    backgroundColor: "#F194FF",
+    borderRadius: 25,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    elevation: 2,
+    marginBottom: 10,
+    marginTop: 10,
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+    fontSize: 18,
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+  },
+  centeredView: {
+    zIndex: 3,
+  },
+  modalFormInput: {
+    borderWidth: 1,
+    width: 300,
+    borderRadius: 10,
+    padding: 8,
+    fontSize: 20,
+    marginBottom: 20,
+  },
+  error: {
+    marginTop: -15,
+    fontSize: 15,
+    color: "red",
+  },
+});
 
 export default RelativesScreen;
