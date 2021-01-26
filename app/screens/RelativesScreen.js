@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TouchableNativeFeedback,
   Keyboard,
+  ActivityIndicator,
 } from "react-native";
 import CustomTouchable from "../components/CustomTouchable";
 import { colors } from "../colors";
@@ -17,15 +18,22 @@ import {
   TextInput,
   TouchableWithoutFeedback,
 } from "react-native-gesture-handler";
-import { Formik, ErrorMessage } from "formik";
+import { Formik } from "formik";
+import { useDispatch } from "react-redux";
+import { addRelative } from "../store/actions/relative";
 
 const iconColors = ["orange", "green", "lightblue"];
 
 import Input from "../components/Input";
 
 const RelativesScreen = () => {
+  const dispatch = useDispatch();
+
   const [isAdd, setIsAdd] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const [isDataValid, setIsDataValid] = useState({
     firstname: true,
@@ -111,7 +119,11 @@ const RelativesScreen = () => {
         </View>
       </View>
 
-      {modalVisible ? (
+      {isLoading ? (
+        <View style={{ marginVertical: "40%" }}>
+          <ActivityIndicator size="large" color={colors.backgroundPrimary} />
+        </View>
+      ) : modalVisible ? (
         <TouchableOpacity
           onPress={() => {
             Keyboard.dismiss();
@@ -154,21 +166,16 @@ const RelativesScreen = () => {
                     mobileNumber: "",
                     email: "",
                   }}
-                  validate={(values) => {
-                    const errors = {};
-                    if (!values.email) {
-                      errors.email = "Required";
-                    } else if (
-                      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(
-                        values.email
-                      )
-                    ) {
-                      errors.email = "Invalid email address";
-                    }
-                    return errors;
-                  }}
-                  onSubmit={(values) => {
+                  onSubmit={async (values) => {
                     console.log(values);
+                    setError(null);
+                    setIsLoading(true);
+                    try {
+                      await dispatch(addRelative(values));
+                    } catch (error) {
+                      setError(error.message);
+                      setIsLoading(false);
+                    }
                   }}
                 >
                   {({ values, handleChange, handleSubmit, setFieldValue }) => {
@@ -183,10 +190,14 @@ const RelativesScreen = () => {
                           handleChange={handleChange("firstname")}
                           styleError={styles.error}
                         />
-                        <TextInput
-                          placeholder="Lastname"
-                          style={{ ...styles.modalFormInput, marginTop: 15 }}
-                          onChangeText={handleChange("lastname")}
+                        <Input
+                          name="lastname"
+                          value={values.lastname}
+                          setValid={setValid}
+                          config={{ placeholder: "Lastname" }}
+                          style={styles.modalFormInput}
+                          handleChange={handleChange("lastname")}
+                          disableError={"false"}
                         />
                         <Input
                           name="mobileNumber"
@@ -200,10 +211,14 @@ const RelativesScreen = () => {
                           handleChange={handleChange("mobileNumber")}
                           styleError={styles.error}
                         />
-                        <TextInput
-                          placeholder="Email"
-                          style={{ ...styles.modalFormInput, marginTop: 15 }}
-                          onChangeText={handleChange("email")}
+                        <Input
+                          name="email"
+                          value={values.email}
+                          setValid={setValid}
+                          config={{ placeholder: "Email" }}
+                          style={styles.modalFormInput}
+                          handleChange={handleChange("email")}
+                          disableError={"false"}
                         />
 
                         <TouchableOpacity
@@ -214,15 +229,15 @@ const RelativesScreen = () => {
                               ? "#2196F3"
                               : "#7fc4fa",
                           }}
-                          onPress={() => {
-                            console.log(isFormValid);
+                          onPress={
                             isFormValid
                               ? () => {
+                                  console.log("form valid");
                                   setModalVisible(() => false);
                                   handleSubmit();
                                 }
-                              : () => {};
-                          }}
+                              : () => {}
+                          }
                         >
                           <Text style={styles.textStyle}>Add Friend</Text>
                         </TouchableOpacity>

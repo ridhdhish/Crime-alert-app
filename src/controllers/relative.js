@@ -19,8 +19,6 @@ const addRelative = async (req, res) => {
   }
 
   try {
-    req.body.userId = req.user.id;
-
     const newRelative = new Relative(req.body);
 
     await newRelative.save();

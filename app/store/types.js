@@ -7,3 +7,5 @@ export const UPDATE_USER = "UPDATE_USER";
 
 export const REPORT_CRIME = "REPORT_CRIME";
 export const REPORT_CRIME_ERROR = "REPORT_CRIME_ERROR";
+
+export const ADD_RELATIVE = "ADD_RELATIVE";

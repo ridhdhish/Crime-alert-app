@@ -11,15 +11,23 @@ const Input = (props) => {
 
   useEffect(() => {
     if (props.type !== "login") {
-      let isValid;
-      if (props.name === "confirmPassword") {
-        console.log(props.value, props.password);
-        isValid = validations[props.name]?.isValid(props.value, props.password);
+      if (props.disableError === "false") {
+        setIsValid(() => isValid);
+        return;
       } else {
-        isValid = validations[props.name]?.isValid(props.value);
+        let isValid;
+        if (props.name === "confirmPassword") {
+          console.log(props.value, props.password);
+          isValid = validations[props.name]?.isValid(
+            props.value,
+            props.password
+          );
+        } else {
+          isValid = validations[props.name]?.isValid(props.value);
+        }
+        props.setValid(props.name, isValid);
+        setIsValid(() => isValid);
       }
-      props.setValid(props.name, isValid);
-      setIsValid(() => isValid);
     }
   }, [props.value, focus, props.name]);
 
@@ -46,12 +54,15 @@ const Input = (props) => {
         }}
         {...props.config}
       />
-      {isTouched && !isValid && props.type !== "login" && (
-        <Text style={props.styleError ? props.styleError : styles.errorText}>
-          {" "}
-          {validations[props.name].message}{" "}
-        </Text>
-      )}
+      {isTouched &&
+        !isValid &&
+        props.type !== "login" &&
+        props.disableError !== "false" && (
+          <Text style={props.styleError ? props.styleError : styles.errorText}>
+            {" "}
+            {validations[props.name].message}{" "}
+          </Text>
+        )}
     </Fragment>
   );
 };

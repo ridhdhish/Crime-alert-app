@@ -6,6 +6,7 @@ import Thunk from "redux-thunk";
 import AppNavigator from "./navigation/AppNavigator";
 import { authReducer } from "./store/reducers/auth";
 import { crimeReducer } from "./store/reducers/crime";
+import { relativeReducer } from "./store/reducers/relative";
 import * as Permissions from "expo-permissions";
 import * as Notifications from "expo-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -22,6 +23,7 @@ Notifications.setNotificationHandler({
 const rootReducer = combineReducers({
   auth: authReducer,
   crime: crimeReducer,
+  relative: relativeReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(Thunk));

@@ -7,6 +7,9 @@ export const reportCrime = (crimeData) => async (dispatch, getState) => {
   const secret = await AsyncStorage.getItem("secretToken");
   const secretToken = JSON.parse(secret);
   const isAuth = auth.token;
+
+  console.log(auth.user);
+
   try {
     //"http://10.0.2.2:5000/api/crime"
     const response = await fetch(`${env.API_URL}/crime`, {
