@@ -1,30 +1,24 @@
+import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
+import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import {
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  Modal,
-  TouchableOpacity,
-  TouchableNativeFeedback,
-  Keyboard,
   ActivityIndicator,
+  Keyboard,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import CustomTouchable from "../components/CustomTouchable";
-import { colors } from "../colors";
-import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import {
-  TextInput,
-  TouchableWithoutFeedback,
-} from "react-native-gesture-handler";
-import { Formik } from "formik";
+import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
+import { colors } from "../colors";
+import BottomPopup from "../components/BottomPopup";
+import CustomTouchable from "../components/CustomTouchable";
+import Input from "../components/Input";
 import { addRelative, getAllRelative } from "../store/actions/relative";
 
 const iconColors = ["orange", "green", "lightblue"];
-
-import Input from "../components/Input";
 
 const RelativesScreen = () => {
   // Fetch relatives here
@@ -32,7 +26,6 @@ const RelativesScreen = () => {
 
   const dispatch = useDispatch();
 
-  const [isAdd, setIsAdd] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -149,24 +142,18 @@ const RelativesScreen = () => {
         <View style={{ marginVertical: "40%" }}>
           <ActivityIndicator size="large" color={colors.backgroundPrimary} />
         </View>
-      ) : modalVisible ? (
-        <TouchableOpacity
-          onPress={() => {
-            Keyboard.dismiss();
-            console.log("hello");
-          }}
-          style={styles.modal}
+      ) : (
+        <BottomPopup
+          modalVisible={modalVisible}
+          closeModal={() => setModalVisible(false)}
         >
-          <Modal
-            animationType="fade"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => {
-              Alert.alert("Modal has been closed.");
+          <Pressable
+            onPress={() => {
+              Keyboard.dismiss();
             }}
           >
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
+            <ScrollView>
+              <View style={styles.centeredView}>
                 <View style={{ padding: 10, flexDirection: "row" }}>
                   <Text style={{ fontSize: 24, fontWeight: "bold" }}>
                     New Friend
@@ -180,9 +167,7 @@ const RelativesScreen = () => {
                     onPress={() => {
                       setModalVisible(false);
                     }}
-                  >
-                    <AntDesign name="closecircleo" size={24} color="black" />
-                  </TouchableOpacity>
+                  ></TouchableOpacity>
                 </View>
 
                 <Formik
@@ -273,11 +258,9 @@ const RelativesScreen = () => {
                   }}
                 </Formik>
               </View>
-            </View>
-          </Modal>
-        </TouchableOpacity>
-      ) : (
-        []
+            </ScrollView>
+          </Pressable>
+        </BottomPopup>
       )}
     </View>
   );
@@ -336,14 +319,6 @@ const styles = StyleSheet.create({
     color: "#666767",
     marginBottom: 3,
   },
-  modal: {
-    position: "absolute",
-    backgroundColor: "black",
-    opacity: 0.5,
-    width: "100%",
-    height: "100%",
-    zIndex: 20,
-  },
   modalView: {
     margin: 20,
     marginTop: "30%",
@@ -381,6 +356,8 @@ const styles = StyleSheet.create({
   },
   centeredView: {
     zIndex: 3,
+    justifyContent: "center",
+    alignItems: "center",
   },
   modalFormInput: {
     borderWidth: 1,
