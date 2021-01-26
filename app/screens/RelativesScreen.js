@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -20,7 +20,7 @@ import {
 } from "react-native-gesture-handler";
 import { Formik } from "formik";
 import { useDispatch } from "react-redux";
-import { addRelative } from "../store/actions/relative";
+import { addRelative, getAllRelative } from "../store/actions/relative";
 
 const iconColors = ["orange", "green", "lightblue"];
 
@@ -54,6 +54,13 @@ const RelativesScreen = () => {
 
     setIsFormValid(() => formValid);
   };
+
+  useEffect(() => {
+    async function getData() {
+      await dispatch(getAllRelative());
+    }
+    getData();
+  }, []);
 
   return (
     <View style={styles.container}>
