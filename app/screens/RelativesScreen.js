@@ -27,6 +27,8 @@ const iconColors = ["orange", "green", "lightblue"];
 import Input from "../components/Input";
 
 const RelativesScreen = () => {
+  // Fetch relatives here
+
   const dispatch = useDispatch();
 
   const [isAdd, setIsAdd] = useState(true);
