@@ -174,6 +174,7 @@ const RelativesScreen = () => {
                       await dispatch(addRelative(values));
                     } catch (error) {
                       setError(error.message);
+                    } finally {
                       setIsLoading(false);
                     }
                   }}
