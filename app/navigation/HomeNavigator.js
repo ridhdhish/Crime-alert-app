@@ -37,8 +37,13 @@ const HomeNavigator = () => {
         },
         tabBarColor: colors.backgroundPrimary,
       })}
-      initialRouteName="Profile"
+      initialRouteName="Relatives"
     >
+      <HomeTabs.Screen
+        name="Home"
+        component={HomeScreenStack}
+        options={{ title: "Map" }}
+      />
       <HomeTabs.Screen
         name="Places"
         component={PlaceScreenStack}
@@ -53,11 +58,6 @@ const HomeNavigator = () => {
         name="Profile"
         component={ProfileScreenStack}
         options={{ title: "Profile" }}
-      />
-      <HomeTabs.Screen
-        name="Home"
-        component={HomeScreenStack}
-        options={{ title: "Map" }}
       />
     </HomeTabs.Navigator>
   );
