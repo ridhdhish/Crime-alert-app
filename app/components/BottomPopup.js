@@ -1,69 +1,73 @@
-import React, { useRef, useState } from "react";
-import {
-  View,
-  Text,
-  Animated,
-  TouchableOpacity,
-  PanResponder,
-} from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Modal, Animated, Dimensions, Platform } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
-const BottomPopup = () => {
-  const value = useState(new Animated.Value(0))[0];
-  const startAnimation = () => {
-    Animated.timing(value, {
-      toValue: 100,
-      duration: 1000,
-      useNativeDriver: true,
-    }).start();
-  };
+const BottomPopup = (props) => {
+  useEffect(() => {
+    if (props.modalVisible) {
+      comeUp.start();
+    }
+  }, [props.modalVisible]);
 
-  const pan = useRef(new Animated.ValueXY()).current;
+  const panY = useState(new Animated.Value(Dimensions.get("window").height))[0];
 
-  const panResponder = useRef(
-    PanResponder.create({
-      onMoveShouldSetPanResponder: () => true,
-      onPanResponderGrant: () => {
-        console.log("Hello");
-        pan.setOffset({
-          x: pan.x._value,
-          y: pan.y._value,
-        });
-      },
-      onPanResponderMove: (_, gesture) => {
-        pan.setValue({
-          x: gesture.dx,
-          y: gesture.dy,
-        });
-      },
-      onPanResponderRelease: () => {
-        pan.flattenOffset();
-      },
-    })
-  ).current;
+  const comeUp = Animated.timing(panY, {
+    toValue: 0,
+    duration: 500,
+    useNativeDriver: true,
+  });
+  const goDown = Animated.timing(panY, {
+    toValue: Dimensions.get("window").height,
+    duration: 500,
+    useNativeDriver: true,
+  });
+
   return (
-    <View>
-      <Animated.View
-        style={[
-          {
-            height: 100,
-            width: 100,
-            borderRadius: 100,
-            backgroundColor: "red",
-            transform: [
-              {
-                translateX: pan.x,
-              },
-            ],
-          },
-          // pan.getLayout(),
-        ]}
-        {...panResponder.panHandlers}
-      />
-
-      <TouchableOpacity onPress={startAnimation}>
-        <Text>Touch me</Text>
-      </TouchableOpacity>
-    </View>
+    <Modal
+      animated
+      animationType="fade"
+      visible={props.modalVisible}
+      transparent
+      onRequestClose={props.closeModal}
+    >
+      <View
+        style={{
+          backgroundColor: "rgba(0,0,0,0.2)",
+          flex: 1,
+          justifyContent: "flex-end",
+        }}
+      >
+        <Animated.View
+          style={[
+            {
+              backgroundColor: "white",
+              padding: 12,
+              borderTopRightRadius: 12,
+              borderTopLeftRadius: 12,
+              transform: [
+                {
+                  translateY: panY,
+                },
+              ],
+            },
+          ]}
+        >
+          <Ionicons
+            name={Platform.OS === "android" ? "md-close" : "ios-close"}
+            size={24}
+            style={{
+              marginLeft: "auto",
+            }}
+            onPress={() => {
+              goDown.start(() => {
+                props.closeModal();
+              });
+            }}
+          />
+          {props.children}
+        </Animated.View>
+      </View>
+    </Modal>
   );
 };
 
