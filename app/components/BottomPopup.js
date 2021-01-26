@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Modal, Animated, Dimensions, Platform } from "react-native";
+import { Modal, Animated, Dimensions, Platform, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 const BottomPopup = (props) => {
@@ -13,12 +13,12 @@ const BottomPopup = (props) => {
 
   const comeUp = Animated.timing(panY, {
     toValue: 0,
-    duration: 500,
+    duration: 300,
     useNativeDriver: true,
   });
   const goDown = Animated.timing(panY, {
     toValue: Dimensions.get("window").height,
-    duration: 500,
+    duration: 300,
     useNativeDriver: true,
   });
 
@@ -30,11 +30,14 @@ const BottomPopup = (props) => {
       transparent
       onRequestClose={props.closeModal}
     >
-      <View
+      <Pressable
         style={{
           backgroundColor: "rgba(0,0,0,0.2)",
           flex: 1,
           justifyContent: "flex-end",
+        }}
+        onPress={() => {
+          goDown.start(() => props.closeModal());
         }}
       >
         <Animated.View
@@ -42,8 +45,10 @@ const BottomPopup = (props) => {
             {
               backgroundColor: "white",
               padding: 12,
+              zIndex: 10,
               borderTopRightRadius: 12,
               borderTopLeftRadius: 12,
+              position: "relative",
               transform: [
                 {
                   translateY: panY,
@@ -54,9 +59,12 @@ const BottomPopup = (props) => {
         >
           <Ionicons
             name={Platform.OS === "android" ? "md-close" : "ios-close"}
-            size={24}
+            size={30}
             style={{
-              marginLeft: "auto",
+              position: "absolute",
+              top: 12,
+              right: 12,
+              zIndex: 100,
             }}
             onPress={() => {
               goDown.start(() => {
@@ -66,7 +74,7 @@ const BottomPopup = (props) => {
           />
           {props.children}
         </Animated.View>
-      </View>
+      </Pressable>
     </Modal>
   );
 };

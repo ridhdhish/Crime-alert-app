@@ -9,8 +9,6 @@ export const addRelative = (relativeData) => async (dispatch, getState) => {
   const isAuth = auth.token;
   const user = auth.user;
 
-  console.log(isAuth);
-
   try {
     //"http://10.0.2.2:5000/api/relative/add"
     const response = await fetch(`${env.API_URL}/relative/add`, {
@@ -28,7 +26,7 @@ export const addRelative = (relativeData) => async (dispatch, getState) => {
     }
     dispatch({
       type: ADD_RELATIVE,
-      payload: data,
+      payload: data.newRelative,
     });
   } catch (error) {
     console.log(error);
@@ -40,8 +38,6 @@ export const getAllRelative = () => async (dispatch, getState) => {
   const { auth } = getState();
   const isAuth = auth.token;
 
-  console.log(isAuth);
-
   try {
     //"http://10.0.2.2:5000/api/relative/view"
     const response = await fetch(`${env.API_URL}/relative/view`, {
@@ -52,7 +48,6 @@ export const getAllRelative = () => async (dispatch, getState) => {
       },
     });
     const data = await response.json();
-    console.log(data);
 
     if (!response.ok) {
       throw new Error(data.message);
@@ -65,14 +60,3 @@ export const getAllRelative = () => async (dispatch, getState) => {
     console.log(err);
   }
 };
-
-// export const reportCrimeError = (crimeData) => async (dispatch) => {
-//   /**
-//    * @Todo
-//    * Do background sync
-//    */
-//   dispatch({
-//     type: REPORT_CRIME_ERROR,
-//     payload: crimeData,
-//   });
-// };
