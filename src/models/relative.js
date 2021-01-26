@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 
 const relativeSchema = new mongoose.Schema(
   {
-    firstName: {
+    firstname: {
       type: String,
       required: true,
     },
-    lastName: {
+    lastname: {
       type: String,
     },
     mobileNumber: {

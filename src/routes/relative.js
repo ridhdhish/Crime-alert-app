@@ -27,7 +27,7 @@ router.get("/view", auth, getRelatives);
 router.post(
   "/add",
   [
-    check("firstName", "firstName is required").not().isEmpty(),
+    check("firstname", "firstname is required").not().isEmpty(),
     check("mobileNumber", "valid mobileNumber is required").isLength({
       max: 10,
       min: 10,
