@@ -46,7 +46,7 @@ export const getAllRelative = () => async (dispatch, getState) => {
     //"http://10.0.2.2:5000/api/relative/view"
     const response = await fetch(`${env.API_URL}/relative/view`, {
       method: "GET",
-      header: {
+      headers: {
         "Content-Type": "application/json",
         Authorization: isAuth ? `Bearer ${auth.token}` : "",
       },
@@ -59,7 +59,7 @@ export const getAllRelative = () => async (dispatch, getState) => {
     }
     dispatch({
       type: GET_RELATIVE,
-      payload: data,
+      payload: data.relatives,
     });
   } catch (err) {
     console.log(err);

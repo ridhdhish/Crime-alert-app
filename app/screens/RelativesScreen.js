@@ -19,7 +19,7 @@ import {
   TouchableWithoutFeedback,
 } from "react-native-gesture-handler";
 import { Formik } from "formik";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addRelative, getAllRelative } from "../store/actions/relative";
 
 const iconColors = ["orange", "green", "lightblue"];
@@ -28,6 +28,7 @@ import Input from "../components/Input";
 
 const RelativesScreen = () => {
   // Fetch relatives here
+  const relatives = useSelector((state) => state.relative.relatives);
 
   const dispatch = useDispatch();
 
@@ -77,55 +78,71 @@ const RelativesScreen = () => {
       </View>
 
       <View style={{ marginTop: 20, borderRadius: 20, zIndex: -2 }}>
-        <View style={styles.card}>
-          <View
-            style={{
-              ...styles.cardIcon,
-              ...{
-                backgroundColor:
-                  iconColors[Math.floor(Math.random() * iconColors.length)],
-              },
-            }}
-          >
-            <FontAwesome name="user" size={27} color="white" />
-          </View>
-          <View style={styles.cardInfo}>
-            <Text style={styles.cardName}>Ridhdhish Desai</Text>
-            <Text
-              style={{
-                fontSize: 12,
-                color: "#b0b0b0",
-                fontWeight: "bold",
-                marginBottom: 3,
-              }}
-            >
-              9876567768
-            </Text>
-            <Text
-              style={{
-                fontSize: 11,
-                color: "#b0b0b0",
-                fontWeight: "bold",
-                marginBottom: 3,
-              }}
-            >
-              ridhdhishdesai@gmail.com
-            </Text>
-          </View>
-          <View style={{ marginLeft: 40 }}>
-            <CustomTouchable>
-              <MaterialIcons
-                style={{ marginBottom: 10 }}
-                name="edit"
-                size={24}
-                color="black"
-              />
-            </CustomTouchable>
-            <CustomTouchable>
-              <MaterialIcons name="delete" size={24} color="red" />
-            </CustomTouchable>
-          </View>
-        </View>
+        {relatives.length ? (
+          relatives.map((relative) => (
+            <View style={styles.card} key={relative._id}>
+              <View
+                style={{
+                  ...styles.cardIcon,
+                  ...{
+                    backgroundColor:
+                      iconColors[Math.floor(Math.random() * iconColors.length)],
+                  },
+                }}
+              >
+                <FontAwesome name="user" size={27} color="white" />
+              </View>
+              <View style={styles.cardInfo}>
+                <Text style={styles.cardName}>
+                  {relative.firstname} {relative.lastname}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    color: "#b0b0b0",
+                    fontWeight: "bold",
+                    marginBottom: 3,
+                  }}
+                >
+                  {relative.mobileNumber}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 11,
+                    color: "#b0b0b0",
+                    fontWeight: "bold",
+                    marginBottom: 3,
+                  }}
+                >
+                  {relative.email}
+                </Text>
+              </View>
+              <View style={{ marginLeft: 40 }}>
+                <CustomTouchable
+                  onPress={() => {
+                    console.log("Edit " + relative._id);
+                  }}
+                >
+                  <MaterialIcons
+                    style={{ marginBottom: 10 }}
+                    name="edit"
+                    size={24}
+                    color="black"
+                  />
+                </CustomTouchable>
+                <CustomTouchable
+                  onPress={() => {
+                    console.log("Edit " + relative._id);
+                  }}
+                >
+                  <MaterialIcons name="delete" size={24} color="red" />
+                </CustomTouchable>
+              </View>
+            </View>
+          ))
+        ) : (
+          <Text>No friend found!!</Text>
+        )}
       </View>
 
       {isLoading ? (

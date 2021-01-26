@@ -1,7 +1,7 @@
 import { ADD_RELATIVE, GET_RELATIVE } from "../types";
 
 const initState = {
-  relative: [],
+  relatives: [],
 };
 
 export const relativeReducer = (state = initState, action) => {
@@ -10,12 +10,12 @@ export const relativeReducer = (state = initState, action) => {
     case ADD_RELATIVE:
       return {
         ...state,
-        relative: payload.relative,
+        relatives: [...state.relatives, payload],
       };
     case GET_RELATIVE:
       return {
         ...state,
-        relative: payload.relative,
+        relatives: payload,
       };
     default:
       return state;
