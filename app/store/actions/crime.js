@@ -1,4 +1,4 @@
-import { REPORT_CRIME, REPORT_CRIME_ERROR } from "../types";
+import { DO_BACK_SYNC, REPORT_CRIME } from "../types";
 import env from "../../environment";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -40,7 +40,7 @@ export const reportCrimeError = (crimeData) => async (dispatch) => {
    * Do background sync
    */
   dispatch({
-    type: REPORT_CRIME_ERROR,
+    type: DO_BACK_SYNC,
     payload: crimeData,
   });
 };

@@ -1,4 +1,4 @@
-import { REPORT_CRIME, REPORT_CRIME_ERROR } from "../types";
+import { DO_BACK_SYNC, REPORT_CRIME, REPORT_CRIME_ERROR } from "../types";
 
 const initState = {
   crime: null,
@@ -15,10 +15,20 @@ export const crimeReducer = (state = initState, action) => {
         crime: payload.crime,
         place: payload.place,
       };
-    case REPORT_CRIME_ERROR:
+    case DO_BACK_SYNC:
       console.log("Do Background Sync", payload);
       return {
         ...state,
+        crime: null,
+        place: null,
+        history: [],
+      };
+    case REPORT_CRIME_ERROR:
+      return {
+        ...state,
+        crime: null,
+        place: null,
+        history: [],
       };
     default:
       return state;

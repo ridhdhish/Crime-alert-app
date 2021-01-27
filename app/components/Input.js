@@ -2,33 +2,50 @@ import React, { Fragment, useEffect, useState } from "react";
 import { StyleSheet, Text, TextInput } from "react-native";
 import { colors } from "../colors";
 import { validations } from "../utils/validations";
+import env from "../environment";
 
 const Input = (props) => {
   const [focus, setFocus] = useState(false);
   const [isTouched, setIsTouched] = useState(false);
   const [isValid, setIsValid] = useState(false);
-  const [editedData, setEditedData] = useState(props.value);
+  const [exist, setExist] = useState(false);
 
   useEffect(() => {
-    if (props.type !== "login") {
-      if (props.disableError === "false") {
-        setIsValid(() => isValid);
-        return;
-      } else {
-        let isValid;
-        if (props.name === "confirmPassword") {
-          console.log(props.value, props.password);
-          isValid = validations[props.name]?.isValid(
-            props.value,
-            props.password
-          );
+    (async function checkValidation() {
+      if (props.type !== "login") {
+        if (props.disableError === "false") {
+          setIsValid(() => isValid);
+          return;
         } else {
-          isValid = validations[props.name]?.isValid(props.value);
+          let isValid;
+          if (props.name === "confirmPassword") {
+            console.log(props.value, props.password);
+            isValid = validations[props.name]?.isValid(
+              props.value,
+              props.password
+            );
+          } else {
+            let valid = true;
+            if (props.checkExistOnServer) {
+              const response = await fetch(
+                `${env.API_URL}/user/check/${props.name}/${props.value}`
+              );
+              if (!response.ok) {
+                valid = false;
+              } else {
+                const data = await response.json();
+                const isExist = data.message;
+                valid = !isExist;
+                setExist(isExist);
+              }
+            }
+            isValid = valid && validations[props.name]?.isValid(props.value);
+          }
+          props.setValid(props.name, isValid);
+          setIsValid(() => isValid);
         }
-        props.setValid(props.name, isValid);
-        setIsValid(() => isValid);
       }
-    }
+    })();
   }, [props.value, focus, props.name]);
 
   return (
@@ -60,7 +77,11 @@ const Input = (props) => {
         props.disableError !== "false" && (
           <Text style={props.styleError ? props.styleError : styles.errorText}>
             {" "}
-            {validations[props.name].message}{" "}
+            {validations[props.name].message(
+              props.checkExistOnServer && exist
+                ? `Account with ${props.name} already exists`
+                : ""
+            )}{" "}
           </Text>
         )}
     </Fragment>

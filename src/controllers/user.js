@@ -156,6 +156,18 @@ const resetPassword = async (req, res) => {
   }
 };
 
+const checkFieldValueExists = async (req, res) => {
+  const { field, value } = req.params;
+  try {
+    const user = await User.findOne({
+      [field]: field === "mobileNumber" ? +value : value,
+    });
+    sendResponse(!!user, res, 200);
+  } catch (error) {
+    sendResponse(error.message, res);
+  }
+};
+
 module.exports = {
   me,
   updateMe,
@@ -163,4 +175,5 @@ module.exports = {
   changePassword,
   forgetPassword,
   resetPassword,
+  checkFieldValueExists,
 };

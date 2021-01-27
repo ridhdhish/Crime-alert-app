@@ -1,4 +1,4 @@
-import { ADD_RELATIVE, GET_RELATIVE } from "../types";
+import { ADD_RELATIVE, GET_RELATIVE, RELATIVE_ERROR } from "../types";
 
 const initState = {
   relatives: [],
@@ -7,6 +7,11 @@ const initState = {
 export const relativeReducer = (state = initState, action) => {
   const { type, payload } = action;
   switch (type) {
+    case RELATIVE_ERROR:
+      return {
+        ...state,
+        relatives: [],
+      };
     case ADD_RELATIVE:
       return {
         ...state,
