@@ -1,5 +1,6 @@
 const { validationResult } = require("express-validator");
 const Relative = require("../models/relative");
+const User = require("../models/user");
 const sendResponse = require("../utils/sendResponse");
 
 const getRelatives = async (req, res) => {
@@ -19,11 +20,35 @@ const addRelative = async (req, res) => {
   }
 
   try {
-    const newRelative = new Relative(req.body);
+    const isRelativeExists = await Relative.findOne({
+      mobileNumber: req.body.mobileNumber,
+    });
+    if (isRelativeExists) {
+      return sendResponse(
+        "Relative already exists with that mobile number",
+        req,
+        400
+      );
+    }
 
+    const newRelative = new Relative(req.body);
+    const user = await User.findOne({
+      $or: [
+        { mobileNumber: newRelative.mobileNumber },
+        { email: newRelative.email },
+      ],
+    });
+    if (user) {
+      newRelative.pushToken = user.pushToken;
+    }
     await newRelative.save();
 
-    res.json({ newRelative });
+    res.json({
+      newRelative: {
+        ...newRelative._doc,
+        pushToken: null,
+      },
+    });
   } catch (err) {
     return sendResponse(err.message, res);
   }

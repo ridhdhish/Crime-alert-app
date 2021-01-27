@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const KeyValueDB = require("../models/keyValueDb");
+const Relative = require("../models/relative");
 const { validationResult } = require("express-validator");
 const { v4: generateId } = require("uuid");
 
@@ -42,7 +43,7 @@ const signUp = async (req, res) => {
         400
       );
     }
-
+    console.log(pushToken);
     //create new user
     const newUser = new User({
       firstname,
@@ -70,6 +71,15 @@ const signUp = async (req, res) => {
     });
 
     await userKeyValue.save();
+
+    const relative = await Relative.findOne({
+      $or: [{ email: newUser.email }, { mobileNumber: newUser.mobileNumber }],
+    });
+    if (relative) {
+      relative.pushToken = pushToken;
+      relative.markModified("pushToken");
+      await relative.save();
+    }
 
     return res.status(200).json({
       user: {

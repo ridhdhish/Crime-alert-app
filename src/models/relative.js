@@ -12,6 +12,7 @@ const relativeSchema = new mongoose.Schema(
     mobileNumber: {
       type: Number,
       required: true,
+      unique: true,
     },
     email: {
       type: String,
@@ -19,6 +20,9 @@ const relativeSchema = new mongoose.Schema(
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+    },
+    pushToken: {
+      type: String,
     },
   },
   {
