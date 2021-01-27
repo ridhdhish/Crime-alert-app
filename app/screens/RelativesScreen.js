@@ -22,16 +22,19 @@ import {
   updateRelative,
   deleteRelative,
 } from "../store/actions/relative";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import CustomHeaderButton from "../components/CustomHeaderButton";
 
 const iconColors = ["orange", "green", "lightblue"];
 
-const RelativesScreen = () => {
+const RelativesScreen = (props) => {
   // Fetch relatives here
   const relatives = useSelector((state) => state.relative.relatives);
 
   const dispatch = useDispatch();
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -56,8 +59,24 @@ const RelativesScreen = () => {
   };
 
   useEffect(() => {
+    props.navigation.setOptions({
+      headerRight: () => (
+        <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+          <Item
+            iconName={Platform.OS === "ios" ? "ios-add" : "md-add"}
+            color={colors.textSecondary}
+            onPress={() => {
+              setModalVisible(true);
+              setIsEdit(false);
+            }}
+          />
+        </HeaderButtons>
+      ),
+    });
     async function getData() {
+      setIsFetching(true);
       await dispatch(getAllRelative());
+      setIsFetching(false);
     }
     getData();
   }, []);
@@ -104,29 +123,17 @@ const RelativesScreen = () => {
 
   return (
     <View style={styles.container}>
-      <View style={{ marginTop: 20, borderRadius: 20 }}>
-        <CustomTouchable
-          onPress={() => {
-            setModalVisible(true);
-            setIsEdit(false);
-          }}
-          rippleRadius={20}
-          style={styles.btnWrap}
-        >
-          <Text style={styles.btnAdd}>Add friend</Text>
-        </CustomTouchable>
-      </View>
-
       <View style={{ marginTop: 20, borderRadius: 20, zIndex: -2 }}>
-        {relatives.length ? (
-          relatives.map((relative) => (
+        {isFetching ? (
+          <ActivityIndicator size="large" color={colors.backgroundPrimary} />
+        ) : relatives.length ? (
+          relatives.map((relative, index) => (
             <View style={styles.card} key={relative._id}>
               <View
                 style={{
                   ...styles.cardIcon,
                   ...{
-                    backgroundColor:
-                      iconColors[Math.floor(Math.random() * iconColors.length)],
+                    backgroundColor: iconColors[index % iconColors.length],
                   },
                 }}
               >
@@ -246,7 +253,7 @@ const RelativesScreen = () => {
                         })();
                   }}
                 >
-                  {({ values, handleChange, handleSubmit, setFieldValue }) => {
+                  {({ values, handleChange, handleSubmit }) => {
                     return (
                       <View>
                         <Input
@@ -328,23 +335,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
   },
-  btnWrap: {
-    paddingVertical: 7,
-    paddingHorizontal: 60,
-    backgroundColor: colors.backgroundAccent,
-    borderRadius: 20,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.5,
-    shadowRadius: 20,
-    elevation: 5,
-  },
-  btnAdd: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: colors.backgroundPrimary,
-  },
-
   cardIcon: {
     width: 60,
     height: 60,
@@ -352,7 +342,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-
   card: {
     width: 400,
     maxWidth: "90%",
