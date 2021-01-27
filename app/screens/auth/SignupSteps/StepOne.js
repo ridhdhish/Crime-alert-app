@@ -24,6 +24,7 @@ const StepOne = (props) => {
         handleChange={props.handleChange("email")}
         name="email"
         setValid={props.setValid}
+        checkExistOnServer
       />
       <View
         style={{
