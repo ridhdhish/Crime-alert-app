@@ -1,4 +1,4 @@
-import { ADD_RELATIVE, GET_RELATIVE } from "../types";
+import { ADD_RELATIVE, GET_RELATIVE, UPDATE_RELATIVE } from "../types";
 import env from "../../environment";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -58,5 +58,36 @@ export const getAllRelative = () => async (dispatch, getState) => {
     });
   } catch (err) {
     console.log(err);
+  }
+};
+
+export const updateRelative = (relative, id) => async (dispatch, getState) => {
+  const { auth } = getState();
+  const isAuth = auth.token;
+  console.log(id);
+
+  try {
+    //"http://10.0.2.2:5000/api/relative/update/{id}"
+    const response = await fetch(`${env.API_URL}/relative/update/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: isAuth ? `Bearer ${auth.token}` : "",
+      },
+      body: JSON.stringify({ ...relative }),
+    });
+    const data = await response.json();
+    console.log("Action data: ", data);
+
+    if (!response.ok) {
+      throw new Error(data.message);
+    }
+    dispatch({
+      type: UPDATE_RELATIVE,
+      payload: data.relative,
+    });
+  } catch (error) {
+    console.log(error);
+    //dispatch(reportCrimeError(crimeData));
   }
 };

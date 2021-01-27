@@ -40,9 +40,9 @@ const updateRelative = async (req, res) => {
       return sendResponse("Unable to update relative", res, 404);
     }
 
-    const { firstName, lastName, email, mobileNumber } = req.body;
-    if (firstName) relative.firstName = firstName;
-    if (lastName) relative.lastName = lastName;
+    const { firstname, lastname, email, mobileNumber } = req.body;
+    if (firstname) relative.firstName = firstname;
+    if (lastname) relative.lastName = lastname;
     if (email) relative.email = email;
     if (mobileNumber) relative.mobileNumber = mobileNumber;
 

@@ -16,7 +16,11 @@ import { colors } from "../colors";
 import BottomPopup from "../components/BottomPopup";
 import CustomTouchable from "../components/CustomTouchable";
 import Input from "../components/Input";
-import { addRelative, getAllRelative } from "../store/actions/relative";
+import {
+  addRelative,
+  getAllRelative,
+  updateRelative,
+} from "../store/actions/relative";
 
 const iconColors = ["orange", "green", "lightblue"];
 
@@ -29,6 +33,8 @@ const RelativesScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [editData, setEditData] = useState({});
   const [error, setError] = useState("");
 
   const [isDataValid, setIsDataValid] = useState({
@@ -55,6 +61,25 @@ const RelativesScreen = () => {
     }
     getData();
   }, []);
+
+  const onRelativeEdit = (id) => {
+    const relative = relatives.filter((relative) => relative._id === id);
+    setEditData(() => relative[0]);
+  };
+
+  const editRelativeHandler = async (values) => {
+    setError(null);
+    setIsLoading(true);
+    try {
+      if (values !== editData) {
+        await dispatch(updateRelative(values, editData._id));
+      }
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -113,7 +138,9 @@ const RelativesScreen = () => {
               <View style={{ marginLeft: 40 }}>
                 <CustomTouchable
                   onPress={() => {
-                    console.log("Edit " + relative._id);
+                    setIsEdit(true);
+                    setModalVisible(true);
+                    onRelativeEdit(relative._id);
                   }}
                 >
                   <MaterialIcons
@@ -125,7 +152,7 @@ const RelativesScreen = () => {
                 </CustomTouchable>
                 <CustomTouchable
                   onPress={() => {
-                    console.log("Edit " + relative._id);
+                    // console.log("Delete " + relative._id);
                   }}
                 >
                   <MaterialIcons name="delete" size={24} color="red" />
@@ -138,7 +165,130 @@ const RelativesScreen = () => {
         )}
       </View>
 
-      {isLoading ? (
+      {isEdit ? (
+        isLoading ? (
+          <View style={{ marginVertical: "40%" }}>
+            <ActivityIndicator size="large" color={colors.backgroundPrimary} />
+          </View>
+        ) : (
+          <BottomPopup
+            modalVisible={modalVisible}
+            closeModal={() => {
+              setModalVisible(false);
+              setIsEdit(false);
+            }}
+          >
+            <Pressable
+              onPress={() => {
+                Keyboard.dismiss();
+              }}
+            >
+              <ScrollView>
+                <View style={styles.centeredView}>
+                  <View style={{ padding: 10, flexDirection: "row" }}>
+                    <Text style={{ fontSize: 24, fontWeight: "bold" }}>
+                      Update Friend
+                    </Text>
+                    <TouchableOpacity
+                      style={{
+                        position: "absolute",
+                        left: "65%",
+                        marginTop: 4,
+                      }}
+                      onPress={() => {
+                        setModalVisible(false);
+                      }}
+                    ></TouchableOpacity>
+                  </View>
+
+                  <Formik
+                    initialValues={{
+                      firstname: editData.firstname,
+                      lastname: editData.lastname,
+                      mobileNumber: editData.mobileNumber + "",
+                      email: editData.email,
+                    }}
+                    onSubmit={(values) => {
+                      editRelativeHandler(values);
+                    }}
+                  >
+                    {({
+                      values,
+                      handleChange,
+                      handleSubmit,
+                      setFieldValue,
+                    }) => {
+                      return (
+                        <View>
+                          <Input
+                            name="firstname"
+                            value={values.firstname}
+                            setValid={setValid}
+                            config={{ placeholder: "Firstname" }}
+                            style={styles.modalFormInput}
+                            handleChange={handleChange("firstname")}
+                            styleError={styles.error}
+                          />
+                          <Input
+                            name="lastname"
+                            value={values.lastname}
+                            setValid={setValid}
+                            config={{ placeholder: "Lastname" }}
+                            style={styles.modalFormInput}
+                            handleChange={handleChange("lastname")}
+                            disableError={"false"}
+                          />
+                          <Input
+                            name="mobileNumber"
+                            value={values.mobileNumber}
+                            setValid={setValid}
+                            config={{
+                              placeholder: "Mobile Number",
+                              keyboardType: "number-pad",
+                            }}
+                            style={styles.modalFormInput}
+                            handleChange={handleChange("mobileNumber")}
+                            styleError={styles.error}
+                          />
+                          <Input
+                            name="email"
+                            value={values.email}
+                            setValid={setValid}
+                            config={{ placeholder: "Email" }}
+                            style={styles.modalFormInput}
+                            handleChange={handleChange("email")}
+                            disableError={"false"}
+                          />
+
+                          <TouchableOpacity
+                            activeOpacity={isFormValid ? 0.5 : 1}
+                            style={{
+                              ...styles.openButton,
+                              backgroundColor: isFormValid
+                                ? "#2196F3"
+                                : "#7fc4fa",
+                            }}
+                            onPress={
+                              isFormValid
+                                ? () => {
+                                    setModalVisible(() => false);
+                                    handleSubmit();
+                                  }
+                                : () => {}
+                            }
+                          >
+                            <Text style={styles.textStyle}>Edit Friend</Text>
+                          </TouchableOpacity>
+                        </View>
+                      );
+                    }}
+                  </Formik>
+                </View>
+              </ScrollView>
+            </Pressable>
+          </BottomPopup>
+        )
+      ) : isLoading ? (
         <View style={{ marginVertical: "40%" }}>
           <ActivityIndicator size="large" color={colors.backgroundPrimary} />
         </View>
@@ -178,7 +328,6 @@ const RelativesScreen = () => {
                     email: "",
                   }}
                   onSubmit={async (values) => {
-                    console.log(values);
                     setError(null);
                     setIsLoading(true);
                     try {
@@ -244,7 +393,6 @@ const RelativesScreen = () => {
                           onPress={
                             isFormValid
                               ? () => {
-                                  console.log("form valid");
                                   setModalVisible(() => false);
                                   handleSubmit();
                                 }
