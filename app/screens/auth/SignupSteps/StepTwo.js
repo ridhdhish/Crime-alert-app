@@ -16,6 +16,7 @@ const StepOne = (props) => {
           placeholder: "(+91) Mobile Number",
           keyboardType: "number-pad",
         }}
+        checkExistOnServer
       />
       <Input
         value={props.values.address}

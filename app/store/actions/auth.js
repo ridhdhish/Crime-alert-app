@@ -1,4 +1,11 @@
-import { AUTH_USER, LOGOUT, TRY_AUTO_LOGIN, UPDATE_USER } from "../types";
+import {
+  AUTH_USER,
+  LOGOUT,
+  RELATIVE_ERROR,
+  REPORT_CRIME_ERROR,
+  TRY_AUTO_LOGIN,
+  UPDATE_USER,
+} from "../types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import env from "../../environment";
 
@@ -76,12 +83,18 @@ export const login = ({ email, password }) => async (dispatch) => {
   dispatch(authUser({ ...body, expirationTime }));
 };
 
-export const logout = () => {
+export const logout = () => (dispatch) => {
   AsyncStorage.removeItem("userData");
   clearTimeout(timer);
-  return {
+  dispatch({
     type: LOGOUT,
-  };
+  });
+  dispatch({
+    type: REPORT_CRIME_ERROR,
+  });
+  dispatch({
+    type: RELATIVE_ERROR,
+  });
 };
 
 const setLogoutTimer = (expirationTime) => (dispatch) => {
