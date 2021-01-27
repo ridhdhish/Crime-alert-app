@@ -83,14 +83,11 @@ const registerCrime = async (req, res) => {
     await Promise.all(
       relatives.map(async (rel) => {
         await sendMail(rel.email, `Mail sent`);
-        const user = await User.findOne({
-          $or: [{ mobileNumber: rel.mobileNumber }, { email: rel.email }],
-        });
-        if (user?.pushToken && Expo.isExpoPushToken(user.pushToken)) {
+        if (rel.pushToken && Expo.isExpoPushToken(rel.pushToken)) {
           const expo = new Expo({ accessToken: process.env.EXPO_ACCESS_TOKEN });
           await expo.sendPushNotificationsAsync([
             {
-              to: user.pushToken,
+              to: rel.pushToken,
               sound: "default",
               body: "Alert has been received",
               data: {
@@ -99,7 +96,7 @@ const registerCrime = async (req, res) => {
             },
           ]);
         }
-        return user;
+        return rel;
       })
     );
     sendResponse(
