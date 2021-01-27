@@ -20,6 +20,7 @@ import {
   addRelative,
   getAllRelative,
   updateRelative,
+  deleteRelative,
 } from "../store/actions/relative";
 
 const iconColors = ["orange", "green", "lightblue"];
@@ -38,10 +39,10 @@ const RelativesScreen = () => {
   const [error, setError] = useState("");
 
   const [isDataValid, setIsDataValid] = useState({
-    firstname: true,
+    firstname: false,
     lastname: true,
     email: true,
-    mobileNumber: true,
+    mobileNumber: false,
   });
 
   const [isFormValid, setIsFormValid] = useState(false);
@@ -51,7 +52,6 @@ const RelativesScreen = () => {
     let formValid = Object.values(isDataValid).reduce(
       (prev, cur) => prev && cur
     );
-
     setIsFormValid(() => formValid);
   };
 
@@ -61,6 +61,15 @@ const RelativesScreen = () => {
     }
     getData();
   }, []);
+
+  useEffect(() => {
+    setIsDataValid({
+      firstname: isEdit,
+      lastname: true,
+      email: true,
+      mobileNumber: isEdit,
+    });
+  }, [isEdit]);
 
   const onRelativeEdit = (id) => {
     const relative = relatives.filter((relative) => relative._id === id);
@@ -81,12 +90,25 @@ const RelativesScreen = () => {
     }
   };
 
+  const deleteRelativeHandler = async (id) => {
+    setError(null);
+    setIsLoading(true);
+    try {
+      await dispatch(deleteRelative(id));
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={{ marginTop: 20, borderRadius: 20 }}>
         <CustomTouchable
           onPress={() => {
             setModalVisible(true);
+            setIsEdit(false);
           }}
           rippleRadius={20}
           style={styles.btnWrap}
@@ -138,7 +160,7 @@ const RelativesScreen = () => {
               <View style={{ marginLeft: 40 }}>
                 <CustomTouchable
                   onPress={() => {
-                    setIsEdit(true);
+                    setIsEdit(() => true);
                     setModalVisible(true);
                     onRelativeEdit(relative._id);
                   }}
@@ -152,7 +174,7 @@ const RelativesScreen = () => {
                 </CustomTouchable>
                 <CustomTouchable
                   onPress={() => {
-                    // console.log("Delete " + relative._id);
+                    deleteRelativeHandler(relative._id);
                   }}
                 >
                   <MaterialIcons name="delete" size={24} color="red" />
@@ -165,137 +187,18 @@ const RelativesScreen = () => {
         )}
       </View>
 
-      {isEdit ? (
-        isLoading ? (
-          <View style={{ marginVertical: "40%" }}>
-            <ActivityIndicator size="large" color={colors.backgroundPrimary} />
-          </View>
-        ) : (
-          <BottomPopup
-            modalVisible={modalVisible}
-            closeModal={() => {
-              setModalVisible(false);
-              setIsEdit(false);
-            }}
-          >
-            <Pressable
-              onPress={() => {
-                Keyboard.dismiss();
-              }}
-            >
-              <ScrollView>
-                <View style={styles.centeredView}>
-                  <View style={{ padding: 10, flexDirection: "row" }}>
-                    <Text style={{ fontSize: 24, fontWeight: "bold" }}>
-                      Update Friend
-                    </Text>
-                    <TouchableOpacity
-                      style={{
-                        position: "absolute",
-                        left: "65%",
-                        marginTop: 4,
-                      }}
-                      onPress={() => {
-                        setModalVisible(false);
-                      }}
-                    ></TouchableOpacity>
-                  </View>
-
-                  <Formik
-                    initialValues={{
-                      firstname: editData.firstname,
-                      lastname: editData.lastname,
-                      mobileNumber: editData.mobileNumber + "",
-                      email: editData.email,
-                    }}
-                    onSubmit={(values) => {
-                      editRelativeHandler(values);
-                    }}
-                  >
-                    {({
-                      values,
-                      handleChange,
-                      handleSubmit,
-                      setFieldValue,
-                    }) => {
-                      return (
-                        <View>
-                          <Input
-                            name="firstname"
-                            value={values.firstname}
-                            setValid={setValid}
-                            config={{ placeholder: "Firstname" }}
-                            style={styles.modalFormInput}
-                            handleChange={handleChange("firstname")}
-                            styleError={styles.error}
-                          />
-                          <Input
-                            name="lastname"
-                            value={values.lastname}
-                            setValid={setValid}
-                            config={{ placeholder: "Lastname" }}
-                            style={styles.modalFormInput}
-                            handleChange={handleChange("lastname")}
-                            disableError={"false"}
-                          />
-                          <Input
-                            name="mobileNumber"
-                            value={values.mobileNumber}
-                            setValid={setValid}
-                            config={{
-                              placeholder: "Mobile Number",
-                              keyboardType: "number-pad",
-                            }}
-                            style={styles.modalFormInput}
-                            handleChange={handleChange("mobileNumber")}
-                            styleError={styles.error}
-                          />
-                          <Input
-                            name="email"
-                            value={values.email}
-                            setValid={setValid}
-                            config={{ placeholder: "Email" }}
-                            style={styles.modalFormInput}
-                            handleChange={handleChange("email")}
-                            disableError={"false"}
-                          />
-
-                          <TouchableOpacity
-                            activeOpacity={isFormValid ? 0.5 : 1}
-                            style={{
-                              ...styles.openButton,
-                              backgroundColor: isFormValid
-                                ? "#2196F3"
-                                : "#7fc4fa",
-                            }}
-                            onPress={
-                              isFormValid
-                                ? () => {
-                                    setModalVisible(() => false);
-                                    handleSubmit();
-                                  }
-                                : () => {}
-                            }
-                          >
-                            <Text style={styles.textStyle}>Edit Friend</Text>
-                          </TouchableOpacity>
-                        </View>
-                      );
-                    }}
-                  </Formik>
-                </View>
-              </ScrollView>
-            </Pressable>
-          </BottomPopup>
-        )
-      ) : isLoading ? (
+      {isLoading ? (
         <View style={{ marginVertical: "40%" }}>
           <ActivityIndicator size="large" color={colors.backgroundPrimary} />
         </View>
       ) : (
         <BottomPopup
           modalVisible={modalVisible}
-          closeModal={() => setModalVisible(false)}
+          closeModal={() => {
+            setIsFormValid(() => false);
+            setModalVisible(false);
+            setIsEdit(false);
+          }}
         >
           <Pressable
             onPress={() => {
@@ -306,7 +209,7 @@ const RelativesScreen = () => {
               <View style={styles.centeredView}>
                 <View style={{ padding: 10, flexDirection: "row" }}>
                   <Text style={{ fontSize: 24, fontWeight: "bold" }}>
-                    New Friend
+                    {isEdit ? "Update Friend" : "New Friend"}
                   </Text>
                   <TouchableOpacity
                     style={{
@@ -322,21 +225,25 @@ const RelativesScreen = () => {
 
                 <Formik
                   initialValues={{
-                    firstname: "",
-                    lastname: "",
-                    mobileNumber: "",
-                    email: "",
+                    firstname: isEdit ? editData.firstname : "",
+                    lastname: isEdit ? editData.lastname : "",
+                    mobileNumber: isEdit ? editData.mobileNumber + "" : "",
+                    email: isEdit ? editData.email : "",
                   }}
-                  onSubmit={async (values) => {
-                    setError(null);
-                    setIsLoading(true);
-                    try {
-                      await dispatch(addRelative(values));
-                    } catch (error) {
-                      setError(error.message);
-                    } finally {
-                      setIsLoading(false);
-                    }
+                  onSubmit={(values) => {
+                    isEdit
+                      ? editRelativeHandler(values)
+                      : (async function () {
+                          setError(null);
+                          setIsLoading(true);
+                          try {
+                            await dispatch(addRelative(values));
+                          } catch (error) {
+                            setError(error.message);
+                          } finally {
+                            setIsLoading(false);
+                          }
+                        })();
                   }}
                 >
                   {({ values, handleChange, handleSubmit, setFieldValue }) => {
@@ -399,7 +306,9 @@ const RelativesScreen = () => {
                               : () => {}
                           }
                         >
-                          <Text style={styles.textStyle}>Add Friend</Text>
+                          <Text style={styles.textStyle}>
+                            {isEdit ? "Edit Friend" : "Add Friend"}
+                          </Text>
                         </TouchableOpacity>
                       </View>
                     );

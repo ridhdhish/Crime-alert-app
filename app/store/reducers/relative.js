@@ -2,6 +2,7 @@ import {
   ADD_RELATIVE,
   GET_RELATIVE,
   UPDATE_RELATIVE,
+  DELETE_RELATIVE,
   RELATIVE_ERROR,
 } from "../types";
 
@@ -34,10 +35,17 @@ export const relativeReducer = (state = initState, action) => {
         (relative) => relative._id === payload._id
       );
       oldState[index] = payload;
-      console.log("Reducer State: ", oldState);
       return {
         ...state,
         relatives: oldState,
+      };
+    case DELETE_RELATIVE:
+      const newRelatives = state.relatives.filter(
+        (relative) => relative._id !== payload
+      );
+      return {
+        ...state,
+        relatives: newRelatives,
       };
     default:
       return state;

@@ -14,13 +14,13 @@ const Input = (props) => {
     (async function checkValidation() {
       if (props.type !== "login") {
         if (props.disableError === "false") {
-          setIsValid(() => isValid);
+          setIsValid(() => true);
           return;
         } else {
-          let isValid;
+          let isValid1;
           if (props.name === "confirmPassword") {
             console.log(props.value, props.password);
-            isValid = validations[props.name]?.isValid(
+            isValid1 = validations[props.name]?.isValid(
               props.value,
               props.password
             );
@@ -39,10 +39,10 @@ const Input = (props) => {
                 setExist(isExist);
               }
             }
-            isValid = valid && validations[props.name]?.isValid(props.value);
+            isValid1 = valid && validations[props.name]?.isValid(props.value);
           }
-          props.setValid(props.name, isValid);
-          setIsValid(() => isValid);
+          props.setValid(props.name, isValid1);
+          setIsValid(() => isValid1);
         }
       }
     })();
