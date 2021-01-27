@@ -41,8 +41,8 @@ const updateRelative = async (req, res) => {
     }
 
     const { firstname, lastname, email, mobileNumber } = req.body;
-    if (firstname) relative.firstName = firstname;
-    if (lastname) relative.lastName = lastname;
+    if (firstname) relative.firstname = firstname;
+    if (lastname) relative.lastname = lastname;
     if (email) relative.email = email;
     if (mobileNumber) relative.mobileNumber = mobileNumber;
 
