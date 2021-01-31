@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
   ScrollView,
+  Alert,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { colors } from "../colors";
@@ -269,6 +270,7 @@ const RelativesScreen = (props) => {
                     lastname: isEdit ? editData.lastname : "",
                     mobileNumber: isEdit ? editData.mobileNumber + "" : "",
                     email: isEdit ? editData.email : "",
+                    priority: isEdit ? editData.priority : "-1",
                   }}
                   onSubmit={(values) => {
                     isEdit
@@ -279,7 +281,9 @@ const RelativesScreen = (props) => {
                           try {
                             await dispatch(addRelative(values));
                           } catch (error) {
-                            console.log(error.message);
+                            Alert.alert("Relative Error", error.message, [
+                              { text: "Okay" },
+                            ]);
                           } finally {
                             setIsLoading(false);
                           }
@@ -301,8 +305,8 @@ const RelativesScreen = (props) => {
                           }}
                         >
                           <Picker
-                            selectedValue={1}
-                            onValueChange={(itemValue, itemIndex) => {}}
+                            selectedValue={values.priority}
+                            onValueChange={handleChange("priority")}
                             dropdownIconColor={colors.backgroundSecondary}
                             // mode="dropdown"
                           >
@@ -325,6 +329,9 @@ const RelativesScreen = (props) => {
                           style={styles.modalFormInput}
                           handleChange={handleChange("firstname")}
                           styleError={styles.error}
+                          config={{
+                            placeholder: "Firstname*",
+                          }}
                         />
                         <Input
                           name="lastname"
@@ -340,7 +347,7 @@ const RelativesScreen = (props) => {
                           value={values.mobileNumber}
                           setValid={setValid}
                           config={{
-                            placeholder: "Mobile Number",
+                            placeholder: "Mobile Number*",
                             keyboardType: "number-pad",
                           }}
                           style={styles.modalFormInput}

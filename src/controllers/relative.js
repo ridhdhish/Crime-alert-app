@@ -24,9 +24,9 @@ const addRelative = async (req, res) => {
     if (totalRelatives.length > 10) {
       return sendResponse("You cannot add more than 10 relatives.", res, 401);
     }
-    const relative = Relative.findOne({
+    const relative = await Relative.findOne({
       userId: req.user.id,
-      priority: req.body.priority,
+      priority: +req.body.priority,
     });
     if (relative) {
       return sendResponse(
@@ -46,7 +46,7 @@ const addRelative = async (req, res) => {
         400
       );
     }
-
+    req.body.userId = req.user.id;
     const newRelative = new Relative(req.body);
     const user = await User.findOne({
       $or: [
