@@ -57,9 +57,7 @@ const Input = (props) => {
         style={{
           ...styles.input,
           ...{
-            borderBottomColor: focus
-              ? colors.backgroundAccent
-              : colors.textPrimary,
+            borderColor: focus ? colors.backgroundAccent : colors.textAccent,
           },
           ...props.style,
         }}

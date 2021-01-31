@@ -21,6 +21,10 @@ const relativeSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    priority: {
+      type: Number,
+      default: 1,
+    },
     pushToken: {
       type: String,
     },

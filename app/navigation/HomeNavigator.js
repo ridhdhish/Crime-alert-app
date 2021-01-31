@@ -37,7 +37,7 @@ const HomeNavigator = () => {
         },
         tabBarColor: colors.backgroundPrimary,
       })}
-      initialRouteName="Relatives"
+      // initialRouteName="Relatives"
     >
       <HomeTabs.Screen
         name="Home"
