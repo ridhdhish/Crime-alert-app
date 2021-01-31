@@ -28,6 +28,7 @@ router.post(
   "/add",
   [
     check("firstname", "firstname is required").not().isEmpty(),
+    check("priority", "priority is required").not().isEmpty(),
     check("mobileNumber", "valid mobileNumber is required").isLength({
       max: 10,
       min: 10,

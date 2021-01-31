@@ -31,6 +31,26 @@ const iconColors = ["orange", "green", "lightblue"];
 const RelativesScreen = (props) => {
   // Fetch relatives here
   const relatives = useSelector((state) => state.relative.relatives);
+  const [leftPriority, setLeftPriority] = useState([]);
+
+  useEffect(() => {
+    const leftPriority = [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+    ].filter(
+      (number) =>
+        !relatives.find((relative) => relative.priority.toString() === number)
+    );
+    setLeftPriority(leftPriority);
+  }, [relatives]);
 
   const dispatch = useDispatch();
 
@@ -259,7 +279,7 @@ const RelativesScreen = (props) => {
                           try {
                             await dispatch(addRelative(values));
                           } catch (error) {
-                            setError(error.message);
+                            console.log(error.message);
                           } finally {
                             setIsLoading(false);
                           }
@@ -269,14 +289,34 @@ const RelativesScreen = (props) => {
                   {({ values, handleChange, handleSubmit }) => {
                     return (
                       <View>
-                        <Picker
-                          selectedValue={1}
-                          style={{ height: 50, width: 100 }}
-                          onValueChange={(itemValue, itemIndex) => {}}
+                        <View
+                          style={{
+                            height: 50,
+                            width: 300,
+                            borderColor: colors.textAccent,
+                            borderWidth: 2,
+                            borderRadius: 5,
+                            overflow: "hidden",
+                            marginBottom: 16,
+                          }}
                         >
-                          <Picker.Item label="1" value="1" />
-                          <Picker.Item label="2" value="2" />
-                        </Picker>
+                          <Picker
+                            selectedValue={1}
+                            onValueChange={(itemValue, itemIndex) => {}}
+                            dropdownIconColor={colors.backgroundSecondary}
+                            // mode="dropdown"
+                          >
+                            <Picker.Item label="Select Priority" value="-1" />
+                            {leftPriority.map((priority) => (
+                              <Picker.Item
+                                label={priority}
+                                value={priority}
+                                key={priority}
+                              />
+                            ))}
+                          </Picker>
+                        </View>
+
                         <Input
                           name="firstname"
                           value={values.firstname}
