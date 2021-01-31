@@ -2,7 +2,6 @@ import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { Formik } from "formik";
 import React, { Fragment, useEffect, useState } from "react";
 import {
-  ActivityIndicator,
   Keyboard,
   Pressable,
   StyleSheet,
@@ -61,6 +60,7 @@ const RelativesScreen = (props) => {
   };
 
   useEffect(() => {
+    setIsFetching(true);
     props.navigation.setOptions({
       headerRight: () => (
         <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
@@ -76,7 +76,6 @@ const RelativesScreen = (props) => {
       ),
     });
     async function getData() {
-      setIsFetching(true);
       await dispatch(getAllRelative());
       setIsFetching(false);
     }
@@ -113,20 +112,17 @@ const RelativesScreen = (props) => {
 
   const deleteRelativeHandler = async (id) => {
     setError(null);
-    setIsLoading(true);
     try {
       await dispatch(deleteRelative(id));
     } catch (error) {
       setError(error.message);
-    } finally {
-      setIsLoading(false);
     }
   };
 
   return (
     <View style={styles.container}>
       <View style={{ marginTop: 20, borderRadius: 20, zIndex: -2 }}>
-        {isFetching ? (
+        {!isLoading && isFetching ? (
           <Fragment>
             <CustomContentLoader />
             <CustomContentLoader />
@@ -196,14 +192,25 @@ const RelativesScreen = (props) => {
             </View>
           ))
         ) : (
-          <Text>No friend found!!</Text>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              width: "90%",
+            }}
+          >
+            <Text style={{ textAlign: "center", fontSize: 16 }}>
+              You haven't added any relatives, You can add max{" "}
+              <Text style={{ fontSize: 20, fontWeight: "bold" }}>10</Text>{" "}
+              relatives by pressing{" "}
+              <Text style={{ fontSize: 20, fontWeight: "bold" }}>+</Text>
+            </Text>
+          </View>
         )}
       </View>
 
       {isLoading ? (
-        <View style={{ marginVertical: "40%" }}>
-          <ActivityIndicator size="large" color={colors.backgroundPrimary} />
-        </View>
+        <CustomContentLoader />
       ) : (
         <BottomPopup
           modalVisible={modalVisible}
