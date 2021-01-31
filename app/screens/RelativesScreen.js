@@ -1,16 +1,15 @@
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { Formik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import {
-  ActivityIndicator,
   Keyboard,
   Pressable,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
+  ScrollView,
 } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import { colors } from "../colors";
 import BottomPopup from "../components/BottomPopup";
@@ -24,6 +23,8 @@ import {
 } from "../store/actions/relative";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../components/CustomHeaderButton";
+import { Picker } from "@react-native-picker/picker";
+import CustomContentLoader from "../components/CustomContentLoader";
 
 const iconColors = ["orange", "green", "lightblue"];
 
@@ -59,6 +60,7 @@ const RelativesScreen = (props) => {
   };
 
   useEffect(() => {
+    setIsFetching(true);
     props.navigation.setOptions({
       headerRight: () => (
         <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
@@ -74,7 +76,6 @@ const RelativesScreen = (props) => {
       ),
     });
     async function getData() {
-      setIsFetching(true);
       await dispatch(getAllRelative());
       setIsFetching(false);
     }
@@ -111,21 +112,22 @@ const RelativesScreen = (props) => {
 
   const deleteRelativeHandler = async (id) => {
     setError(null);
-    setIsLoading(true);
     try {
       await dispatch(deleteRelative(id));
     } catch (error) {
       setError(error.message);
-    } finally {
-      setIsLoading(false);
     }
   };
 
   return (
     <View style={styles.container}>
       <View style={{ marginTop: 20, borderRadius: 20, zIndex: -2 }}>
-        {isFetching ? (
-          <ActivityIndicator size="large" color={colors.backgroundPrimary} />
+        {!isLoading && isFetching ? (
+          <Fragment>
+            <CustomContentLoader />
+            <CustomContentLoader />
+            <CustomContentLoader />
+          </Fragment>
         ) : relatives.length ? (
           relatives.map((relative, index) => (
             <View style={styles.card} key={relative._id}>
@@ -190,14 +192,25 @@ const RelativesScreen = (props) => {
             </View>
           ))
         ) : (
-          <Text>No friend found!!</Text>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              width: "90%",
+            }}
+          >
+            <Text style={{ textAlign: "center", fontSize: 16 }}>
+              You haven't added any relatives, You can add max{" "}
+              <Text style={{ fontSize: 20, fontWeight: "bold" }}>10</Text>{" "}
+              relatives by pressing{" "}
+              <Text style={{ fontSize: 20, fontWeight: "bold" }}>+</Text>
+            </Text>
+          </View>
         )}
       </View>
 
       {isLoading ? (
-        <View style={{ marginVertical: "40%" }}>
-          <ActivityIndicator size="large" color={colors.backgroundPrimary} />
-        </View>
+        <CustomContentLoader />
       ) : (
         <BottomPopup
           modalVisible={modalVisible}
@@ -256,6 +269,14 @@ const RelativesScreen = (props) => {
                   {({ values, handleChange, handleSubmit }) => {
                     return (
                       <View>
+                        <Picker
+                          selectedValue={1}
+                          style={{ height: 50, width: 100 }}
+                          onValueChange={(itemValue, itemIndex) => {}}
+                        >
+                          <Picker.Item label="1" value="1" />
+                          <Picker.Item label="2" value="2" />
+                        </Picker>
                         <Input
                           name="firstname"
                           value={values.firstname}
@@ -406,9 +427,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalFormInput: {
-    borderWidth: 1,
+    borderWidth: 2,
     width: 300,
-    borderRadius: 10,
+    borderRadius: 5,
     padding: 8,
     fontSize: 20,
     marginBottom: 20,
