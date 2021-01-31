@@ -10,7 +10,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export const addRelative = (relativeData) => async (dispatch, getState) => {
   const { auth } = getState();
   const isAuth = auth.token;
-  const user = auth.user;
 
   //"http://10.0.2.2:5000/api/relative/add"
   const response = await fetch(`${env.API_URL}/relative/add`, {
@@ -19,7 +18,7 @@ export const addRelative = (relativeData) => async (dispatch, getState) => {
       "Content-Type": "application/json",
       Authorization: isAuth ? `Bearer ${auth.token}` : "",
     },
-    body: JSON.stringify({ ...relativeData, userId: user._id }),
+    body: JSON.stringify(relativeData),
   });
   const data = await response.json();
 
