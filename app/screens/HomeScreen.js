@@ -10,15 +10,14 @@ import { getCrimeData } from "../utils/getCrimeData";
 import { sendNotification } from "../utils/sendNotification";
 import AlertButton from "../components/AlertButton";
 import { useNotification } from "../hooks/useNotification";
+import currentLocationImage from "../assets/images/currentLocation.png";
+import CustomContentLoader from "../components/CustomContentLoader";
 
 const HomeScreen = (props) => {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
-  const [currentLocation, setCurrentLocation] = useState({
-    latitude: 21.1702,
-    longitude: 72.8311,
-  });
+  const [currentLocation, setCurrentLocation] = useState(null);
 
   useNotification();
 
@@ -78,27 +77,32 @@ const HomeScreen = (props) => {
               color={colors.textSecondary}
             />
           </FloatingButton>
-          <MapView
-            style={{ flex: 1 }}
-            region={{
-              ...currentLocation,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}
-            minZoomLevel={2}
-            maxZoomLevel={20}
-            zoomEnabled
-          >
-            <Marker
-              coordinate={{
+          {currentLocation ? (
+            <MapView
+              style={{ flex: 1 }}
+              region={{
                 ...currentLocation,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
               }}
-              title="Surat"
-              description="The city of Sun"
-            />
-          </MapView>
+              minZoomLevel={2}
+              maxZoomLevel={20}
+              zoomEnabled
+            >
+              <Marker
+                coordinate={{
+                  ...currentLocation,
+                  latitudeDelta: 0.0922,
+                  longitudeDelta: 0.0421,
+                }}
+                title="Surat"
+                description="The city of Sun"
+                // image={currentLocationImage}
+              />
+            </MapView>
+          ) : (
+            <CustomContentLoader map />
+          )}
           <AlertButton loading={isLoading} reportCrimeData={reportCrimeData} />
         </Fragment>
       )}

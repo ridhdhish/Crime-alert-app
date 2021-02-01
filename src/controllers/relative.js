@@ -20,17 +20,33 @@ const addRelative = async (req, res) => {
   }
 
   try {
+    const totalRelatives = await Relative.find({ userId: req.user.id });
+    if (totalRelatives.length > 10) {
+      return sendResponse("You cannot add more than 10 relatives.", res, 401);
+    }
+    const relative = await Relative.findOne({
+      userId: req.user.id,
+      priority: +req.body.priority,
+    });
+    if (relative) {
+      return sendResponse(
+        `You have already relative name ${relative.firstname} with the priority ${req.body.priority}`,
+        res,
+        400
+      );
+    }
+
     const isRelativeExists = await Relative.findOne({
       mobileNumber: req.body.mobileNumber,
     });
     if (isRelativeExists) {
       return sendResponse(
         "Relative already exists with that mobile number",
-        req,
+        res,
         400
       );
     }
-
+    req.body.userId = req.user.id;
     const newRelative = new Relative(req.body);
     const user = await User.findOne({
       $or: [
