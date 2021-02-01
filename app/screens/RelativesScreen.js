@@ -32,7 +32,9 @@ const iconColors = ["orange", "green", "lightblue"];
 
 const RelativesScreen = (props) => {
   // Fetch relatives here
-  const relatives = useSelector((state) => state.relative.relatives);
+  const relatives = useSelector((state) =>
+    state.relative.relatives.sort((a, b) => +a.priority - +b.priority)
+  );
   const [leftPriority, setLeftPriority] = useState([]);
 
   useEffect(() => {
@@ -162,7 +164,7 @@ const RelativesScreen = (props) => {
           refreshing={isRefreshing}
         />
       }
-      contentContainerStyle={{ flex: 1 }}
+      contentContainerStyle={{ flexGrow: 1 }}
     >
       <View style={styles.container}>
         <View style={{ marginVertical: 20, borderRadius: 20, zIndex: -2 }}>
@@ -183,7 +185,11 @@ const RelativesScreen = (props) => {
                     },
                   }}
                 >
-                  <FontAwesome name="user" size={27} color="white" />
+                  <Text
+                    style={{ color: "white", fontSize: 20, fontWeight: "bold" }}
+                  >
+                    {relative.priority}
+                  </Text>
                 </View>
                 <View style={styles.cardInfo}>
                   <Text style={styles.cardName}>
@@ -335,7 +341,7 @@ const RelativesScreen = (props) => {
                                 // mode="dropdown"
                               >
                                 <Picker.Item
-                                  label="Select Priority"
+                                  label="Select Notification Priority"
                                   value="-1"
                                 />
                                 {leftPriority.map((priority) => (
