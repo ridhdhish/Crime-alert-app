@@ -69,6 +69,10 @@ const registerCrime = async (req, res) => {
       placeId: place.id,
     });
 
+    if (req.body.crimeData) {
+      crime.crimeData = req.body.crimeData;
+    }
+
     await crime.save();
 
     /**

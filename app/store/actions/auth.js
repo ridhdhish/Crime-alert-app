@@ -1,6 +1,7 @@
 import {
   AUTH_USER,
   LOGOUT,
+  REFRESH_USER_DATA,
   RELATIVE_ERROR,
   REPORT_CRIME_ERROR,
   TRY_AUTO_LOGIN,
@@ -10,6 +11,33 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import env from "../../environment";
 
 let timer;
+
+export const me = () => async (dispatch, getState) => {
+  try {
+    const response = await fetch(`${env.API_URL}/user/me`, {
+      headers: {
+        Authorization: `Bearer ${getState().auth.token}`,
+        Accepts: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message);
+    }
+    const oldData = await JSON.parse(await AsyncStorage.getItem("userData"));
+    AsyncStorage.setItem(
+      "userData",
+      JSON.stringify({ ...oldData, user: data.message.user })
+    );
+    dispatch({
+      type: REFRESH_USER_DATA,
+      payload: data.message.user,
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
 export const signup = ({
   email,

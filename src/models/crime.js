@@ -11,6 +11,9 @@ const CrimeSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
+    crimeData: {
+      type: String,
+    },
     crimeStatus: {
       level: {
         type: Number,
