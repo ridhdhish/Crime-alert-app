@@ -79,11 +79,15 @@ const registerCrime = async (req, res) => {
      * send message, mail, call to relative
      */
 
-    const relatives = await Relative.find({ userId });
+    let relatives = await Relative.find({ userId });
+    relatives = relatives.sort((a, b) => +a.priority - +b.priority);
+    let sendAlerts = 0;
     await Promise.all(
       relatives.map(async (rel) => {
-        await sendMail(rel.email, `Mail sent`);
-        if (rel.pushToken && Expo.isExpoPushToken(rel.pushToken)) {
+        if (sendAlerts >= 3) {
+          return rel;
+        } else if (rel.pushToken && Expo.isExpoPushToken(rel.pushToken)) {
+          await sendMail(rel.email, `Mail sent`);
           const expo = new Expo({ accessToken: process.env.EXPO_ACCESS_TOKEN });
           await expo.sendPushNotificationsAsync([
             {
@@ -95,8 +99,12 @@ const registerCrime = async (req, res) => {
               },
             },
           ]);
+          sendAlerts++;
+          return rel;
+        } else {
+          await sendMail(rel.email, `Mail sent`);
+          return rel;
         }
-        return rel;
       })
     );
     sendResponse(

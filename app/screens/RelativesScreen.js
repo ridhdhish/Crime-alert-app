@@ -59,7 +59,7 @@ const RelativesScreen = (props) => {
   const dispatch = useDispatch();
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [isFetching, setIsFetching] = useState(false);
+  const [isFetching, setIsFetching] = useState(true);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
