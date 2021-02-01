@@ -2,7 +2,6 @@ const { validationResult } = require("express-validator");
 const Crime = require("../models/crime");
 const Place = require("../models/place");
 const Relative = require("../models/relative");
-const User = require("../models/user");
 const sendResponse = require("../utils/sendResponse");
 const jwt = require("jsonwebtoken");
 const { sendMail } = require("../utils/sendMail");
@@ -74,50 +73,40 @@ const registerCrime = async (req, res) => {
 
     /**
      * @Todo
-     * Send notification to relative, bluetooth near by
+     * bluetooth near by
      * Send crime to police
-     * send message, mail, call to relative
+     * send message, call to relative
      */
 
     let relatives = await Relative.find({ userId });
     relatives = relatives.sort((a, b) => +a.priority - +b.priority);
-    let noSendPushNotificationAlerts = 0;
-    let noSendMailNotificationAlerts = 0;
+
+    const pushRelatives = relatives
+      .filter(
+        (relative) =>
+          relative.pushToken && Expo.isExpoPushToken(relative.pushToken)
+      )
+      .slice(0, 3);
+    const mailRelatives = relatives.slice(0, 3);
+
     await Promise.all(
-      relatives.map(async (rel) => {
-        if (sendAlerts >= 3) {
-          return rel;
-        } else if (
-          rel.pushToken &&
-          Expo.isExpoPushToken(rel.pushToken) &&
-          noSendPushNotificationAlerts < 3
-        ) {
-          await sendMail(rel.email, `Mail sent`);
-          const expo = new Expo({ accessToken: process.env.EXPO_ACCESS_TOKEN });
-          await expo.sendPushNotificationsAsync([
-            {
-              to: rel.pushToken,
-              sound: "default",
-              body: "Alert has been received",
-              data: {
-                username: "User's name who sent the alert",
-              },
+      pushRelatives.map(async (rel) => {
+        const expo = new Expo({ accessToken: process.env.EXPO_ACCESS_TOKEN });
+        await expo.sendPushNotificationsAsync([
+          {
+            to: rel.pushToken,
+            sound: "default",
+            body: "Alert has been received",
+            data: {
+              username: "User's name who sent the alert",
             },
-          ]);
-          noSendPushNotificationAlerts++;
-          return rel;
-        } else {
-          if (
-            noSendMailNotificationAlerts < 5 &&
-            noSendPushNotificationAlerts < 3
-          ) {
-            await sendMail(rel.email, `Mail sent`);
-            noSendMailNotificationAlerts++;
-            return rel;
-          }
-          return rel;
-        }
+          },
+        ]);
+        return rel;
       })
+    );
+    await Promise.all(
+      mailRelatives.map(async (rel) => await sendMail(rel.email))
     );
     sendResponse(
       {
