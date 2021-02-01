@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import ContentLoader, { Rect, Circle, Path } from "react-content-loader/native";
-import { View } from "react-native";
+import { View, Dimensions } from "react-native";
 
 const CustomContentLoader = (props) => {
   return (
@@ -8,7 +8,7 @@ const CustomContentLoader = (props) => {
       {!props.map ? (
         <ContentLoader
           height={100}
-          width={400}
+          width={350}
           viewBox="0 0 320 54"
           backgroundColor="#ddd"
           foregroundColor="#bbb"
@@ -27,13 +27,13 @@ const CustomContentLoader = (props) => {
           style={{
             flex: 1,
             justifyContent: "center",
-            marginHorizontal: 50,
+            marginHorizontal: Dimensions.get("window").width / 5,
           }}
         >
           <ContentLoader
             viewBox="0 0 800 400"
             height={400}
-            width={500}
+            width={Dimensions.get("window").width}
             backgroundColor="#ddd"
             foregroundColor="#bbb"
           >
