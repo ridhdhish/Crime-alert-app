@@ -37,6 +37,8 @@
     "mongoose": "^5.11.13",
     "morgan": "^1.10.0",
     "nodemailer": "^6.4.17",
+    "react-native-chart-kit": "^6.10.1",
+    "react-native-svg": "^12.1.0",
     "twilio": "^3.55.0",
     "uuid": "^8.3.2"
   },
