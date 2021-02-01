@@ -17,9 +17,9 @@ const HomeNavigator = () => {
         tabBarIcon: ({ focused }) => {
           let iconName;
           if (route.name === "Home") {
-            iconName = "map";
-          } else if (route.name === "Places") {
             iconName = "location";
+          } else if (route.name === "Places") {
+            iconName = "map";
           } else if (route.name === "Relatives") {
             iconName = "people";
           } else if (route.name === "Profile") {

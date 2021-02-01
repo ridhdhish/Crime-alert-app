@@ -63,10 +63,8 @@ const signUp = async (req, res) => {
     const token = generateToken(newUser.id, jwt);
     await newUser.save();
 
-    const secretToken = generateId();
-
     const userKeyValue = new KeyValueDB({
-      key: `${SECRET_TOKEN_PREFIX}${secretToken}`,
+      key: `${SECRET_TOKEN_PREFIX}${newUser.id}`,
       value: newUser,
     });
 
@@ -88,7 +86,7 @@ const signUp = async (req, res) => {
         pushToken: null,
       },
       token,
-      secretToken,
+      secretToken: newUser.id,
     });
   } catch (error) {
     sendResponse(error.message, res);
@@ -120,14 +118,21 @@ const login = async (req, res) => {
     //generate token
     const token = generateToken(user.id, jwt);
 
-    const secretToken = generateId();
-
-    const userKeyValue = new KeyValueDB({
-      key: `${SECRET_TOKEN_PREFIX}${secretToken}`,
-      value: user,
+    const isExist = await KeyValueDB.findOne({
+      key: `${SECRET_TOKEN_PREFIX}${user.id}`,
     });
 
-    await userKeyValue.save();
+    if (isExist) {
+      isExist.value = user;
+      await isExist.save();
+    } else {
+      const userKeyValue = new KeyValueDB({
+        key: `${SECRET_TOKEN_PREFIX}${user.id}`,
+        value: user,
+      });
+
+      await userKeyValue.save();
+    }
 
     return res.status(200).json({
       user: {
@@ -136,7 +141,7 @@ const login = async (req, res) => {
         pushToken: null,
       },
       token,
-      secretToken,
+      secretToken: user.id,
     });
   } catch (error) {
     sendResponse(error.message, res);
