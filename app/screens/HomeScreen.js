@@ -47,6 +47,8 @@ const HomeScreen = (props) => {
     try {
       const crimeData = await getCrimeData();
       dispatch(reportCrime({ ...crimeData, crimeData: crimeDataText }));
+      setCrimeDataText("");
+      setAddCrimeData(false);
       setCurrentLocation({
         latitude: crimeData.location.lat,
         longitude: crimeData.location.long,
@@ -189,6 +191,11 @@ const HomeScreen = (props) => {
                 title="Surat"
                 description="The city of Sun"
                 // image={currentLocationImage}
+              />
+              <Circle
+                center={currentLocation}
+                radius={500}
+                fillColor={"rgba(255, 0, 0, 0.5)"}
               />
             </MapView>
           ) : (
