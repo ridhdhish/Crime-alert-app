@@ -8,7 +8,6 @@
 - [How To Run App and API](#How_To_Run)
 - [Databases](#Databases)
 - [Env Structure](#env)
-- [App basic Design](#App_design)
 
 # Crime-alert-app
 
@@ -108,11 +107,6 @@ $ npm start
 - EMAIL_ID = xxxxx
 - EMAIL_PASSWORD = xxxxxxx
 - EXPO_ACCESS_TOKEN = xxxxxxxxx
-
-## App_Design
-
-- Updating...
-  ![alt text](/CrimeAppFlowImage.png)
 
 ## Improvements
 

@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { ActivityIndicator } from "react-native";
 import { colors } from "../colors";
 import { useDispatch } from "react-redux";
-import { authUser, tryAutoLogin } from "../store/actions/auth";
+import { authUser, me, tryAutoLogin } from "../store/actions/auth";
 import LogoText from "../components/LogoText";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -33,6 +33,7 @@ const LoadingScreen = () => {
       const expireIn =
         new Date(expirationTime).getTime() - new Date().getTime();
       dispatch(authUser({ user, token, expirationTime: expireIn }));
+      dispatch(me());
     };
     tryLogin();
   }, []);

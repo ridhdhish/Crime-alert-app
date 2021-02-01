@@ -11,6 +11,12 @@ const FloatingButton = (props) => {
           position: "absolute",
           borderRadius: 100,
           zIndex: 1000,
+          width: 50,
+          height: 50,
+          padding: 10,
+          backgroundColor: colors.backgroundPrimary,
+          justifyContent: "center",
+          alignItems: "center",
         },
         ...props.style,
       }}
