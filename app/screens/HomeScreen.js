@@ -23,11 +23,14 @@ import { TextInput } from "react-native-gesture-handler";
 
 const HomeScreen = (props) => {
   const auth = useSelector((state) => state.auth);
+  const crimePlaces = useSelector((state) => state.crime.crimePlaces);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [currentLocation, setCurrentLocation] = useState(null);
   const [addCrimeData, setAddCrimeData] = useState(false);
   const [crimeDataText, setCrimeDataText] = useState("");
+
+  console.log(crimePlaces);
 
   useNotification();
 
