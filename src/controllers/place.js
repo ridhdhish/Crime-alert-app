@@ -66,8 +66,8 @@ const getCurrentLocationAroundPlaces = async (req, res) => {
       places = await Place.aggregate([
         {
           $match: {
-            "location.lat": { $lte: +lat + 0.03, $gte: +lat - 0.03 },
-            "location.long": { $lte: +long + 0.03, $gte: +long - 0.03 },
+            "location.lat": { $lte: +lat + 0.015, $gte: +lat - 0.015 },
+            "location.long": { $lte: +long + 0.015, $gte: +long - 0.015 },
           },
         },
       ]);

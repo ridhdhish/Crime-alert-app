@@ -10,7 +10,10 @@ const initState = {
   crime: null,
   place: null,
   history: [],
-  crimePlaces: [],
+  crimePlaces: {
+    totalCrimes: 0,
+    places: [],
+  },
 };
 
 export const crimeReducer = (state = initState, action) => {
@@ -29,11 +32,18 @@ export const crimeReducer = (state = initState, action) => {
         crime: null,
         place: null,
         history: [],
+        crimePlaces: {
+          totalCrimes: 0,
+          places: [],
+        },
       };
     case GET_AROUND_DATA:
       return {
         ...state,
-        crimePlaces: payload,
+        crimePlaces: {
+          totalCrimes: payload.totalCrimes,
+          places: payload.places,
+        },
       };
     case REPORT_CRIME_ERROR:
       return {
@@ -41,6 +51,10 @@ export const crimeReducer = (state = initState, action) => {
         crime: null,
         place: null,
         history: [],
+        crimePlaces: {
+          totalCrimes: 0,
+          places: [],
+        },
       };
     default:
       return state;

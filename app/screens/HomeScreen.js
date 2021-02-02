@@ -20,6 +20,7 @@ import { useNotification } from "../hooks/useNotification";
 import currentLocationImage from "../assets/images/currentLocation.png";
 import CustomContentLoader from "../components/CustomContentLoader";
 import { TextInput } from "react-native-gesture-handler";
+import { getCriticalColor } from "../utils/getCriticalColor";
 
 const HomeScreen = (props) => {
   const auth = useSelector((state) => state.auth);
@@ -191,6 +192,7 @@ const HomeScreen = (props) => {
               }}
               minZoomLevel={2}
               maxZoomLevel={12}
+              mapType="terrain"
               zoomEnabled
               onPress={() => Keyboard.dismiss()}
             >
@@ -208,7 +210,10 @@ const HomeScreen = (props) => {
               <Circle
                 center={currentLocation}
                 radius={5000}
-                fillColor={"rgba(255, 0, 0, 0.5)"}
+                fillColor={getCriticalColor(
+                  crimePlaces.places.length,
+                  crimePlaces.totalCrimes
+                )}
                 strokeWidth={0}
               />
             </MapView>

@@ -66,7 +66,10 @@ export const getAroundData = ({ lat, long, city }) => async (
     }
     dispatch({
       type: GET_AROUND_DATA,
-      payload: data.message,
+      payload: {
+        places: data.message.places,
+        totalCrimes: data.message.totalCrimes,
+      },
     });
   } catch (error) {
     console.log(error.message);
