@@ -199,6 +199,7 @@ const HomeScreen = (props) => {
                 center={currentLocation}
                 radius={500}
                 fillColor={"rgba(255, 0, 0, 0.5)"}
+                strokeWidth={0}
               />
             </MapView>
           ) : (
