@@ -9,6 +9,9 @@
 //   textAccent: "#abb0c1",
 //   danger: "#db4a39",
 //   facebookBlue: "#4267B2",
+//   safe: "#00ff00",
+//   moderate: "#ffff00",
+//   critical: "#ff0000",
 // };
 export const colors = {
   backgroundPrimary: "#403527",
@@ -22,4 +25,7 @@ export const colors = {
   textAccent: "#abb0c1",
   danger: "#db4a39",
   facebookBlue: "#4267B2",
+  safe: "#00ff00",
+  moderate: "#ffff00",
+  critical: "#ff0000",
 };

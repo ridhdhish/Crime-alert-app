@@ -170,7 +170,7 @@ const HomeScreen = (props) => {
               }}
             >
               <TextInput
-                placeholder="Crime Data"
+                placeholder="Crime Detail"
                 placeholderTextColor="#ddd"
                 style={{ color: colors.textSecondary }}
                 autoFocus
@@ -190,7 +190,7 @@ const HomeScreen = (props) => {
                 longitudeDelta: 0.0421,
               }}
               minZoomLevel={2}
-              maxZoomLevel={20}
+              maxZoomLevel={12}
               zoomEnabled
               onPress={() => Keyboard.dismiss()}
             >
@@ -207,7 +207,7 @@ const HomeScreen = (props) => {
               />
               <Circle
                 center={currentLocation}
-                radius={500}
+                radius={5000}
                 fillColor={"rgba(255, 0, 0, 0.5)"}
                 strokeWidth={0}
               />

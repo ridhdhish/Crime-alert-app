@@ -58,9 +58,9 @@ const registerCrime = async (req, res) => {
     const { location, city, state, address } = req.body;
     const place = new Place({
       location,
-      city: city.toLowerCase(),
-      state: state.toLowerCase(),
-      address: address.toLowerCase(),
+      city: city ? city.toLowerCase() : "",
+      state: state ? state.toLowerCase() : "",
+      address: address ? address.toLowerCase() : "",
     });
     await place.save();
 
