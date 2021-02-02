@@ -7,10 +7,9 @@ import Icon from "react-native-vector-icons/Feather";
 import { LineChart, BarChart } from "react-native-chart-kit";
 import { colors } from "../colors/index";
 
-import { LinearGradient } from "expo-linear-gradient";
+import { data } from "../utils/historyCrime";
 
 const PlacesScreen = () => {
-  const [state, setState] = useState({ country: "uk" });
   const [leftPriority, setLeftPriority] = useState([
     "Surat",
     "Vadodara",
@@ -18,7 +17,9 @@ const PlacesScreen = () => {
     "Rajkot",
     "Mumbai",
   ]);
-  const [selectedValue, setSelectedValue] = useState("Select City");
+
+  const [selectedValue, setSelectedValue] = useState("Surat");
+  console.log(data[selectedValue.toLowerCase()]);
   return (
     <View>
       <View
@@ -50,72 +51,61 @@ const PlacesScreen = () => {
             }}
             // mode="dropdown"
           >
-            <Picker.Item label="Select City" value="-1" />
             {leftPriority.map((priority) => (
               <Picker.Item label={priority} value={priority} key={priority} />
             ))}
           </Picker>
         </View>
-
-        <LineChart
-          data={{
-            labels: [
-              "J",
-              "F",
-              "M",
-              "A",
-              "M",
-              "J",
-              "J",
-              "A",
-              "S",
-              "O",
-              "N",
-              "D",
-            ],
-            datasets: [
-              {
-                data: [
-                  Math.random() * 100,
-                  Math.random() * 100,
-                  Math.random() * 100,
-                  Math.random() * 100,
-                  Math.random() * 100,
-                  Math.random() * 100,
-                  Math.random() * 100,
-                  Math.random() * 100,
-                  Math.random() * 100,
-                  Math.random() * 100,
-                  Math.random() * 100,
-                  Math.random() * 100,
-                ],
+        {data[selectedValue.toLowerCase()] ? (
+          <LineChart
+            data={{
+              labels: [
+                "J",
+                "F",
+                "M",
+                "A",
+                "M",
+                "J",
+                "J",
+                "A",
+                "S",
+                "O",
+                "N",
+                "D",
+              ],
+              datasets: [
+                {
+                  data: data[selectedValue.toLowerCase()],
+                },
+              ],
+            }}
+            width={Dimensions.get("window").width}
+            height={280}
+            fromZero={true}
+            yAxisLabel="Crime"
+            yAxisInterval={"5"}
+            chartConfig={{
+              backgroundColor: "#fb8c00",
+              backgroundGradientFrom: "#fb8c00",
+              backgroundGradientTo: "#fb8c00",
+              decimalPlaces: 0, // optional, defaults to 2dp
+              color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+              labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+              propsForDots: {
+                r: "8",
+                strokeWidth: "2",
+                stroke: "#ffa726",
               },
-            ],
-          }}
-          width={Dimensions.get("window").width}
-          height={280}
-          yAxisLabel="$"
-          yAxisSuffix="k"
-          yAxisInterval={1}
-          chartConfig={{
-            backgroundColor: "#fb8c00",
-            backgroundGradientFrom: "#fb8c00",
-            backgroundGradientTo: "#fb8c00",
-            decimalPlaces: 2, // optional, defaults to 2dp
-            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            propsForDots: {
-              r: "6",
-              strokeWidth: "2",
-              stroke: "#ffa726",
-            },
-          }}
-          bezier
-          style={{
-            marginVertical: 18,
-            alignItems: "center",
-          }}
-        />
+            }}
+            bezier
+            style={{
+              marginVertical: 18,
+              alignItems: "center",
+            }}
+          />
+        ) : (
+          []
+        )}
       </View>
       <View
         style={{
