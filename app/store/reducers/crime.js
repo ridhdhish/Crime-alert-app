@@ -1,4 +1,9 @@
-import { DO_BACK_SYNC, REPORT_CRIME, REPORT_CRIME_ERROR } from "../types";
+import {
+  DO_BACK_SYNC,
+  GET_AROUND_DATA,
+  REPORT_CRIME,
+  REPORT_CRIME_ERROR,
+} from "../types";
 // import { crimePlacesData } from "../../utils/crimeDummyData";
 
 const initState = {
@@ -24,6 +29,11 @@ export const crimeReducer = (state = initState, action) => {
         crime: null,
         place: null,
         history: [],
+      };
+    case GET_AROUND_DATA:
+      return {
+        ...state,
+        crimePlaces: payload,
       };
     case REPORT_CRIME_ERROR:
       return {

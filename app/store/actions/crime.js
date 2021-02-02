@@ -43,4 +43,32 @@ export const reportCrimeError = (crimeData) => async (dispatch) => {
   });
 };
 
-export const getAroundData = () => async (dispatch) => {};
+export const getAroundData = ({ lat, long, city }) => async (
+  dispatch,
+  getState
+) => {
+  try {
+    const response = await fetch(
+      `${env.API_URL}/place/around?${lat ? "lat=" + lat : ""}${
+        long ? "&long=" + long : ""
+      }${city ? "city=" + city : ""}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Accepts: "application/json",
+          Authorization: `Bearer ${getState().auth.token}`,
+        },
+      }
+    );
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message);
+    }
+    dispatch({
+      type: GET_AROUND_DATA,
+      payload: data.message,
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
