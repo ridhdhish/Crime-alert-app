@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, Dimensions } from "react-native";
+import DropDownPicker from "react-native-dropdown-picker";
+import Icon from "react-native-vector-icons/Feather";
 
 import { LineChart, BarChart } from "react-native-chart-kit";
 
 const PlacesScreen = () => {
+  const [state, setState] = useState({ country: "uk" });
   return (
     <View>
-      <Text>Places</Text>
-      <BarChart
+      <Text style={{ fontSize: 20, marginHorizontal: 20, marginVertical: 10 }}>
+        Citylight
+      </Text>
+      <LineChart
         data={{
           labels: ["January", "February", "March", "April", "May"],
           datasets: [
@@ -46,10 +51,11 @@ const PlacesScreen = () => {
         bezier
         style={{
           marginVertical: 8,
-          marginLeft: 10,
           borderRadius: 16,
+          alignItems: "center",
         }}
       />
+      <Text style={{ textAlign: "center", fontSize: 18 }}>Crime per Month</Text>
     </View>
   );
 };
