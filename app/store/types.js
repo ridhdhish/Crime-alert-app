@@ -9,6 +9,7 @@ export const UPDATE_USER = "UPDATE_USER";
 export const REPORT_CRIME = "REPORT_CRIME";
 export const DO_BACK_SYNC = "DO_BACK_SYNC";
 export const REPORT_CRIME_ERROR = "REPORT_CRIME_ERROR";
+export const GET_AROUND_DATA = "GET_AROUND_DATA";
 
 export const RELATIVE_ERROR = "RELATIVE_ERROR";
 export const ADD_RELATIVE = "ADD_RELATIVE";

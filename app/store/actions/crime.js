@@ -1,4 +1,4 @@
-import { DO_BACK_SYNC, REPORT_CRIME } from "../types";
+import { DO_BACK_SYNC, REPORT_CRIME, GET_AROUND_DATA } from "../types";
 import env from "../../environment";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -42,3 +42,5 @@ export const reportCrimeError = (crimeData) => async (dispatch) => {
     payload: crimeData,
   });
 };
+
+export const getAroundData = () => async (dispatch) => {};
