@@ -10,6 +10,7 @@ import {
   View,
   ScrollView,
   Alert,
+  RefreshControl,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { colors } from "../colors";
@@ -31,7 +32,9 @@ const iconColors = ["orange", "green", "lightblue"];
 
 const RelativesScreen = (props) => {
   // Fetch relatives here
-  const relatives = useSelector((state) => state.relative.relatives);
+  const relatives = useSelector((state) =>
+    state.relative.relatives.sort((a, b) => +a.priority - +b.priority)
+  );
   const [leftPriority, setLeftPriority] = useState([]);
 
   useEffect(() => {
@@ -56,9 +59,10 @@ const RelativesScreen = (props) => {
   const dispatch = useDispatch();
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [isFetching, setIsFetching] = useState(false);
+  const [isFetching, setIsFetching] = useState(true);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [editData, setEditData] = useState({});
   const [error, setError] = useState("");
@@ -81,27 +85,39 @@ const RelativesScreen = (props) => {
   };
 
   useEffect(() => {
-    setIsFetching(true);
     props.navigation.setOptions({
-      headerRight: () => (
-        <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-          <Item
-            iconName={Platform.OS === "ios" ? "ios-add" : "md-add"}
-            color={colors.textSecondary}
-            onPress={() => {
-              setModalVisible(true);
-              setIsEdit(false);
-            }}
-          />
-        </HeaderButtons>
-      ),
+      headerRight: () =>
+        leftPriority.length > 0 ? (
+          <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+            <Item
+              iconName={Platform.OS === "ios" ? "ios-add" : "md-add"}
+              color={colors.textSecondary}
+              onPress={() => {
+                setModalVisible(true);
+                setIsEdit(false);
+              }}
+            />
+          </HeaderButtons>
+        ) : (
+          <Fragment></Fragment>
+        ),
     });
+  }, [leftPriority]);
+
+  useEffect(() => {
+    setIsFetching(true);
     async function getData() {
       await dispatch(getAllRelative());
       setIsFetching(false);
     }
     getData();
   }, []);
+
+  const getAllRelativeData = async () => {
+    setIsRefreshing(true);
+    await dispatch(getAllRelative());
+    setIsRefreshing(false);
+  };
 
   useEffect(() => {
     setIsDataValid({
@@ -141,260 +157,279 @@ const RelativesScreen = (props) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={{ marginTop: 20, borderRadius: 20, zIndex: -2 }}>
-        {!isLoading && isFetching ? (
-          <Fragment>
-            <CustomContentLoader />
-            <CustomContentLoader />
-            <CustomContentLoader />
-          </Fragment>
-        ) : relatives.length ? (
-          relatives.map((relative, index) => (
-            <View style={styles.card} key={relative._id}>
-              <View
-                style={{
-                  ...styles.cardIcon,
-                  ...{
-                    backgroundColor: iconColors[index % iconColors.length],
-                  },
-                }}
-              >
-                <FontAwesome name="user" size={27} color="white" />
-              </View>
-              <View style={styles.cardInfo}>
-                <Text style={styles.cardName}>
-                  {relative.firstname} {relative.lastname}
-                </Text>
-                <Text
+    <ScrollView
+      refreshControl={
+        <RefreshControl
+          onRefresh={getAllRelativeData}
+          refreshing={isRefreshing}
+        />
+      }
+      contentContainerStyle={{ flexGrow: 1 }}
+    >
+      <View style={styles.container}>
+        <View style={{ marginVertical: 20, borderRadius: 20, zIndex: -2 }}>
+          {!isLoading && isFetching ? (
+            <Fragment>
+              <CustomContentLoader />
+              <CustomContentLoader />
+              <CustomContentLoader />
+            </Fragment>
+          ) : relatives.length ? (
+            relatives.map((relative, index) => (
+              <View style={styles.card} key={relative._id}>
+                <View
                   style={{
-                    fontSize: 12,
-                    color: "#b0b0b0",
-                    fontWeight: "bold",
-                    marginBottom: 3,
+                    ...styles.cardIcon,
+                    ...{
+                      backgroundColor: iconColors[index % iconColors.length],
+                    },
                   }}
                 >
-                  {relative.mobileNumber}
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 11,
-                    color: "#b0b0b0",
-                    fontWeight: "bold",
-                    marginBottom: 3,
-                  }}
-                >
-                  {relative.email}
-                </Text>
+                  <Text
+                    style={{ color: "white", fontSize: 20, fontWeight: "bold" }}
+                  >
+                    {relative.priority}
+                  </Text>
+                </View>
+                <View style={styles.cardInfo}>
+                  <Text style={styles.cardName}>
+                    {relative.firstname} {relative.lastname}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      color: "#b0b0b0",
+                      fontWeight: "bold",
+                      marginBottom: 3,
+                    }}
+                  >
+                    {relative.mobileNumber}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 11,
+                      color: "#b0b0b0",
+                      fontWeight: "bold",
+                      marginBottom: 3,
+                    }}
+                  >
+                    {relative.email}
+                  </Text>
+                </View>
+                <View style={{ marginLeft: 40 }}>
+                  <CustomTouchable
+                    onPress={() => {
+                      setIsEdit(() => true);
+                      setModalVisible(true);
+                      onRelativeEdit(relative._id);
+                    }}
+                  >
+                    <MaterialIcons
+                      style={{ marginBottom: 10 }}
+                      name="edit"
+                      size={24}
+                      color="black"
+                    />
+                  </CustomTouchable>
+                  <CustomTouchable
+                    onPress={() => {
+                      deleteRelativeHandler(relative._id);
+                    }}
+                  >
+                    <MaterialIcons name="delete" size={24} color="red" />
+                  </CustomTouchable>
+                </View>
               </View>
-              <View style={{ marginLeft: 40 }}>
-                <CustomTouchable
-                  onPress={() => {
-                    setIsEdit(() => true);
-                    setModalVisible(true);
-                    onRelativeEdit(relative._id);
-                  }}
-                >
-                  <MaterialIcons
-                    style={{ marginBottom: 10 }}
-                    name="edit"
-                    size={24}
-                    color="black"
-                  />
-                </CustomTouchable>
-                <CustomTouchable
-                  onPress={() => {
-                    deleteRelativeHandler(relative._id);
-                  }}
-                >
-                  <MaterialIcons name="delete" size={24} color="red" />
-                </CustomTouchable>
-              </View>
+            ))
+          ) : (
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                width: "90%",
+              }}
+            >
+              <Text style={{ textAlign: "center", fontSize: 16 }}>
+                You haven't added any relatives, You can add max{" "}
+                <Text style={{ fontSize: 20, fontWeight: "bold" }}>10</Text>{" "}
+                relatives by pressing{" "}
+                <Text style={{ fontSize: 20, fontWeight: "bold" }}>+</Text>
+              </Text>
             </View>
-          ))
+          )}
+        </View>
+
+        {isLoading ? (
+          <CustomContentLoader />
         ) : (
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              width: "90%",
+          <BottomPopup
+            modalVisible={modalVisible}
+            closeModal={() => {
+              setIsFormValid(() => false);
+              setModalVisible(false);
+              setIsEdit(false);
             }}
           >
-            <Text style={{ textAlign: "center", fontSize: 16 }}>
-              You haven't added any relatives, You can add max{" "}
-              <Text style={{ fontSize: 20, fontWeight: "bold" }}>10</Text>{" "}
-              relatives by pressing{" "}
-              <Text style={{ fontSize: 20, fontWeight: "bold" }}>+</Text>
-            </Text>
-          </View>
+            <Pressable
+              onPress={() => {
+                Keyboard.dismiss();
+              }}
+            >
+              <ScrollView>
+                <View style={styles.centeredView}>
+                  <View style={{ padding: 10, flexDirection: "row" }}>
+                    <Text style={{ fontSize: 24, fontWeight: "bold" }}>
+                      {isEdit ? "Update Friend" : "New Friend"}
+                    </Text>
+                    <TouchableOpacity
+                      style={{
+                        position: "absolute",
+                        left: "65%",
+                        marginTop: 4,
+                      }}
+                      onPress={() => {
+                        setModalVisible(false);
+                      }}
+                    ></TouchableOpacity>
+                  </View>
+
+                  <Formik
+                    initialValues={{
+                      firstname: isEdit ? editData.firstname : "",
+                      lastname: isEdit ? editData.lastname : "",
+                      mobileNumber: isEdit ? editData.mobileNumber + "" : "",
+                      email: isEdit ? editData.email : "",
+                      priority: isEdit ? editData.priority : "-1",
+                    }}
+                    onSubmit={(values) => {
+                      isEdit
+                        ? editRelativeHandler(values)
+                        : (async function () {
+                            setError(null);
+                            setIsLoading(true);
+                            try {
+                              await dispatch(addRelative(values));
+                            } catch (error) {
+                              Alert.alert("Relative Error", error.message, [
+                                { text: "Okay" },
+                              ]);
+                            } finally {
+                              setIsLoading(false);
+                            }
+                          })();
+                    }}
+                  >
+                    {({ values, handleChange, handleSubmit }) => {
+                      return (
+                        <View>
+                          {!isEdit && (
+                            <View
+                              style={{
+                                height: 50,
+                                width: 300,
+                                borderColor: colors.textAccent,
+                                borderWidth: 2,
+                                borderRadius: 5,
+                                overflow: "hidden",
+                                marginBottom: 16,
+                              }}
+                            >
+                              <Picker
+                                selectedValue={values.priority}
+                                onValueChange={handleChange("priority")}
+                                dropdownIconColor={colors.backgroundSecondary}
+                                // mode="dropdown"
+                              >
+                                <Picker.Item
+                                  label="Select Notification Priority"
+                                  value="-1"
+                                />
+                                {leftPriority.map((priority) => (
+                                  <Picker.Item
+                                    label={priority}
+                                    value={priority}
+                                    key={priority}
+                                  />
+                                ))}
+                              </Picker>
+                            </View>
+                          )}
+
+                          <Input
+                            name="firstname"
+                            value={values.firstname}
+                            setValid={setValid}
+                            config={{ placeholder: "Firstname" }}
+                            style={styles.modalFormInput}
+                            handleChange={handleChange("firstname")}
+                            styleError={styles.error}
+                            config={{
+                              placeholder: "Firstname*",
+                            }}
+                          />
+                          <Input
+                            name="lastname"
+                            value={values.lastname}
+                            setValid={setValid}
+                            config={{ placeholder: "Lastname" }}
+                            style={styles.modalFormInput}
+                            handleChange={handleChange("lastname")}
+                            disableError={"false"}
+                          />
+                          <Input
+                            name="mobileNumber"
+                            value={values.mobileNumber}
+                            setValid={setValid}
+                            config={{
+                              placeholder: "Mobile Number*",
+                              keyboardType: "number-pad",
+                            }}
+                            style={styles.modalFormInput}
+                            handleChange={handleChange("mobileNumber")}
+                            styleError={styles.error}
+                          />
+                          <Input
+                            name="email"
+                            value={values.email}
+                            setValid={setValid}
+                            config={{ placeholder: "Email" }}
+                            style={styles.modalFormInput}
+                            handleChange={handleChange("email")}
+                            disableError={"false"}
+                          />
+
+                          <TouchableOpacity
+                            activeOpacity={isFormValid ? 0.5 : 1}
+                            style={{
+                              ...styles.openButton,
+                              backgroundColor: isFormValid
+                                ? "#2196F3"
+                                : "#7fc4fa",
+                            }}
+                            onPress={
+                              isFormValid
+                                ? () => {
+                                    setModalVisible(() => false);
+                                    handleSubmit();
+                                  }
+                                : () => {}
+                            }
+                          >
+                            <Text style={styles.textStyle}>
+                              {isEdit ? "Edit Friend" : "Add Friend"}
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
+                      );
+                    }}
+                  </Formik>
+                </View>
+              </ScrollView>
+            </Pressable>
+          </BottomPopup>
         )}
       </View>
-
-      {isLoading ? (
-        <CustomContentLoader />
-      ) : (
-        <BottomPopup
-          modalVisible={modalVisible}
-          closeModal={() => {
-            setIsFormValid(() => false);
-            setModalVisible(false);
-            setIsEdit(false);
-          }}
-        >
-          <Pressable
-            onPress={() => {
-              Keyboard.dismiss();
-            }}
-          >
-            <ScrollView>
-              <View style={styles.centeredView}>
-                <View style={{ padding: 10, flexDirection: "row" }}>
-                  <Text style={{ fontSize: 24, fontWeight: "bold" }}>
-                    {isEdit ? "Update Friend" : "New Friend"}
-                  </Text>
-                  <TouchableOpacity
-                    style={{
-                      position: "absolute",
-                      left: "65%",
-                      marginTop: 4,
-                    }}
-                    onPress={() => {
-                      setModalVisible(false);
-                    }}
-                  ></TouchableOpacity>
-                </View>
-
-                <Formik
-                  initialValues={{
-                    firstname: isEdit ? editData.firstname : "",
-                    lastname: isEdit ? editData.lastname : "",
-                    mobileNumber: isEdit ? editData.mobileNumber + "" : "",
-                    email: isEdit ? editData.email : "",
-                    priority: isEdit ? editData.priority : "-1",
-                  }}
-                  onSubmit={(values) => {
-                    isEdit
-                      ? editRelativeHandler(values)
-                      : (async function () {
-                          setError(null);
-                          setIsLoading(true);
-                          try {
-                            await dispatch(addRelative(values));
-                          } catch (error) {
-                            Alert.alert("Relative Error", error.message, [
-                              { text: "Okay" },
-                            ]);
-                          } finally {
-                            setIsLoading(false);
-                          }
-                        })();
-                  }}
-                >
-                  {({ values, handleChange, handleSubmit }) => {
-                    return (
-                      <View>
-                        <View
-                          style={{
-                            height: 50,
-                            width: 300,
-                            borderColor: colors.textAccent,
-                            borderWidth: 2,
-                            borderRadius: 5,
-                            overflow: "hidden",
-                            marginBottom: 16,
-                          }}
-                        >
-                          <Picker
-                            selectedValue={values.priority}
-                            onValueChange={handleChange("priority")}
-                            dropdownIconColor={colors.backgroundSecondary}
-                            // mode="dropdown"
-                          >
-                            <Picker.Item label="Select Priority" value="-1" />
-                            {leftPriority.map((priority) => (
-                              <Picker.Item
-                                label={priority}
-                                value={priority}
-                                key={priority}
-                              />
-                            ))}
-                          </Picker>
-                        </View>
-
-                        <Input
-                          name="firstname"
-                          value={values.firstname}
-                          setValid={setValid}
-                          config={{ placeholder: "Firstname" }}
-                          style={styles.modalFormInput}
-                          handleChange={handleChange("firstname")}
-                          styleError={styles.error}
-                          config={{
-                            placeholder: "Firstname*",
-                          }}
-                        />
-                        <Input
-                          name="lastname"
-                          value={values.lastname}
-                          setValid={setValid}
-                          config={{ placeholder: "Lastname" }}
-                          style={styles.modalFormInput}
-                          handleChange={handleChange("lastname")}
-                          disableError={"false"}
-                        />
-                        <Input
-                          name="mobileNumber"
-                          value={values.mobileNumber}
-                          setValid={setValid}
-                          config={{
-                            placeholder: "Mobile Number*",
-                            keyboardType: "number-pad",
-                          }}
-                          style={styles.modalFormInput}
-                          handleChange={handleChange("mobileNumber")}
-                          styleError={styles.error}
-                        />
-                        <Input
-                          name="email"
-                          value={values.email}
-                          setValid={setValid}
-                          config={{ placeholder: "Email" }}
-                          style={styles.modalFormInput}
-                          handleChange={handleChange("email")}
-                          disableError={"false"}
-                        />
-
-                        <TouchableOpacity
-                          activeOpacity={isFormValid ? 0.5 : 1}
-                          style={{
-                            ...styles.openButton,
-                            backgroundColor: isFormValid
-                              ? "#2196F3"
-                              : "#7fc4fa",
-                          }}
-                          onPress={
-                            isFormValid
-                              ? () => {
-                                  setModalVisible(() => false);
-                                  handleSubmit();
-                                }
-                              : () => {}
-                          }
-                        >
-                          <Text style={styles.textStyle}>
-                            {isEdit ? "Edit Friend" : "Add Friend"}
-                          </Text>
-                        </TouchableOpacity>
-                      </View>
-                    );
-                  }}
-                </Formik>
-              </View>
-            </ScrollView>
-          </Pressable>
-        </BottomPopup>
-      )}
-    </View>
+    </ScrollView>
   );
 };
 

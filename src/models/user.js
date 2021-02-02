@@ -31,6 +31,20 @@ const UserSchema = new mongoose.Schema(
     pushToken: {
       type: String,
     },
+    recentAlerts: [
+      {
+        isSeen: {
+          type: Boolean,
+          default: false,
+        },
+        crimeId: {
+          type: mongoose.Schema.Types.ObjectId,
+        },
+        userId: {
+          type: mongoose.Schema.Types.ObjectId,
+        },
+      },
+    ],
   },
   {
     timestamps: true,
