@@ -9,6 +9,7 @@ import { crimeReducer } from "./store/reducers/crime";
 import { relativeReducer } from "./store/reducers/relative";
 import * as Permissions from "expo-permissions";
 import * as Notifications from "expo-notifications";
+import * as Network from "expo-network";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 Notifications.setNotificationHandler({
@@ -19,6 +20,8 @@ Notifications.setNotificationHandler({
     };
   },
 });
+
+// Network.getNetworkStateAsync().then((state) => console.log(state));
 
 const rootReducer = combineReducers({
   auth: authReducer,

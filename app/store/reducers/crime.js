@@ -1,9 +1,11 @@
+import { crimePlacesData } from "../../utils/crimeDummyData";
 import { DO_BACK_SYNC, REPORT_CRIME, REPORT_CRIME_ERROR } from "../types";
 
 const initState = {
   crime: null,
   place: null,
   history: [],
+  crimePlaces: crimePlacesData,
 };
 
 export const crimeReducer = (state = initState, action) => {

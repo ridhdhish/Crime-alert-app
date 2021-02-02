@@ -12,7 +12,6 @@ const relativeSchema = new mongoose.Schema(
     mobileNumber: {
       type: Number,
       required: true,
-      unique: true,
     },
     email: {
       type: String,
