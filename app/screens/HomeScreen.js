@@ -11,7 +11,7 @@ import MapView, { Marker, Circle } from "react-native-maps";
 import { useSelector, useDispatch } from "react-redux";
 import { colors } from "../colors";
 import FloatingButton from "../components/FloatingButton";
-import { reportCrime } from "../store/actions/crime";
+import { getAroundData, reportCrime } from "../store/actions/crime";
 import { Ionicons } from "@expo/vector-icons";
 import { getCrimeData } from "../utils/getCrimeData";
 import { sendNotification } from "../utils/sendNotification";
@@ -30,8 +30,6 @@ const HomeScreen = (props) => {
   const [addCrimeData, setAddCrimeData] = useState(false);
   const [crimeDataText, setCrimeDataText] = useState("");
 
-  console.log(crimePlaces);
-
   useNotification();
 
   useEffect(() => {
@@ -44,6 +42,17 @@ const HomeScreen = (props) => {
     }
     setLocation();
   }, []);
+
+  useEffect(() => {
+    if (currentLocation) {
+      dispatch(
+        getAroundData({
+          lat: currentLocation.latitude,
+          long: currentLocation.longitude,
+        })
+      );
+    }
+  }, [currentLocation]);
 
   const reportCrimeData = async () => {
     setIsLoading(true);
@@ -186,6 +195,7 @@ const HomeScreen = (props) => {
               onPress={() => Keyboard.dismiss()}
             >
               <Marker
+                draggable
                 coordinate={{
                   ...currentLocation,
                   latitudeDelta: 0.0922,
