@@ -4,7 +4,7 @@ const { getDistanceFromLatLonInKm } = require("../utils/getLatLongDistance");
 const { validationResult } = require("express-validator");
 
 /**
- * This will return all places that are registered with crime
+ * This will query all places that are registered with crime
  * Improve this according to user location
  */
 const getAllPlaces = async (req, res) => {
@@ -40,6 +40,38 @@ const getAllPlaces = async (req, res) => {
       res,
       200
     );
+  } catch (error) {
+    sendResponse(error.message, res);
+  }
+};
+
+const getCurrentLocationAroundPlaces = async (req, res) => {
+  const { city, lat, long } = req.query;
+
+  try {
+    let places;
+    if (city) {
+      places = await Place.find({
+        $or: [
+          { city },
+          { city: city.toUpperCase() },
+          { city: city.charAt(0).toUpperCase() + city.slice(1) },
+        ],
+      });
+      return sendResponse(places, res, 200);
+    }
+    if (!places) {
+      places = await Place.aggregate([
+        {
+          $match: {
+            "location.lat": { $lte: +lat + 0.03, $gte: +lat - 0.03 },
+            "location.long": { $lte: +long + 0.03, $gte: +long - 0.03 },
+          },
+        },
+      ]);
+      console.log(places);
+      sendResponse(places, res, 200);
+    }
   } catch (error) {
     sendResponse(error.message, res);
   }
@@ -116,4 +148,5 @@ module.exports = {
   getOnePlace,
   addPlace,
   addPlaceCrimeStatus,
+  getCurrentLocationAroundPlaces,
 };

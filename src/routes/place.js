@@ -4,6 +4,7 @@ const {
   getOnePlace,
   addPlace,
   addPlaceCrimeStatus,
+  getCurrentLocationAroundPlaces,
 } = require("../controllers/place");
 const router = express.Router();
 const auth = require("../middlewares/auth");
@@ -37,6 +38,13 @@ router.put(
   auth,
   addPlaceCrimeStatus
 );
+
+/**
+ * route : GET /api/place/around?lat=xx&long=xx&city=xx
+ * access : Private
+ * desc: Get place around data
+ */
+router.get("/around", auth, getCurrentLocationAroundPlaces);
 
 /**
  * route : GET /api/place/:id
