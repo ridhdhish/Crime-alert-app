@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { View, Text } from "react-native";
+import { View, Text, Dimensions } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DropDownPicker from "react-native-dropdown-picker";
 import Icon from "react-native-vector-icons/Feather";
 
 import { LineChart, BarChart } from "react-native-chart-kit";
 import { colors } from "../colors/index";
+
+import { LinearGradient } from "expo-linear-gradient";
 
 const PlacesScreen = () => {
   const [state, setState] = useState({ country: "uk" });
@@ -19,90 +21,22 @@ const PlacesScreen = () => {
   const [selectedValue, setSelectedValue] = useState("Select City");
   return (
     <View>
-      <Text
+      <View
         style={{
-          fontSize: 25,
-          marginHorizontal: 10,
-          marginVertical: 20,
-          fontWeight: "bold",
+          alignItems: "center",
+          backgroundColor: "#fb8c00",
         }}
       >
-        Surat
-      </Text>
-      <LineChart
-        data={{
-          labels: [
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-            "12",
-          ],
-          datasets: [
-            {
-              data: [
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-              ],
-            },
-          ],
-        }}
-        width={350}
-        height={250}
-        yAxisLabel="$"
-        yAxisSuffix="k"
-        yAxisInterval={1}
-        chartConfig={{
-          backgroundColor: "#e26a00",
-          backgroundGradientFrom: "#fb8c00",
-          backgroundGradientTo: "#ffa726",
-          decimalPlaces: 2, // optional, defaults to 2dp
-          color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          style: {
-            borderRadius: 16,
-          },
-          propsForDots: {
-            r: "6",
-            strokeWidth: "2",
-            stroke: "#ffa726",
-          },
-        }}
-        bezier
-        style={{
-          marginVertical: 18,
-          borderRadius: 16,
-          alignItems: "center",
-        }}
-      />
-      <Text style={{ textAlign: "center", fontSize: 18 }}>Crime per Month</Text>
-      <View style={{ alignItems: "center", marginTop: 60 }}>
         <View
           style={{
             height: 50,
-            width: 300,
-            borderColor: colors.textAccent,
+            width: 200,
+            borderColor: "white",
             borderWidth: 2,
             borderRadius: 5,
             overflow: "hidden",
             marginBottom: 16,
+            marginTop: 20,
           }}
         >
           <Picker
@@ -110,7 +44,10 @@ const PlacesScreen = () => {
             onValueChange={(itemValue, itemIndex) =>
               setSelectedValue(itemValue)
             }
-            dropdownIconColor={colors.backgroundSecondary}
+            dropdownIconColor="white"
+            style={{
+              color: "white",
+            }}
             // mode="dropdown"
           >
             <Picker.Item label="Select City" value="-1" />
@@ -118,6 +55,107 @@ const PlacesScreen = () => {
               <Picker.Item label={priority} value={priority} key={priority} />
             ))}
           </Picker>
+        </View>
+
+        <LineChart
+          data={{
+            labels: [
+              "J",
+              "F",
+              "M",
+              "A",
+              "M",
+              "J",
+              "J",
+              "A",
+              "S",
+              "O",
+              "N",
+              "D",
+            ],
+            datasets: [
+              {
+                data: [
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100,
+                ],
+              },
+            ],
+          }}
+          width={Dimensions.get("window").width}
+          height={280}
+          yAxisLabel="$"
+          yAxisSuffix="k"
+          yAxisInterval={1}
+          chartConfig={{
+            backgroundColor: "#fb8c00",
+            backgroundGradientFrom: "#fb8c00",
+            backgroundGradientTo: "#fb8c00",
+            decimalPlaces: 2, // optional, defaults to 2dp
+            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            propsForDots: {
+              r: "6",
+              strokeWidth: "2",
+              stroke: "#ffa726",
+            },
+          }}
+          bezier
+          style={{
+            marginVertical: 18,
+            alignItems: "center",
+          }}
+        />
+      </View>
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+          marginTop: 80,
+          flexDirection: "row",
+        }}
+      >
+        <View
+          style={{
+            backgroundColor: "#f5af49",
+            borderRadius: 5,
+            width: 150,
+            height: 100,
+            marginRight: 20,
+            elevation: 5,
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ marginTop: 10, color: "grey" }}>Total Cases</Text>
+          <Text style={{ fontSize: 30, fontWeight: "bold", marginTop: 7 }}>
+            240
+          </Text>
+        </View>
+        <View
+          style={{
+            backgroundColor: "#f5af49",
+            borderRadius: 5,
+            width: 150,
+            height: 100,
+            elevation: 5,
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ marginTop: 10, color: "grey" }}>Avg case/month</Text>
+          <Text style={{ fontSize: 30, fontWeight: "bold", marginTop: 7 }}>
+            22
+          </Text>
         </View>
       </View>
     </View>
