@@ -264,18 +264,16 @@ const HomeScreen = (props) => {
                 title="Surat"
                 description="The city of Sun"
               ></Marker>
-              {crimePlaces.crimes.map((crime) => (
-                <Fragment>
-                  <Marker
-                    coordinate={{
-                      latitude: crime.location.lat,
-                      longitude: crime.location.long,
-                      latitudeDelta: 0.0922,
-                      longitudeDelta: 0.0421,
-                    }}
-                  />
-                  <Text>{crime.location.lat}</Text>
-                </Fragment>
+              {crimePlaces.places.map((crime) => (
+                <Marker
+                  key={Math.random()}
+                  coordinate={{
+                    latitude: crime.location.lat,
+                    longitude: crime.location.long,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
+                  }}
+                />
               ))}
               <Circle
                 center={markerPosition}
