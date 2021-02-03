@@ -13,6 +13,7 @@ const initState = {
   crimePlaces: {
     totalCrimes: 0,
     places: [],
+    crimes: [],
   },
 };
 
@@ -43,6 +44,7 @@ export const crimeReducer = (state = initState, action) => {
         crimePlaces: {
           totalCrimes: payload.totalCrimes,
           places: payload.places,
+          crimes: payload.crimes,
         },
       };
     case REPORT_CRIME_ERROR:
