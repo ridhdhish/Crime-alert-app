@@ -1,13 +1,7 @@
-import React, { useState } from "react";
-import { View, Text, Dimensions } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import DropDownPicker from "react-native-dropdown-picker";
-import Icon from "react-native-vector-icons/Feather";
-
-import { LineChart, BarChart } from "react-native-chart-kit";
-import { colors } from "../colors/index";
-
-import { LinearGradient } from "expo-linear-gradient";
+import React, { useState } from "react";
+import { Dimensions, Text, View } from "react-native";
+import { LineChart } from "react-native-chart-kit";
 
 const PlacesScreen = () => {
   const [state, setState] = useState({ country: "uk" });

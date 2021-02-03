@@ -69,6 +69,7 @@ export const getAroundData = ({ lat, long, city }) => async (
       payload: {
         places: data.message.places,
         totalCrimes: data.message.totalCrimes,
+        crimes: data.message.places,
       },
     });
   } catch (error) {
