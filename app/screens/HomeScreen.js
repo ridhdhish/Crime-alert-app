@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { colors } from "../colors";
 import FloatingButton from "../components/FloatingButton";
 import { getAroundData, reportCrime } from "../store/actions/crime";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { getCrimeData } from "../utils/getCrimeData";
 import { sendNotification } from "../utils/sendNotification";
 import AlertButton from "../components/AlertButton";
@@ -95,7 +95,7 @@ const HomeScreen = (props) => {
         <Fragment>
           <FloatingButton
             style={{
-              left: 20,
+              left: 15,
               top: 25,
             }}
             onPress={() => props.navigation.toggleDrawer()}
@@ -165,6 +165,28 @@ const HomeScreen = (props) => {
               </View>
             )}
           </FloatingButton>
+          {JSON.stringify(markerPosition) !==
+            JSON.stringify(currentLocation) && (
+            <FloatingButton
+              style={{
+                bottom: 30,
+                left: 15,
+                width: 100,
+                flexDirection: "row",
+                elevation: 5,
+                borderColor: colors.textSecondary,
+                borderWidth: 1,
+              }}
+              onPress={() => setMarkerPosition(currentLocation)}
+            >
+              <MaterialIcons
+                name="navigation"
+                size={20}
+                color={colors.textSecondary}
+              />
+              <Text style={{ color: colors.textSecondary }}>Recenter</Text>
+            </FloatingButton>
+          )}
           {addCrimeData && (
             <View
               style={{
@@ -224,60 +246,9 @@ const HomeScreen = (props) => {
                   <Text>Hello</Text>
                 </Callout>
               </Marker>
-              <Marker
-                coordinate={{
-                  latitude: markerPosition.latitude - 0.022,
-                  longitude: markerPosition.longitude - 0.022,
-                  latitudeDelta: 0.0922,
-                  longitudeDelta: 0.0421,
-                }}
-                title="Surat"
-                description="The city of Sun"
-              ></Marker>
-              <Marker
-                coordinate={{
-                  latitude: markerPosition.latitude - 0.022,
-                  longitude: markerPosition.longitude + 0.022,
-                  latitudeDelta: 0.0922,
-                  longitudeDelta: 0.0421,
-                }}
-                title="Surat"
-                description="The city of Sun"
-              ></Marker>
-              <Marker
-                coordinate={{
-                  latitude: markerPosition.latitude + 0.022,
-                  longitude: markerPosition.longitude - 0.022,
-                  latitudeDelta: 0.0922,
-                  longitudeDelta: 0.0421,
-                }}
-                title="Surat"
-                description="The city of Sun"
-              ></Marker>
-              <Marker
-                coordinate={{
-                  latitude: markerPosition.latitude + 0.022,
-                  longitude: markerPosition.longitude + 0.022,
-                  latitudeDelta: 0.0922,
-                  longitudeDelta: 0.0421,
-                }}
-                title="Surat"
-                description="The city of Sun"
-              ></Marker>
-              {crimePlaces.places.map((crime) => (
-                <Marker
-                  key={Math.random()}
-                  coordinate={{
-                    latitude: crime.location.lat,
-                    longitude: crime.location.long,
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421,
-                  }}
-                />
-              ))}
               <Circle
                 center={markerPosition}
-                radius={3300}
+                radius={3000}
                 fillColor={getCriticalColor(
                   crimePlaces.places.length,
                   crimePlaces.totalCrimes
