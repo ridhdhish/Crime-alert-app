@@ -46,6 +46,9 @@ const getAllPlaces = async (req, res) => {
   }
 };
 
+/**
+ * @Doubt
+ */
 const getCurrentLocationAroundPlaces = async (req, res) => {
   const { city, lat, long } = req.query;
 
@@ -73,7 +76,7 @@ const getCurrentLocationAroundPlaces = async (req, res) => {
         },
       ]);
       console.log(places);
-      sendResponse({ places, totalCrimes, crimes: placesData }, res, 200);
+      sendResponse({ places, totalCrimes }, res, 200);
     }
   } catch (error) {
     sendResponse(error.message, res);
