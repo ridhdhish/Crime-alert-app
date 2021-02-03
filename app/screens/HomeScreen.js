@@ -87,8 +87,6 @@ const HomeScreen = (props) => {
     }
   };
 
-  console.log(crimePlaces.crimes?.length);
-
   return (
     <Fragment>
       {!auth.user ? (
@@ -266,6 +264,19 @@ const HomeScreen = (props) => {
                 title="Surat"
                 description="The city of Sun"
               ></Marker>
+              {crimePlaces.crimes.map((crime) => (
+                <Fragment>
+                  <Marker
+                    coordinate={{
+                      latitude: crime.location.lat,
+                      longitude: crime.location.long,
+                      latitudeDelta: 0.0922,
+                      longitudeDelta: 0.0421,
+                    }}
+                  />
+                  <Text>{crime.location.lat}</Text>
+                </Fragment>
+              ))}
               <Circle
                 center={markerPosition}
                 radius={3300}

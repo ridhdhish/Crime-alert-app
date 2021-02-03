@@ -52,7 +52,6 @@ const getCurrentLocationAroundPlaces = async (req, res) => {
   try {
     let places;
     const totalCrimes = await Crime.countDocuments();
-    const places = await Place.find({});
     if (city) {
       places = await Place.find({
         $or: [
@@ -73,7 +72,7 @@ const getCurrentLocationAroundPlaces = async (req, res) => {
         },
       ]);
       console.log(places);
-      sendResponse({ places, totalCrimes, places }, res, 200);
+      sendResponse({ places, totalCrimes }, res, 200);
     }
   } catch (error) {
     sendResponse(error.message, res);
