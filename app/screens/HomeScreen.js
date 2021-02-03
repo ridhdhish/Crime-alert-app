@@ -87,6 +87,8 @@ const HomeScreen = (props) => {
     }
   };
 
+  console.log(crimePlaces.crimes?.length);
+
   return (
     <Fragment>
       {!auth.user ? (

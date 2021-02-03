@@ -73,7 +73,7 @@ const getCurrentLocationAroundPlaces = async (req, res) => {
         },
       ]);
       console.log(places);
-      sendResponse({ places, totalCrimes, crime }, res, 200);
+      sendResponse({ places, totalCrimes, crimes }, res, 200);
     }
   } catch (error) {
     sendResponse(error.message, res);
