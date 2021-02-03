@@ -1,4 +1,4 @@
-import { DO_BACK_SYNC, REPORT_CRIME } from "../types";
+import { DO_BACK_SYNC, REPORT_CRIME, GET_AROUND_DATA } from "../types";
 import env from "../../environment";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -41,4 +41,37 @@ export const reportCrimeError = (crimeData) => async (dispatch) => {
     type: DO_BACK_SYNC,
     payload: crimeData,
   });
+};
+
+export const getAroundData = ({ lat, long, city }) => async (
+  dispatch,
+  getState
+) => {
+  try {
+    const response = await fetch(
+      `${env.API_URL}/place/around?${lat ? "lat=" + lat : ""}${
+        long ? "&long=" + long : ""
+      }${city ? "city=" + city : ""}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Accepts: "application/json",
+          Authorization: `Bearer ${getState().auth.token}`,
+        },
+      }
+    );
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message);
+    }
+    dispatch({
+      type: GET_AROUND_DATA,
+      payload: {
+        places: data.message.places,
+        totalCrimes: data.message.totalCrimes,
+      },
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
 };

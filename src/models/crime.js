@@ -19,7 +19,7 @@ const CrimeSchema = new mongoose.Schema(
         type: Number,
       },
       keyword: {
-        enum: ["critical", "high", "moderate", "low"],
+        enum: ["critical", "danger", "moderate", "safe"],
         type: String,
       },
       type: {

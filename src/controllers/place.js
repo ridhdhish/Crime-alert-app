@@ -1,4 +1,5 @@
 const Place = require("../models/place");
+const Crime = require("../models/crime");
 const sendResponse = require("../utils/sendResponse");
 const { getDistanceFromLatLonInKm } = require("../utils/getLatLongDistance");
 const { validationResult } = require("express-validator");
@@ -50,6 +51,7 @@ const getCurrentLocationAroundPlaces = async (req, res) => {
 
   try {
     let places;
+    const totalCrimes = await Crime.countDocuments();
     if (city) {
       places = await Place.find({
         $or: [
@@ -64,13 +66,13 @@ const getCurrentLocationAroundPlaces = async (req, res) => {
       places = await Place.aggregate([
         {
           $match: {
-            "location.lat": { $lte: +lat + 0.03, $gte: +lat - 0.03 },
-            "location.long": { $lte: +long + 0.03, $gte: +long - 0.03 },
+            "location.lat": { $lte: +lat + 0.015, $gte: +lat - 0.015 },
+            "location.long": { $lte: +long + 0.015, $gte: +long - 0.015 },
           },
         },
       ]);
       console.log(places);
-      sendResponse(places, res, 200);
+      sendResponse({ places, totalCrimes }, res, 200);
     }
   } catch (error) {
     sendResponse(error.message, res);

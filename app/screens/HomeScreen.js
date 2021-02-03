@@ -11,7 +11,7 @@ import MapView, { Marker, Circle } from "react-native-maps";
 import { useSelector, useDispatch } from "react-redux";
 import { colors } from "../colors";
 import FloatingButton from "../components/FloatingButton";
-import { reportCrime } from "../store/actions/crime";
+import { getAroundData, reportCrime } from "../store/actions/crime";
 import { Ionicons } from "@expo/vector-icons";
 import { getCrimeData } from "../utils/getCrimeData";
 import { sendNotification } from "../utils/sendNotification";
@@ -20,6 +20,7 @@ import { useNotification } from "../hooks/useNotification";
 import currentLocationImage from "../assets/images/currentLocation.png";
 import CustomContentLoader from "../components/CustomContentLoader";
 import { TextInput } from "react-native-gesture-handler";
+import { getCriticalColor } from "../utils/getCriticalColor";
 
 const HomeScreen = (props) => {
   const auth = useSelector((state) => state.auth);
@@ -29,8 +30,6 @@ const HomeScreen = (props) => {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [addCrimeData, setAddCrimeData] = useState(false);
   const [crimeDataText, setCrimeDataText] = useState("");
-
-  console.log(crimePlaces);
 
   useNotification();
 
@@ -44,6 +43,17 @@ const HomeScreen = (props) => {
     }
     setLocation();
   }, []);
+
+  useEffect(() => {
+    if (currentLocation) {
+      dispatch(
+        getAroundData({
+          lat: currentLocation.latitude,
+          long: currentLocation.longitude,
+        })
+      );
+    }
+  }, [currentLocation]);
 
   const reportCrimeData = async () => {
     setIsLoading(true);
@@ -161,7 +171,7 @@ const HomeScreen = (props) => {
               }}
             >
               <TextInput
-                placeholder="Crime Data"
+                placeholder="Crime Detail"
                 placeholderTextColor="#ddd"
                 style={{ color: colors.textSecondary }}
                 autoFocus
@@ -181,11 +191,13 @@ const HomeScreen = (props) => {
                 longitudeDelta: 0.0421,
               }}
               minZoomLevel={2}
-              maxZoomLevel={20}
+              maxZoomLevel={12}
+              mapType="terrain"
               zoomEnabled
               onPress={() => Keyboard.dismiss()}
             >
               <Marker
+                draggable
                 coordinate={{
                   ...currentLocation,
                   latitudeDelta: 0.0922,
@@ -197,8 +209,11 @@ const HomeScreen = (props) => {
               />
               <Circle
                 center={currentLocation}
-                radius={500}
-                fillColor={"rgba(255, 0, 0, 0.5)"}
+                radius={5000}
+                fillColor={getCriticalColor(
+                  crimePlaces.places.length,
+                  crimePlaces.totalCrimes
+                )}
                 strokeWidth={0}
               />
             </MapView>
