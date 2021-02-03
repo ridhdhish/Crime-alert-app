@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { Fragment, useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import { useDispatch } from "react-redux";
 import { colors } from "../colors";
 import CustomButton from "../components/CustomButton";
@@ -14,6 +14,7 @@ import { getCrimeData } from "../utils/getCrimeData";
 import { sendNotification } from "../utils/sendNotification";
 import { WAVE_SVG } from "../utils/svg";
 import { useNotification } from "../hooks/useNotification";
+import FloatingButton from "../components/FloatingButton";
 const StartScreen = (props) => {
   const { navigation } = props;
   const [onceRegistered, setOnceRegistered] = useState(false);
@@ -52,34 +53,48 @@ const StartScreen = (props) => {
         <NormalText style={{ fontSize: 14 }}>Welcome to Crime Alert</NormalText>
       </View>
       {onceRegistered ? (
-        <AlertButton
-          loading={loading}
-          style={{ bottom: 100, marginBottom: 20 }}
-          reportCrimeData={sendAlert}
-          color={colors.backgroundPrimary}
-        />
+        <Fragment>
+          <AlertButton
+            loading={loading}
+            style={{ bottom: 50, marginBottom: 20 }}
+            reportCrimeData={sendAlert}
+            color={colors.backgroundPrimary}
+          />
+          <FloatingButton
+            style={{
+              top: 25,
+              right: 25,
+            }}
+            onPress={() => props.navigation.navigate("Login")}
+          >
+            <Ionicons
+              size={30}
+              color={colors.textSecondary}
+              name={Platform.OS === "android" ? "md-log-in" : "ios-log-in"}
+            />
+          </FloatingButton>
+        </Fragment>
       ) : (
-        <Fragment></Fragment>
+        <CustomButton
+          text={"Register"}
+          style={styles.startBtn}
+          touchableStyle={{
+            padding: 8,
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+          textStyle={styles.startBtnText}
+          onPress={() => {
+            navigation.navigate("Signup");
+          }}
+        >
+          <Ionicons
+            name="ios-arrow-forward"
+            size={20}
+            color={colors.textSecondary}
+          />
+        </CustomButton>
       )}
-      <CustomButton
-        text={onceRegistered ? "Login" : "Register"}
-        style={styles.startBtn}
-        touchableStyle={{
-          padding: 8,
-          flexDirection: "row",
-          alignItems: "center",
-        }}
-        textStyle={styles.startBtnText}
-        onPress={() => {
-          navigation.navigate(onceRegistered ? "Login" : "Signup");
-        }}
-      >
-        <Ionicons
-          name="ios-arrow-forward"
-          size={20}
-          color={colors.textSecondary}
-        />
-      </CustomButton>
       <SVG svg={WAVE_SVG} />
     </View>
   );

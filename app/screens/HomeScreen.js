@@ -7,7 +7,7 @@ import {
   Text,
   View,
 } from "react-native";
-import MapView, { Marker, Circle } from "react-native-maps";
+import MapView, { Marker, Circle, Callout } from "react-native-maps";
 import { useSelector, useDispatch } from "react-redux";
 import { colors } from "../colors";
 import FloatingButton from "../components/FloatingButton";
@@ -28,6 +28,7 @@ const HomeScreen = (props) => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [currentLocation, setCurrentLocation] = useState(null);
+  const [markerPosition, setMarkerPosition] = useState(null);
   const [addCrimeData, setAddCrimeData] = useState(false);
   const [crimeDataText, setCrimeDataText] = useState("");
 
@@ -40,20 +41,24 @@ const HomeScreen = (props) => {
         latitude: crimeData.location.lat,
         longitude: crimeData.location.long,
       });
+      setMarkerPosition({
+        latitude: crimeData.location.lat,
+        longitude: crimeData.location.long,
+      });
     }
     setLocation();
   }, []);
 
   useEffect(() => {
-    if (currentLocation) {
+    if (markerPosition) {
       dispatch(
         getAroundData({
-          lat: currentLocation.latitude,
-          long: currentLocation.longitude,
+          lat: markerPosition.latitude,
+          long: markerPosition.longitude,
         })
       );
     }
-  }, [currentLocation]);
+  }, [markerPosition]);
 
   const reportCrimeData = async () => {
     setIsLoading(true);
@@ -63,6 +68,10 @@ const HomeScreen = (props) => {
       setCrimeDataText("");
       setAddCrimeData(false);
       setCurrentLocation({
+        latitude: crimeData.location.lat,
+        longitude: crimeData.location.long,
+      });
+      setMarkerPosition({
         latitude: crimeData.location.lat,
         longitude: crimeData.location.long,
       });
@@ -182,7 +191,7 @@ const HomeScreen = (props) => {
             </View>
           )}
 
-          {currentLocation ? (
+          {currentLocation && markerPosition ? (
             <MapView
               style={{ flex: 1 }}
               region={{
@@ -191,25 +200,33 @@ const HomeScreen = (props) => {
                 longitudeDelta: 0.0421,
               }}
               minZoomLevel={2}
-              maxZoomLevel={12}
+              maxZoomLevel={20}
               mapType="terrain"
               zoomEnabled
               onPress={() => Keyboard.dismiss()}
             >
               <Marker
                 draggable
+                onDragEnd={(event) => {
+                  // console.log(event.nativeEvent.coordinate);
+                  setMarkerPosition(event.nativeEvent.coordinate);
+                }}
                 coordinate={{
-                  ...currentLocation,
+                  ...markerPosition,
                   latitudeDelta: 0.0922,
                   longitudeDelta: 0.0421,
                 }}
                 title="Surat"
                 description="The city of Sun"
                 // image={currentLocationImage}
-              />
+              >
+                <Callout>
+                  <Text>Hello</Text>
+                </Callout>
+              </Marker>
               <Circle
-                center={currentLocation}
-                radius={5000}
+                center={markerPosition}
+                radius={3300}
                 fillColor={getCriticalColor(
                   crimePlaces.places.length,
                   crimePlaces.totalCrimes
