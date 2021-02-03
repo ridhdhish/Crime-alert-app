@@ -52,6 +52,7 @@ const getCurrentLocationAroundPlaces = async (req, res) => {
   try {
     let places;
     const totalCrimes = await Crime.countDocuments();
+    const placesData = await Place.find({});
     if (city) {
       places = await Place.find({
         $or: [
@@ -66,13 +67,13 @@ const getCurrentLocationAroundPlaces = async (req, res) => {
       places = await Place.aggregate([
         {
           $match: {
-            "location.lat": { $lte: +lat + 0.015, $gte: +lat - 0.015 },
-            "location.long": { $lte: +long + 0.015, $gte: +long - 0.015 },
+            "location.lat": { $lte: +lat + 0.022, $gte: +lat - 0.022 },
+            "location.long": { $lte: +long + 0.022, $gte: +long - 0.022 },
           },
         },
       ]);
       console.log(places);
-      sendResponse({ places, totalCrimes }, res, 200);
+      sendResponse({ places, totalCrimes, crimes: placesData }, res, 200);
     }
   } catch (error) {
     sendResponse(error.message, res);
