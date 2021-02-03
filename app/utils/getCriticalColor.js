@@ -5,7 +5,7 @@ import { colors } from "../colors";
  */
 export const getCriticalColor = (placeCrimes, totalCrimes) => {
   const percentageCrimes = (+placeCrimes / +totalCrimes) * 100;
-  if (percentageCrimes === 0) {
+  if (percentageCrimes === 0 || isNaN(percentageCrimes)) {
     return colors.safe;
   } else if (percentageCrimes <= 5) {
     return colors.moderate;

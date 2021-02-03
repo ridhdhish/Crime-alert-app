@@ -224,57 +224,6 @@ const HomeScreen = (props) => {
                   <Text>Hello</Text>
                 </Callout>
               </Marker>
-              <Marker
-                coordinate={{
-                  latitude: markerPosition.latitude - 0.022,
-                  longitude: markerPosition.longitude - 0.022,
-                  latitudeDelta: 0.0922,
-                  longitudeDelta: 0.0421,
-                }}
-                title="Surat"
-                description="The city of Sun"
-              ></Marker>
-              <Marker
-                coordinate={{
-                  latitude: markerPosition.latitude - 0.022,
-                  longitude: markerPosition.longitude + 0.022,
-                  latitudeDelta: 0.0922,
-                  longitudeDelta: 0.0421,
-                }}
-                title="Surat"
-                description="The city of Sun"
-              ></Marker>
-              <Marker
-                coordinate={{
-                  latitude: markerPosition.latitude + 0.022,
-                  longitude: markerPosition.longitude - 0.022,
-                  latitudeDelta: 0.0922,
-                  longitudeDelta: 0.0421,
-                }}
-                title="Surat"
-                description="The city of Sun"
-              ></Marker>
-              <Marker
-                coordinate={{
-                  latitude: markerPosition.latitude + 0.022,
-                  longitude: markerPosition.longitude + 0.022,
-                  latitudeDelta: 0.0922,
-                  longitudeDelta: 0.0421,
-                }}
-                title="Surat"
-                description="The city of Sun"
-              ></Marker>
-              {crimePlaces.places.map((crime) => (
-                <Marker
-                  key={Math.random()}
-                  coordinate={{
-                    latitude: crime.location.lat,
-                    longitude: crime.location.long,
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421,
-                  }}
-                />
-              ))}
               <Circle
                 center={markerPosition}
                 radius={3300}
