@@ -1,4 +1,9 @@
-import { DO_BACK_SYNC, REPORT_CRIME, GET_AROUND_DATA } from "../types";
+import {
+  DO_BACK_SYNC,
+  REPORT_CRIME,
+  GET_AROUND_DATA,
+  GET_CITY_DATA,
+} from "../types";
 import env from "../../environment";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -51,7 +56,7 @@ export const getAroundData = ({ lat, long, city }) => async (
     const response = await fetch(
       `${env.API_URL}/place/around?${lat ? "lat=" + lat : ""}${
         long ? "&long=" + long : ""
-      }${city ? "city=" + city : ""}`,
+      }${city ? "city=" + city.toLowerCase() : ""}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -64,14 +69,24 @@ export const getAroundData = ({ lat, long, city }) => async (
     if (!response.ok) {
       throw new Error(data.message);
     }
-    dispatch({
-      type: GET_AROUND_DATA,
-      payload: {
-        places: data.message.places,
-        totalCrimes: data.message.totalCrimes,
-        crimes: data.message.crimes,
-      },
-    });
+    if (city) {
+      dispatch({
+        type: GET_CITY_DATA,
+        payload: {
+          places: data.message,
+          totalCrimes: data.message.length,
+        },
+      });
+    } else {
+      dispatch({
+        type: GET_AROUND_DATA,
+        payload: {
+          places: data.message.places,
+          totalCrimes: data.message.totalCrimes,
+          crimes: data.message.crimes,
+        },
+      });
+    }
   } catch (error) {
     console.log(error.message);
   }

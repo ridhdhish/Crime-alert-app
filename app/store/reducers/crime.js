@@ -3,6 +3,7 @@ import {
   GET_AROUND_DATA,
   REPORT_CRIME,
   REPORT_CRIME_ERROR,
+  GET_CITY_DATA,
 } from "../types";
 // import { crimePlacesData } from "../../utils/crimeDummyData";
 
@@ -13,6 +14,10 @@ const initState = {
   crimePlaces: {
     totalCrimes: 0,
     places: [],
+  },
+  cityData: {
+    places: [],
+    totalCrimes: 0,
   },
 };
 
@@ -51,6 +56,14 @@ export const crimeReducer = (state = initState, action) => {
           totalCrimes: 0,
           places: [],
           crimes: [],
+        },
+      };
+    case GET_CITY_DATA:
+      return {
+        ...state,
+        cityData: {
+          places: payload.places,
+          totalCrimes: payload.totalCrimes,
         },
       };
     default:

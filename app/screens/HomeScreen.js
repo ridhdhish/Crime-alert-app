@@ -246,7 +246,6 @@ const HomeScreen = (props) => {
                   <Text>Hello</Text>
                 </Callout>
               </Marker>
-<<<<<<< HEAD
               {crimePlaces.places.map((crime) => (
                 <Marker
                   key={Math.random()}
@@ -258,8 +257,6 @@ const HomeScreen = (props) => {
                   }}
                 />
               ))}
-=======
->>>>>>> bc57f263521491d1f3d193249fd92ea227125239
               <Circle
                 center={markerPosition}
                 radius={3000}
