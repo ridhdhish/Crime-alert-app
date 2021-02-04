@@ -8,7 +8,6 @@ import { colors } from "../colors/index";
 import { data } from "../utils/historyCrime";
 import React, { useState } from "react";
 import { Dimensions, Text, View } from "react-native";
-import { LineChart } from "react-native-chart-kit";
 
 const PlacesScreen = () => {
   const [leftPriority, setLeftPriority] = useState([
