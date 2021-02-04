@@ -32,10 +32,6 @@ export const crimeReducer = (state = initState, action) => {
         crime: null,
         place: null,
         history: [],
-        crimePlaces: {
-          totalCrimes: 0,
-          places: [],
-        },
       };
     case GET_AROUND_DATA:
       return {
@@ -54,6 +50,7 @@ export const crimeReducer = (state = initState, action) => {
         crimePlaces: {
           totalCrimes: 0,
           places: [],
+          crimes: [],
         },
       };
     default:

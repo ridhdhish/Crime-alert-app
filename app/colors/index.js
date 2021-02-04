@@ -23,9 +23,9 @@ export const colors = {
   textSecondary: "#fdfdfe",
   textTertiary: "#08080f",
   textAccent: "#abb0c1",
-  danger: "rgba(219, 74, 57, 0.5)",
+  danger: "rgba(219, 74, 57, 0.3)",
   facebookBlue: "#4267B2",
-  safe: "rgba(0, 255, 0, 0.5)",
-  moderate: "rgba(255, 255, 0, 0.5)",
-  critical: "rgba(255, 0, 0, 0.5)",
+  safe: "rgba(0, 255, 0, 0.3)",
+  moderate: "rgba(255, 255, 0, 0.3)",
+  critical: "rgba(255, 0, 0, 0.3)",
 };

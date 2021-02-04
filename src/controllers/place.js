@@ -2,6 +2,9 @@ const Place = require("../models/place");
 const Crime = require("../models/crime");
 const sendResponse = require("../utils/sendResponse");
 const { getDistanceFromLatLonInKm } = require("../utils/getLatLongDistance");
+const {
+  getLatLongDifferenceFromKms,
+} = require("../utils/getLatLongMinusNumberFromKms");
 const { validationResult } = require("express-validator");
 
 /**
@@ -46,8 +49,11 @@ const getAllPlaces = async (req, res) => {
   }
 };
 
+/**
+ * @Doubt
+ */
 const getCurrentLocationAroundPlaces = async (req, res) => {
-  const { city, lat, long } = req.query;
+  const { city, lat, long, kms } = req.query;
 
   try {
     let places;
@@ -64,16 +70,26 @@ const getCurrentLocationAroundPlaces = async (req, res) => {
       return sendResponse(places, res, 200);
     }
     if (!places) {
+      let difference = 0.025;
+      if (kms) {
+        difference = getLatLongDifferenceFromKms(+kms);
+      }
       places = await Place.aggregate([
         {
           $match: {
-            "location.lat": { $lte: +lat + 0.022, $gte: +lat - 0.022 },
-            "location.long": { $lte: +long + 0.022, $gte: +long - 0.022 },
+            "location.lat": {
+              $lte: +lat + difference,
+              $gte: +lat - difference,
+            },
+            "location.long": {
+              $lte: +long + difference,
+              $gte: +long - difference,
+            },
           },
         },
       ]);
       console.log(places);
-      sendResponse({ places, totalCrimes, crimes: placesData }, res, 200);
+      sendResponse({ places, totalCrimes }, res, 200);
     }
   } catch (error) {
     sendResponse(error.message, res);

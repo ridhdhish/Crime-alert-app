@@ -40,7 +40,7 @@ router.put(
 );
 
 /**
- * route : GET /api/place/around?lat=xx&long=xx&city=xx
+ * route : GET /api/place/around?lat=xx&long=xx&city=xx?kms=xx
  * access : Private
  * desc: Get place around data
  */

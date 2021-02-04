@@ -1,36 +1,41 @@
 const mongoose = require("mongoose");
 
-const PlaceSchema = new mongoose.Schema({
-  location: {
-    lat: {
-      type: Number,
-      required: true,
-    },
-    long: {
-      type: Number,
-      required: true,
-    },
-  },
-  crimeStatus: [
-    {
-      level: {
+const PlaceSchema = new mongoose.Schema(
+  {
+    location: {
+      lat: {
         type: Number,
+        required: true,
       },
-      keyword: {
-        enum: ["critical", "high", "moderate", "low"],
-        type: String,
+      long: {
+        type: Number,
+        required: true,
       },
     },
-  ],
-  state: {
-    type: String,
+    crimeStatus: [
+      {
+        level: {
+          type: Number,
+        },
+        keyword: {
+          enum: ["critical", "high", "moderate", "low"],
+          type: String,
+        },
+      },
+    ],
+    state: {
+      type: String,
+    },
+    city: {
+      type: String,
+    },
+    address: {
+      type: String,
+    },
   },
-  city: {
-    type: String,
-  },
-  address: {
-    type: String,
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
 module.exports = mongoose.model("Place", PlaceSchema);
