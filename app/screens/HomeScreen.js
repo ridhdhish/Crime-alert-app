@@ -176,6 +176,7 @@ const HomeScreen = (props) => {
                 elevation: 5,
                 borderColor: colors.textSecondary,
                 borderWidth: 1,
+                paddingHorizontal: 5,
               }}
               onPress={() => setMarkerPosition(currentLocation)}
             >
@@ -212,12 +213,11 @@ const HomeScreen = (props) => {
               />
             </View>
           )}
-
           {currentLocation && markerPosition ? (
             <MapView
               style={{ flex: 1 }}
               region={{
-                ...currentLocation,
+                ...markerPosition,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
               }}
@@ -243,9 +243,28 @@ const HomeScreen = (props) => {
                 // image={currentLocationImage}
               >
                 <Callout>
-                  <Text>Hello</Text>
+                  <Text>You</Text>
                 </Callout>
               </Marker>
+              {crimePlaces.places.map((place) => (
+                <Marker
+                  key={place._id}
+                  coordinate={{
+                    latitude: place.location.lat,
+                    longitude: place.location.long,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
+                  }}
+                  title={place.address}
+                  zIndex={1001}
+                >
+                  <Ionicons
+                    name="ios-alert-circle"
+                    color="rgba(255, 255, 0, 0.8)"
+                    size={25}
+                  />
+                </Marker>
+              ))}
               <Circle
                 center={markerPosition}
                 radius={3000}

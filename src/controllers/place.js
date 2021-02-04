@@ -72,7 +72,7 @@ const getCurrentLocationAroundPlaces = async (req, res) => {
     if (!places) {
       let difference = 0.025;
       if (kms) {
-        difference = getLatLongDifferenceFromKms(+kms);
+        difference = +getLatLongDifferenceFromKms(+kms * 2);
       }
       places = await Place.aggregate([
         {
