@@ -11,6 +11,8 @@ import { Button, SafeAreaView, Text, View } from "react-native";
 import { logout } from "../store/actions/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { toTitleCase } from "../utils/toTitleCase";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { isAndroid } from "../utils/isAndroid";
 
 const RootDrawer = createDrawerNavigator();
 
@@ -25,6 +27,27 @@ const RootHomeNavigator = () => {
         activeTintColor: colors.textSecondary,
         // inactiveTintColor: colors.textSecondary,
       }}
+      screenOptions={({ route }) => ({
+        drawerIcon: ({ color, size, focused }) => {
+          let iconName;
+          if (route.name === "Home") {
+            iconName = "home";
+          } else if (route.name === "History") {
+            return <MaterialIcons size={size} color={color} name="history" />;
+          } else if (route.name === "Setting") {
+            iconName = "settings";
+          }
+          return (
+            <Ionicons
+              size={size}
+              color={color}
+              name={`${isAndroid() ? "md-" : "ios-"}${iconName}${
+                focused ? "" : "-outline"
+              }`}
+            />
+          );
+        },
+      })}
       drawerContent={(props) => (
         <View
           style={{
@@ -96,9 +119,11 @@ const RootHomeNavigator = () => {
       )}
     >
       <RootDrawer.Screen
-        name="Home"
+        name={"Home"}
         component={HomeNavigator}
-        options={{ title: "Home" }}
+        options={{
+          title: "Home",
+        }}
       />
       <RootDrawer.Screen
         name="History"

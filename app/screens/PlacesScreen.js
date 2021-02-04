@@ -51,7 +51,7 @@ const PlacesScreen = () => {
           <View
             style={{
               alignItems: "center",
-              backgroundColor: "#fb8c00",
+              backgroundColor: colors.backgroundExtra,
             }}
           >
             <View
@@ -105,19 +105,19 @@ const PlacesScreen = () => {
                 ],
                 datasets: [
                   {
-                    data: monthData,
+                    // data: monthData,
+                    data: [1, 10, 5, 4, 7, 8, 9, 1, 4, 2, 8, 0],
                   },
                 ],
               }}
               width={Dimensions.get("window").width}
               height={280}
               fromZero={true}
-              yAxisLabel="Crime"
               yAxisInterval={"5"}
               chartConfig={{
-                backgroundColor: "#fb8c00",
-                backgroundGradientFrom: "#fb8c00",
-                backgroundGradientTo: "#fb8c00",
+                backgroundColor: colors.backgroundExtra,
+                backgroundGradientFrom: colors.backgroundExtra,
+                backgroundGradientTo: colors.backgroundExtra,
                 decimalPlaces: 0, // optional, defaults to 2dp
                 color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
                 labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
