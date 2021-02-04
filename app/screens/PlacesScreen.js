@@ -1,19 +1,14 @@
 import { Picker } from "@react-native-picker/picker";
-import DropDownPicker from "react-native-dropdown-picker";
-import Icon from "react-native-vector-icons/Feather";
-
-import { LineChart, BarChart } from "react-native-chart-kit";
+import { LineChart } from "react-native-chart-kit";
 import { colors } from "../colors/index";
-
-import { data } from "../utils/historyCrime";
 import React, { useState, useEffect, Fragment } from "react";
 import { ActivityIndicator, Dimensions, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-
 import { getAroundData } from "../store/actions/crime";
-import { getAllRelative } from "../store/actions/relative";
 
 const PlacesScreen = () => {
+  const cityData = useSelector((state) => state.crime.cityData);
+
   const [leftPriority, setLeftPriority] = useState([
     "Surat",
     "Vadodara",
@@ -31,23 +26,21 @@ const PlacesScreen = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const getData = async () => {
+    async function getData() {
       await dispatch(getAroundData({ city: selectedValue }));
       setIsLoading(() => false);
-      const newArray = Array(12).fill(0);
-      console.log(selectedValue);
-      cityData.places.forEach((place) => {
-        const month = new Date(place["createdAt"]).getMonth();
-        newArray[month]++;
-      });
-      //console.log("New Array: ", newArray);
-      setMonthData((prev) => [...newArray]);
-      //console.log("Month data: ", monthData);
-    };
+    }
     getData();
   }, [selectedValue]);
 
-  const cityData = useSelector((state) => state.crime.cityData);
+  useEffect(() => {
+    const newArray = Array(12).fill(0);
+    cityData.places.forEach((place) => {
+      const month = new Date(place["createdAt"]).getMonth();
+      newArray[month]++;
+    });
+    setMonthData((prev) => [...newArray]);
+  }, [cityData]);
 
   return (
     <View>
@@ -75,8 +68,8 @@ const PlacesScreen = () => {
             >
               <Picker
                 selectedValue={selectedValue}
-                onValueChange={(itemValue, itemIndex) => {
-                  setSelectedValue(itemValue);
+                onValueChange={(itemValue) => {
+                  setSelectedValue(() => itemValue);
                 }}
                 dropdownIconColor="white"
                 style={{
