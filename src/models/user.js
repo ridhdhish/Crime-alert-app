@@ -31,6 +31,9 @@ const UserSchema = new mongoose.Schema(
     pushToken: {
       type: String,
     },
+    appPassword: {
+      type: String,
+    },
     recentAlerts: [
       {
         isSeen: {
