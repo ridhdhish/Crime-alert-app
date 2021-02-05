@@ -71,9 +71,10 @@ export default function App() {
         <AppNavigator />
         <StatusBar
           translucent={true}
-          barStyle="dark-content"
+          barStyle="light-content"
           backgroundColor="rgba(0, 0, 0, 0.1)"
           hidden
+          animated
         />
       </View>
     </Provider>

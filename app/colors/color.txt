@@ -146,3 +146,4 @@
 .Straße-über-Hügel-3-hsla { color: hsla(28, 83, 68, 1); }
 .Straße-über-Hügel-4-hsla { color: hsla(22, 68, 51, 1); }
 .Straße-über-Hügel-5-hsla { color: hsla(16, 44, 55, 1); }
+
