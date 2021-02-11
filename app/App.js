@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, StatusBar, StyleSheet, View } from "react-native";
 import { Provider } from "react-redux";
 import { applyMiddleware, combineReducers, createStore } from "redux";
@@ -9,8 +9,8 @@ import { crimeReducer } from "./store/reducers/crime";
 import { relativeReducer } from "./store/reducers/relative";
 import * as Permissions from "expo-permissions";
 import * as Notifications from "expo-notifications";
-import * as Network from "expo-network";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import NetInfo from "@react-native-community/netinfo";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => {
@@ -21,8 +21,6 @@ Notifications.setNotificationHandler({
   },
 });
 
-// Network.getNetworkStateAsync().then((state) => console.log(state));
-
 const rootReducer = combineReducers({
   auth: authReducer,
   crime: crimeReducer,
@@ -32,6 +30,8 @@ const rootReducer = combineReducers({
 const store = createStore(rootReducer, applyMiddleware(Thunk));
 
 export default function App() {
+  const [isConnected, setIsConnected] = useState(true);
+
   useEffect(() => {
     // LogBox.ignoreLogs(["Setting a timer"]);
     (async function askPermissions() {
@@ -63,7 +63,22 @@ export default function App() {
         console.log(error.message);
       }
     })();
+
+    const unsubscribe = NetInfo.addEventListener((state) => {
+      console.log("Is connected?", state.isConnected);
+      setIsConnected(state.isConnected);
+    });
+
+    return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (!isConnected) {
+      Alert.alert("Network Error", "You are not connect with internet", [
+        { text: "Okay" },
+      ]);
+    }
+  }, [isConnected]);
 
   return (
     <Provider store={store}>
