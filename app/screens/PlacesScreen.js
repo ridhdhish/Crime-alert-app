@@ -51,16 +51,12 @@ const PlacesScreen = () => {
           <View
             style={{
               alignItems: "center",
-              backgroundColor: colors.backgroundExtra,
             }}
           >
             <View
               style={{
                 height: 50,
                 width: 200,
-                borderColor: "white",
-                borderWidth: 2,
-                borderRadius: 5,
                 overflow: "hidden",
                 marginBottom: 16,
                 marginTop: 20,
@@ -71,11 +67,10 @@ const PlacesScreen = () => {
                 onValueChange={(itemValue) => {
                   setSelectedValue(() => itemValue);
                 }}
-                dropdownIconColor="white"
+                dropdownIconColor={colors.backgroundPrimary}
                 style={{
-                  color: "white",
+                  color: colors.backgroundPrimary,
                 }}
-                // mode="dropdown"
               >
                 {leftPriority.map((priority) => (
                   <Picker.Item
@@ -86,97 +81,102 @@ const PlacesScreen = () => {
                 ))}
               </Picker>
             </View>
-
-            <LineChart
-              data={{
-                labels: [
-                  "J",
-                  "F",
-                  "M",
-                  "A",
-                  "M",
-                  "J",
-                  "J",
-                  "A",
-                  "S",
-                  "O",
-                  "N",
-                  "D",
-                ],
-                datasets: [
-                  {
-                    // data: monthData,
-                    data: [1, 10, 5, 4, 7, 8, 9, 1, 4, 2, 8, 0],
-                  },
-                ],
+            <View
+              style={{
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
+                marginTop: 80,
+                flexDirection: "row",
               }}
-              width={Dimensions.get("window").width}
-              height={280}
-              fromZero={true}
-              yAxisInterval={"5"}
-              chartConfig={{
-                backgroundColor: colors.backgroundExtra,
-                backgroundGradientFrom: colors.backgroundExtra,
-                backgroundGradientTo: colors.backgroundExtra,
-                decimalPlaces: 0, // optional, defaults to 2dp
-                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                propsForDots: {
-                  r: "8",
-                  strokeWidth: "2",
-                  stroke: "#ffa726",
+            >
+              <View
+                style={{
+                  backgroundColor: "#f5af49",
+                  borderRadius: 5,
+                  width: 150,
+                  height: 100,
+                  marginRight: 20,
+                  elevation: 5,
+                  alignItems: "center",
+                }}
+              >
+                <Text style={{ marginTop: 10, color: "grey" }}>
+                  Total Cases
+                </Text>
+                <Text
+                  style={{ fontSize: 30, fontWeight: "bold", marginTop: 7 }}
+                >
+                  {cityData.totalCrimes}
+                </Text>
+              </View>
+              <View
+                style={{
+                  backgroundColor: "#f5af49",
+                  borderRadius: 5,
+                  width: 150,
+                  height: 100,
+                  elevation: 5,
+                  alignItems: "center",
+                }}
+              >
+                <Text style={{ marginTop: 10, color: "grey" }}>
+                  Avg case/month
+                </Text>
+                <Text
+                  style={{ fontSize: 30, fontWeight: "bold", marginTop: 7 }}
+                >
+                  {(cityData.totalCrimes / 12).toFixed(2)}
+                </Text>
+              </View>
+            </View>
+          </View>
+          <LineChart
+            data={{
+              labels: [
+                "J",
+                "F",
+                "M",
+                "A",
+                "M",
+                "J",
+                "J",
+                "A",
+                "S",
+                "O",
+                "N",
+                "D",
+              ],
+              datasets: [
+                {
+                  // data: monthData,
+                  data: [1, 10, 5, 4, 7, 8, 9, 1, 4, 2, 8, 0],
                 },
-              }}
-              bezier
-              style={{
-                marginVertical: 18,
-                alignItems: "center",
-              }}
-            />
-          </View>
-          <View
-            style={{
-              flex: 1,
-              alignItems: "center",
-              justifyContent: "center",
-              marginTop: 80,
-              flexDirection: "row",
+              ],
             }}
-          >
-            <View
-              style={{
-                backgroundColor: "#f5af49",
-                borderRadius: 5,
-                width: 150,
-                height: 100,
-                marginRight: 20,
-                elevation: 5,
-                alignItems: "center",
-              }}
-            >
-              <Text style={{ marginTop: 10, color: "grey" }}>Total Cases</Text>
-              <Text style={{ fontSize: 30, fontWeight: "bold", marginTop: 7 }}>
-                {cityData.totalCrimes}
-              </Text>
-            </View>
-            <View
-              style={{
-                backgroundColor: "#f5af49",
-                borderRadius: 5,
-                width: 150,
-                height: 100,
-                elevation: 5,
-                alignItems: "center",
-              }}
-            >
-              <Text style={{ marginTop: 10, color: "grey" }}>
-                Avg case/month
-              </Text>
-              <Text style={{ fontSize: 30, fontWeight: "bold", marginTop: 7 }}>
-                {(cityData.totalCrimes / 12).toFixed(2)}
-              </Text>
-            </View>
-          </View>
+            width={Dimensions.get("window").width}
+            height={280}
+            fromZero={true}
+            yAxisInterval={"5"}
+            chartConfig={{
+              backgroundColor: colors.backgroundExtra,
+              backgroundGradientFrom: colors.backgroundExtra,
+              backgroundGradientTo: colors.backgroundExtra,
+              decimalPlaces: 0, // optional, defaults to 2dp
+              color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+              labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+              propsForDots: {
+                r: "8",
+                strokeWidth: "2",
+                stroke: "#ffa726",
+              },
+            }}
+            bezier
+            style={{
+              marginVertical: 18,
+              alignItems: "center",
+            }}
+          />
         </Fragment>
       )}
     </View>

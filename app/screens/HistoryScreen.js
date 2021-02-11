@@ -1,9 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { View, Text } from "react-native";
 
 const HistoryScreen = () => {
-  const [path, setPath] = useState([]);
-
   return (
     <View>
       <Text>HistoryScreen</Text>
