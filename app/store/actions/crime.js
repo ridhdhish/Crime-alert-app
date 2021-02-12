@@ -15,37 +15,40 @@ export const reportCrime = (crimeData) => async (dispatch, getState) => {
   const isAuth = auth.token;
   console.log(auth.isConnected);
   try {
-    const result = await insertCrime({
-      id: Math.random(),
-      lat: crimeData.location.lat,
-      long: crimeData.location.long,
-      address: crimeData.address,
-      city: crimeData.city,
-      crimeData: crimeData.crimeData,
-      state: crimeData.state,
+    // "http://10.0.2.2:5000/api/crime"
+    const response = await fetch(`${env.API_URL}/crime`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: isAuth ? `Bearer ${auth.token}` : "",
+      },
+      body: JSON.stringify(isAuth ? crimeData : { ...crimeData, secretToken }),
     });
-
-    //"http://10.0.2.2:5000/api/crime"
-    // const response = await fetch(`${env.API_URL}/crime`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Authorization: isAuth ? `Bearer ${auth.token}` : "",
-    //   },
-    //   body: JSON.stringify(isAuth ? crimeData : { ...crimeData, secretToken }),
-    // });
-    // const data = await response.json();
-
-    // if (!response.ok) {
-    //   throw new Error(data.message);
-    // }
-    // dispatch({
-    //   type: REPORT_CRIME,
-    //   payload: data,
-    // });
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message);
+    }
+    dispatch({
+      type: REPORT_CRIME,
+      payload: data,
+    });
   } catch (error) {
     console.log(error.message);
-    // dispatch(reportCrimeError(crimeData));
+    if (
+      !auth.isConnected ||
+      error.message.toLowerCase().contains("network request")
+    ) {
+      await insertCrime({
+        id: Math.random(),
+        lat: crimeData.location.lat,
+        long: crimeData.location.long,
+        address: crimeData.address,
+        city: crimeData.city,
+        crimeData: crimeData.crimeData,
+        state: crimeData.state,
+      });
+    }
+    dispatch(reportCrimeError(crimeData));
   }
 };
 
