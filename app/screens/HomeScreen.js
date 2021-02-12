@@ -24,6 +24,7 @@ import { getCriticalColor } from "../utils/getCriticalColor";
 
 const HomeScreen = (props) => {
   const auth = useSelector((state) => state.auth);
+  const crime = useSelector((state) => state.crime);
   const crimePlaces = useSelector((state) => state.crime.crimePlaces);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -75,10 +76,12 @@ const HomeScreen = (props) => {
         latitude: crimeData.location.lat,
         longitude: crimeData.location.long,
       });
-      sendNotification({
-        title: "Sent Notification",
-        body: "Alert has be reported successfully",
-      });
+      if (auth.isConnected) {
+        sendNotification({
+          title: "Sent Notification",
+          body: "Alert has be reported successfully",
+        });
+      }
     } catch (error) {
       console.log(error.message);
       Alert.alert("Error", error.message, [{ text: "Okay" }]);

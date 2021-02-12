@@ -6,7 +6,12 @@ import {
 } from "../types";
 import env from "../../environment";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { insertCrime } from "../../utils/SQLiteQueries";
+import {
+  clearCrimes,
+  getCrimeData,
+  insertCrime,
+} from "../../utils/SQLiteQueries";
+import { sendNotification } from "../../utils/sendNotification";
 
 export const reportCrime = (crimeData) => async (dispatch, getState) => {
   const { auth } = getState();
@@ -28,17 +33,17 @@ export const reportCrime = (crimeData) => async (dispatch, getState) => {
     if (!response.ok) {
       throw new Error(data.message);
     }
+    await clearCrimes();
     dispatch({
       type: REPORT_CRIME,
       payload: data,
     });
   } catch (error) {
-    console.log(error.message);
     if (
       !auth.isConnected ||
-      error.message.toLowerCase().contains("network request")
+      error.message.toLowerCase().includes("network request")
     ) {
-      await insertCrime({
+      const result = await insertCrime({
         id: Math.random(),
         lat: crimeData.location.lat,
         long: crimeData.location.long,
@@ -47,6 +52,7 @@ export const reportCrime = (crimeData) => async (dispatch, getState) => {
         crimeData: crimeData.crimeData,
         state: crimeData.state,
       });
+      console.log(result);
     }
     dispatch(reportCrimeError(crimeData));
   }
@@ -102,6 +108,51 @@ export const getAroundData = ({ lat, long, city }) => async (
         },
       });
     }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+export const doBackgroundSync = () => async (dispatch, getState) => {
+  try {
+    const isAuth = getState().auth;
+    console.log(isAuth);
+    const secret = await AsyncStorage.getItem("secretToken");
+    const secretToken = JSON.parse(secret);
+    const result = await getCrimeData();
+    const crime = result.rows._array[result.rows._array.length - 1];
+    console.log(crime);
+    const crimeData = {
+      location: {
+        lat: crime.lat,
+        long: crime.log,
+      },
+      city: crime.city,
+      state: crime.state,
+      address: crime.address,
+      crimeData: crime.crimeData,
+    };
+    const response = await fetch(`${env.API_URL}/crime`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: isAuth ? `Bearer ${getState().auth.token}` : "",
+      },
+      body: JSON.stringify(isAuth ? crimeData : { ...crimeData, secretToken }),
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message);
+    }
+    await clearCrimes();
+    sendNotification({
+      title: "Sent Notification",
+      body: "Alert has be reported successfully",
+    });
+    dispatch({
+      type: REPORT_CRIME,
+      payload: data,
+    });
   } catch (error) {
     console.log(error.message);
   }

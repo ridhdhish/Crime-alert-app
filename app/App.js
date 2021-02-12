@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Alert, StatusBar, StyleSheet, View } from "react-native";
 import { Provider, useDispatch } from "react-redux";
 import { applyMiddleware, combineReducers, createStore } from "redux";
@@ -13,6 +13,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import NetInfo from "@react-native-community/netinfo";
 import { initCrimeDB } from "./utils/SQLiteQueries";
 import { setConnectedToInternet } from "./store/actions/auth";
+import { doBackgroundSync } from "./store/actions/crime";
 
 initCrimeDB()
   .then(() => console.log("Db has been created successfully"))
@@ -37,6 +38,7 @@ const store = createStore(rootReducer, applyMiddleware(Thunk));
 
 export default function App() {
   const [isConnected, setIsConnected] = useState(true);
+  const previousConnected = useRef(true);
 
   useEffect(() => {
     // LogBox.ignoreLogs(["Setting a timer"]);
@@ -72,7 +74,7 @@ export default function App() {
 
     const unsubscribe = NetInfo.addEventListener((state) => {
       console.log("Is connected?", state.isConnected);
-      setIsConnected(state.isConnected);
+      setIsConnected(() => state.isConnected);
       store.dispatch(setConnectedToInternet(isConnected));
     });
 
@@ -80,10 +82,20 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    previousConnected.current = isConnected;
     if (!isConnected) {
-      Alert.alert("Network Error", "You are not connect with internet", [
-        { text: "Okay" },
-      ]);
+      // Alert.alert("Network Error", "You are not connect with internet", [
+      //   { text: "Okay" },
+      // ]);
+      console.log("======================");
+      console.log("Not Connected");
+      console.log("======================");
+    }
+    if (isConnected) {
+      // store.getState().auth.isConnected
+      //  &&
+      // previousConnected.current === false
+      // store.dispatch(doBackgroundSync());
     }
   }, [isConnected]);
 
@@ -95,7 +107,7 @@ export default function App() {
           translucent={true}
           barStyle="light-content"
           backgroundColor="rgba(0, 0, 0, 0.1)"
-          hidden
+          // hidden
           animated
         />
       </View>

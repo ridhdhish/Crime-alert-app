@@ -14,6 +14,7 @@ import env from "../../environment";
 let timer;
 
 export const me = () => async (dispatch, getState) => {
+  console.log(getState().auth);
   try {
     const response = await fetch(`${env.API_URL}/user/me`, {
       headers: {

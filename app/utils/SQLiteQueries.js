@@ -113,3 +113,22 @@ export const dropTable = () => {
     });
   });
 };
+
+export const clearCrimes = () => {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        `
+        DELETE FROM alerts
+      `,
+        [],
+        (_, result) => {
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err);
+        }
+      );
+    });
+  });
+};
