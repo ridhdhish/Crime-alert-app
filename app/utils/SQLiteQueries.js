@@ -2,7 +2,7 @@ import * as SQLite from "expo-sqlite";
 
 const db = SQLite.openDatabase("alerts.db");
 
-export const init = async () => {
+export const initCrimeDB = async () => {
   return new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
@@ -13,7 +13,8 @@ export const init = async () => {
           city TEXT,
           address TEXT,
           state TEXT,
-          crimeData TEXT
+          crimeData TEXT,
+          id REAL NOT NULL
         );
       `,
         [],
@@ -21,7 +22,92 @@ export const init = async () => {
           resolve();
         },
         (_, error) => {
-          reject();
+          reject(error);
+        }
+      );
+    });
+  });
+};
+
+export const insertCrime = async ({
+  id,
+  lat,
+  long,
+  city = "",
+  address = "",
+  state = "",
+  crimeData = "",
+}) => {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        `
+        INSERT INTO alerts (lat, long, city, address, state, crimeData, id)
+        VALUES (?, ?, ?, ?, ?, ?, ?);
+      `,
+        [lat, long, city, address, state, crimeData, id],
+        (_, result) => {
+          resolve(result);
+        },
+        (_, error) => {
+          reject(error);
+        }
+      );
+    });
+  });
+};
+
+export const deleteCrime = async (id) => {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        `
+        DELETE FROM alerts where id = ?;
+      `,
+        [id],
+        (_, result) => {
+          resolve(result);
+        },
+        (_, error) => {
+          reject(error);
+        }
+      );
+    });
+  });
+};
+
+export const getCrimeData = () => {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        `
+        SELECT * from alerts
+      `,
+        [],
+        (_, result) => {
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err);
+        }
+      );
+    });
+  });
+};
+
+export const dropTable = () => {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        `
+        DROP TABLE alerts
+      `,
+        [],
+        (_, result) => {
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err);
         }
       );
     });

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Alert, StatusBar, StyleSheet, View } from "react-native";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import Thunk from "redux-thunk";
 import AppNavigator from "./navigation/AppNavigator";
@@ -11,9 +11,10 @@ import * as Permissions from "expo-permissions";
 import * as Notifications from "expo-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NetInfo from "@react-native-community/netinfo";
-import { init } from "./utils/SQLiteQueries";
+import { initCrimeDB } from "./utils/SQLiteQueries";
+import { setConnectedToInternet } from "./store/actions/auth";
 
-init()
+initCrimeDB()
   .then(() => console.log("Db has been created successfully"))
   .catch((error) => console.log(error.message));
 
@@ -72,6 +73,7 @@ export default function App() {
     const unsubscribe = NetInfo.addEventListener((state) => {
       console.log("Is connected?", state.isConnected);
       setIsConnected(state.isConnected);
+      store.dispatch(setConnectedToInternet(isConnected));
     });
 
     return () => unsubscribe();

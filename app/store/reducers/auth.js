@@ -5,12 +5,14 @@ import {
   REFRESH_USER_DATA,
   TRY_AUTO_LOGIN,
   UPDATE_USER,
+  SET_CONNECTED_TO_INTERNET,
 } from "../types";
 
 const initState = {
   user: null,
   token: null,
   tryAutoLogin: false,
+  isConnected: true,
 };
 
 export const authReducer = (state = initState, action) => {
@@ -48,6 +50,13 @@ export const authReducer = (state = initState, action) => {
         ...state,
         user: payload.user,
       };
+
+    case SET_CONNECTED_TO_INTERNET:
+      return {
+        ...state,
+        isConnected: payload,
+      };
+
     default:
       return state;
   }
