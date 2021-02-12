@@ -11,6 +11,11 @@ import * as Permissions from "expo-permissions";
 import * as Notifications from "expo-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NetInfo from "@react-native-community/netinfo";
+import { init } from "./utils/SQLiteQueries";
+
+init()
+  .then(() => console.log("Db has been created successfully"))
+  .catch((error) => console.log(error.message));
 
 Notifications.setNotificationHandler({
   handleNotification: async () => {
