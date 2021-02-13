@@ -14,12 +14,13 @@ export const initCrimeDB = async () => {
           address TEXT,
           state TEXT,
           crimeData TEXT,
-          id REAL NOT NULL
+          id REAL NOT NULL,
+          createdAt REAL NULL
         );
       `,
         [],
-        (_) => {
-          resolve();
+        (_, result) => {
+          resolve(result);
         },
         (_, error) => {
           reject(error);
@@ -42,10 +43,10 @@ export const insertCrime = async ({
     db.transaction((tx) => {
       tx.executeSql(
         `
-        INSERT INTO alerts (lat, long, city, address, state, crimeData, id)
-        VALUES (?, ?, ?, ?, ?, ?, ?);
+        INSERT INTO alerts (lat, long, city, address, state, crimeData, id, createdAt)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?);
       `,
-        [lat, long, city, address, state, crimeData, id],
+        [lat, long, city, address, state, crimeData, id, Date.now()],
         (_, result) => {
           resolve(result);
         },

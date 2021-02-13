@@ -6,6 +6,7 @@ import {
   TRY_AUTO_LOGIN,
   UPDATE_USER,
   SET_CONNECTED_TO_INTERNET,
+  LOADED_DATA,
 } from "../types";
 
 const initState = {
@@ -13,6 +14,7 @@ const initState = {
   token: null,
   tryAutoLogin: false,
   isConnected: true,
+  loadedData: false,
 };
 
 export const authReducer = (state = initState, action) => {
@@ -55,6 +57,12 @@ export const authReducer = (state = initState, action) => {
       return {
         ...state,
         isConnected: payload,
+      };
+
+    case LOADED_DATA:
+      return {
+        ...state,
+        loadedData: payload,
       };
 
     default:

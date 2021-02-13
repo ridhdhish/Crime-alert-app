@@ -113,46 +113,54 @@ export const getAroundData = ({ lat, long, city }) => async (
   }
 };
 
-export const doBackgroundSync = () => async (dispatch, getState) => {
+export const doBackgroundSync = (userData = {}) => async (
+  dispatch,
+  getState
+) => {
   try {
-    const isAuth = getState().auth;
-    console.log(isAuth);
+    const isAuth = userData.token;
     const secret = await AsyncStorage.getItem("secretToken");
     const secretToken = JSON.parse(secret);
     const result = await getCrimeData();
     const crime = result.rows._array[result.rows._array.length - 1];
-    console.log(crime);
-    const crimeData = {
-      location: {
-        lat: crime.lat,
-        long: crime.log,
-      },
-      city: crime.city,
-      state: crime.state,
-      address: crime.address,
-      crimeData: crime.crimeData,
-    };
-    const response = await fetch(`${env.API_URL}/crime`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: isAuth ? `Bearer ${getState().auth.token}` : "",
-      },
-      body: JSON.stringify(isAuth ? crimeData : { ...crimeData, secretToken }),
-    });
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message);
+    if (crime && Date.now() - crime.createdAt < 1000 * 60 * 60 * 2) {
+      const crimeData = {
+        location: {
+          lat: crime.lat,
+          long: crime.long,
+        },
+        city: crime.city,
+        state: crime.state,
+        address: crime.address,
+        crimeData: crime.crimeData,
+      };
+      const response = await fetch(`${env.API_URL}/crime`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: isAuth ? `Bearer ${getState().auth.token}` : "",
+        },
+        body: JSON.stringify(
+          isAuth ? crimeData : { ...crimeData, secretToken }
+        ),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+      await clearCrimes();
+      sendNotification({
+        title: "Sent Notification",
+        body: "Alert has be reported successfully",
+      });
+      dispatch({
+        type: REPORT_CRIME,
+        payload: data,
+      });
+    } else {
+      await clearCrimes();
+      console.log("No Crimes");
     }
-    await clearCrimes();
-    sendNotification({
-      title: "Sent Notification",
-      body: "Alert has be reported successfully",
-    });
-    dispatch({
-      type: REPORT_CRIME,
-      payload: data,
-    });
   } catch (error) {
     console.log(error.message);
   }

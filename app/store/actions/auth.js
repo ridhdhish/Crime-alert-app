@@ -7,6 +7,7 @@ import {
   TRY_AUTO_LOGIN,
   UPDATE_USER,
   SET_CONNECTED_TO_INTERNET,
+  LOADED_DATA,
 } from "../types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import env from "../../environment";
@@ -14,7 +15,6 @@ import env from "../../environment";
 let timer;
 
 export const me = () => async (dispatch, getState) => {
-  console.log(getState().auth);
   try {
     const response = await fetch(`${env.API_URL}/user/me`, {
       headers: {
@@ -192,5 +192,12 @@ export const setConnectedToInternet = (isConnected) => {
   return {
     type: SET_CONNECTED_TO_INTERNET,
     payload: isConnected,
+  };
+};
+
+export const setLoadedData = (isLoaded) => {
+  return {
+    type: LOADED_DATA,
+    payload: isLoaded,
   };
 };

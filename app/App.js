@@ -12,7 +12,7 @@ import * as Notifications from "expo-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NetInfo from "@react-native-community/netinfo";
 import { initCrimeDB } from "./utils/SQLiteQueries";
-import { setConnectedToInternet } from "./store/actions/auth";
+import { setConnectedToInternet, setLoadedData } from "./store/actions/auth";
 import { doBackgroundSync } from "./store/actions/crime";
 
 initCrimeDB()
@@ -38,7 +38,8 @@ const store = createStore(rootReducer, applyMiddleware(Thunk));
 
 export default function App() {
   const [isConnected, setIsConnected] = useState(true);
-  const previousConnected = useRef(true);
+  const [user, setUser] = useState();
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     // LogBox.ignoreLogs(["Setting a timer"]);
@@ -77,12 +78,20 @@ export default function App() {
       setIsConnected(() => state.isConnected);
       store.dispatch(setConnectedToInternet(isConnected));
     });
+    const unsubscribeStore = store.subscribe(() => {
+      if (store.getState().auth.loadedData) {
+        setUser(store.getState().auth);
+        setLoaded(store.getState().auth.loadedData);
+        unsubscribeStore();
+      }
+    });
 
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   useEffect(() => {
-    previousConnected.current = isConnected;
     if (!isConnected) {
       // Alert.alert("Network Error", "You are not connect with internet", [
       //   { text: "Okay" },
@@ -91,13 +100,10 @@ export default function App() {
       console.log("Not Connected");
       console.log("======================");
     }
-    if (isConnected) {
-      // store.getState().auth.isConnected
-      //  &&
-      // previousConnected.current === false
-      // store.dispatch(doBackgroundSync());
+    if (isConnected && loaded) {
+      store.dispatch(doBackgroundSync(user));
     }
-  }, [isConnected]);
+  }, [isConnected, loaded]);
 
   return (
     <Provider store={store}>
