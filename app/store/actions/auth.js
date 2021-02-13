@@ -6,6 +6,8 @@ import {
   REPORT_CRIME_ERROR,
   TRY_AUTO_LOGIN,
   UPDATE_USER,
+  SET_CONNECTED_TO_INTERNET,
+  LOADED_DATA,
 } from "../types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import env from "../../environment";
@@ -184,4 +186,18 @@ export const updateProfile = (user, expirationTime) => async (
   } catch (err) {
     console.log(err);
   }
+};
+
+export const setConnectedToInternet = (isConnected) => {
+  return {
+    type: SET_CONNECTED_TO_INTERNET,
+    payload: isConnected,
+  };
+};
+
+export const setLoadedData = (isLoaded) => {
+  return {
+    type: LOADED_DATA,
+    payload: isLoaded,
+  };
 };

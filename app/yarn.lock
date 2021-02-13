@@ -4955,6 +4955,11 @@ react-is@^17.0.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.1.tgz#5b3531bd76a645a4c9fb6e693ed36419e3301339"
   integrity sha512-NAnt2iGDXohE5LI7uBnLnqvLQMtzhkiAOLXTmv+qnF9Ky7xAPcX8Up/xWIhxvLVGJvuLiNc4xQLtuqDRzb4fSA==
 
+react-native-background-actions@^2.5.2:
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/react-native-background-actions/-/react-native-background-actions-2.5.2.tgz#bc6f886cff5a0067dcc7353019f6e072a7d22e05"
+  integrity sha512-LP6OfjIabtNXtPw0AUL0rrqFoZAx+YDOEa7eY8AsRIQrBUYuQRNZhc7cvqtE+VXge4F1dFdeSLrt17/lVky5fA==
+
 react-native-chart-kit@^6.10.1:
   version "6.10.1"
   resolved "https://registry.yarnpkg.com/react-native-chart-kit/-/react-native-chart-kit-6.10.1.tgz#b96331ae1017ebe6188ce4c3b10e9ed3a9cce5e2"
