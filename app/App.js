@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, StatusBar, StyleSheet, View } from "react-native";
-import { Provider, useDispatch } from "react-redux";
+import { Provider } from "react-redux";
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import Thunk from "redux-thunk";
 import AppNavigator from "./navigation/AppNavigator";
@@ -12,8 +12,10 @@ import * as Notifications from "expo-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NetInfo from "@react-native-community/netinfo";
 import { initCrimeDB } from "./utils/SQLiteQueries";
-import { setConnectedToInternet, setLoadedData } from "./store/actions/auth";
+import { setConnectedToInternet } from "./store/actions/auth";
 import { doBackgroundSync } from "./store/actions/crime";
+import { Accelerometer } from "expo-sensors";
+import { ShakeEventExpo } from "./utils/deviceShake";
 
 initCrimeDB()
   .then(() => console.log("Db has been created successfully"))
@@ -68,6 +70,16 @@ export default function App() {
          */
         const token = await Notifications.getExpoPushTokenAsync();
         AsyncStorage.setItem("pushToken", JSON.stringify(token.data));
+
+        /**
+         * For shake event
+         */
+        const isAccelerometerAvailable = await Accelerometer.isAvailableAsync();
+        if (isAccelerometerAvailable) {
+          ShakeEventExpo.addListener(() => {
+            console.log("Shake Shake Shake", Math.random());
+          });
+        }
       } catch (error) {
         console.log(error.message);
       }
@@ -88,6 +100,8 @@ export default function App() {
 
     return () => {
       unsubscribe();
+      unsubscribeStore();
+      ShakeEventExpo.removeListener();
     };
   }, []);
 
