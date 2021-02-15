@@ -127,7 +127,7 @@ export default function App() {
           translucent={true}
           barStyle="light-content"
           backgroundColor="rgba(0, 0, 0, 0.1)"
-          // hidden
+          hidden
           animated
         />
       </View>

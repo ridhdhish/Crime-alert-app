@@ -75,6 +75,7 @@ const signUp = async (req, res) => {
     });
     if (relative) {
       relative.pushToken = pushToken;
+      relative.existingUserId = newUser.id;
       relative.markModified("pushToken");
       await relative.save();
     }

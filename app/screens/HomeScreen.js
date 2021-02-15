@@ -21,10 +21,10 @@ import currentLocationImage from "../assets/images/currentLocation.png";
 import CustomContentLoader from "../components/CustomContentLoader";
 import { TextInput } from "react-native-gesture-handler";
 import { getCriticalColor } from "../utils/getCriticalColor";
+import Layout from "../components/Layout";
 
 const HomeScreen = (props) => {
   const auth = useSelector((state) => state.auth);
-  const crime = useSelector((state) => state.crime);
   const crimePlaces = useSelector((state) => state.crime.crimePlaces);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -32,7 +32,7 @@ const HomeScreen = (props) => {
   const [markerPosition, setMarkerPosition] = useState(null);
   const [addCrimeData, setAddCrimeData] = useState(false);
   const [crimeDataText, setCrimeDataText] = useState("");
-
+  console.log(auth.user);
   useNotification();
 
   useEffect(() => {
@@ -95,20 +95,7 @@ const HomeScreen = (props) => {
       {!auth.user ? (
         <ActivityIndicator size="large" color={colors.backgroundPrimary} />
       ) : (
-        <Fragment>
-          <FloatingButton
-            style={{
-              left: 15,
-              top: 25,
-            }}
-            onPress={() => props.navigation.toggleDrawer()}
-          >
-            <Ionicons
-              size={30}
-              name={Platform.OS === "android" ? "md-menu" : "ios-menu"}
-              color={colors.textSecondary}
-            />
-          </FloatingButton>
+        <Layout navigation={props.navigation}>
           <FloatingButton
             style={{
               right: 80,
@@ -282,7 +269,7 @@ const HomeScreen = (props) => {
             <CustomContentLoader map />
           )}
           <AlertButton loading={isLoading} reportCrimeData={reportCrimeData} />
-        </Fragment>
+        </Layout>
       )}
     </Fragment>
   );

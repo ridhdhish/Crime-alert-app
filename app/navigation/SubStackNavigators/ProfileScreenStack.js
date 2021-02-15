@@ -9,7 +9,7 @@ const ProfileScreenStack = () => (
   <ProfileStack.Navigator
     screenOptions={({ navigation }) => ({
       ...stackCommonOption(navigation),
-      // headerShown: false,
+      headerShown: false,
     })}
   >
     <ProfileStack.Screen

@@ -28,6 +28,10 @@ const relativeSchema = new mongoose.Schema(
     pushToken: {
       type: String,
     },
+    existingUserId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
   {
     timestamps: true,
