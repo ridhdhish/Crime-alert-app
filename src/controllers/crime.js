@@ -2,6 +2,7 @@ const { validationResult } = require("express-validator");
 const Crime = require("../models/crime");
 const Place = require("../models/place");
 const Relative = require("../models/relative");
+const User = require("../models/user");
 const sendResponse = require("../utils/sendResponse");
 const jwt = require("jsonwebtoken");
 const { sendMail } = require("../utils/sendMail");
@@ -95,6 +96,14 @@ const registerCrime = async (req, res) => {
 
     await Promise.all(
       pushRelatives.map(async (rel) => {
+        const user = await User.findById(rel.existingUserId);
+        if (user) {
+          user.recentAlerts.push({
+            crimeId: crime.id,
+            userId: userId,
+          });
+          await user.save();
+        }
         const expo = new Expo({ accessToken: process.env.EXPO_ACCESS_TOKEN });
         await expo.sendPushNotificationsAsync([
           {
