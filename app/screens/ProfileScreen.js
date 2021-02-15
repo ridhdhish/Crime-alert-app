@@ -23,6 +23,9 @@ import { colors } from "../colors";
 import { useDispatch, useSelector } from "react-redux";
 import { updateProfile } from "../store/actions/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Layout from "../components/Layout";
+import FloatingButton from "../components/FloatingButton";
+import { Ionicons } from "@expo/vector-icons";
 
 const ProfileScreen = (props) => {
   const dispatch = useDispatch();
@@ -69,32 +72,24 @@ const ProfileScreen = (props) => {
     setIsLoading(false);
   };
 
-  useEffect(() => {
-    props.navigation.setOptions({
-      headerRight: () =>
-        isEdit ? (
-          <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-            <Item
-              iconName={Platform.OS === "ios" ? "ios-save" : "md-save"}
-              color={colors.textSecondary}
-              onPress={() => {
-                editProfileHandler();
-              }}
-            />
-          </HeaderButtons>
-        ) : (
-          <Fragment></Fragment>
-        ),
-    });
-  }, [isEdit]);
-
-  useEffect(() => {
-    //setEditedData(() => ref.current.values);
-  });
-
   return (
-    <View>
+    <Layout>
       <ScrollView>
+        {isEdit && (
+          <FloatingButton
+            style={{
+              right: 15,
+              top: 25,
+            }}
+            onPress={() => editProfileHandler()}
+          >
+            <Ionicons
+              size={30}
+              name={Platform.OS === "ios" ? "ios-save" : "md-save"}
+              color={colors.textSecondary}
+            />
+          </FloatingButton>
+        )}
         <TouchableWithoutFeedback
           onPress={() => {
             Keyboard.dismiss();
@@ -105,7 +100,7 @@ const ProfileScreen = (props) => {
             style={{
               justifyContent: "center",
               flexDirection: "row",
-              paddingTop: 35,
+              paddingTop: 80,
             }}
           >
             <View style={styles.profilePic}>
@@ -191,7 +186,7 @@ const ProfileScreen = (props) => {
           )}
         </TouchableWithoutFeedback>
       </ScrollView>
-    </View>
+    </Layout>
   );
 };
 

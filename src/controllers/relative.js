@@ -58,6 +58,7 @@ const addRelative = async (req, res) => {
     });
     if (user) {
       newRelative.pushToken = user.pushToken;
+      newRelative.existingUserId = user.id;
       if (Expo.isExpoPushToken(user.pushToken)) {
         const expo = new Expo({ accessToken: process.env.EXPO_ACCESS_TOKEN });
         expo.sendPushNotificationsAsync([

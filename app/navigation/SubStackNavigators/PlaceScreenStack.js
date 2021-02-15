@@ -9,6 +9,7 @@ const PlaceScreenStack = () => (
   <PlaceStack.Navigator
     screenOptions={({ navigation }) => ({
       ...stackCommonOption(navigation),
+      headerShown: false,
     })}
   >
     <PlaceStack.Screen

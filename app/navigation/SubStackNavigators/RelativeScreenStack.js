@@ -9,6 +9,7 @@ const RelativeScreenStack = () => (
   <RelativeStack.Navigator
     screenOptions={({ navigation }) => ({
       ...stackCommonOption(navigation),
+      headerShown: false,
     })}
   >
     <RelativeStack.Screen
