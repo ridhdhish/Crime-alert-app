@@ -32,7 +32,6 @@ const HomeScreen = (props) => {
   const [markerPosition, setMarkerPosition] = useState(null);
   const [addCrimeData, setAddCrimeData] = useState(false);
   const [crimeDataText, setCrimeDataText] = useState("");
-  console.log(auth.user);
   useNotification();
 
   useEffect(() => {
