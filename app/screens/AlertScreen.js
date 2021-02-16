@@ -20,7 +20,7 @@ const AlertScreen = (props) => {
       ios: "maps:0,0?q=",
       android: "geo:0,0?q=",
     });
-    const latLng = `${alert.location.lat},${alert.location.lng}`;
+    const latLng = `${alert.location.lat},${alert.location.long}`;
     const label = "Crime Location";
     const url = Platform.select({
       ios: `${scheme}${label}@${latLng}`,
@@ -37,11 +37,13 @@ const AlertScreen = (props) => {
             style={{
               padding: 10,
               borderBottomColor: "rgba(0, 0, 0, 0.1)",
-              borderBottomWidth: 2,
-              backgroundColor: alert.isSeen
-                ? "rgba(242, 145, 60, 0.2)"
+              borderBottomWidth: !alert.isSeen ? 0 : 2,
+              backgroundColor: !alert.isSeen
+                ? "rgba(242, 145, 60, 0.3)"
                 : "white",
               flexDirection: "row",
+              margin: 5,
+              borderRadius: 10,
             }}
             key={alert.crimeId}
           >
@@ -99,7 +101,7 @@ const AlertScreen = (props) => {
                   textStyle={{
                     color: colors.textSecondary,
                   }}
-                  onPress={() => {}}
+                  onPress={() => openInMaps(alert)}
                 />
                 <CustomButton
                   text="Details"
@@ -116,7 +118,7 @@ const AlertScreen = (props) => {
                   textStyle={{
                     color: colors.backgroundSecondary,
                   }}
-                  onPress={() => openInMaps(alert)}
+                  onPress={() => {}}
                 />
               </View>
             </View>

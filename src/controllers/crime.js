@@ -102,7 +102,9 @@ const registerCrime = async (req, res) => {
         const user = await User.findById(rel.existingUserId);
         if (user) {
           user.recentAlerts.push({
-            title: `${sender.firstname} ${sender.lastname} needs your help`,
+            title: `${sender.firstname} ${sender.lastname} needs your help ${
+              place.address && "near " + places.address
+            }`,
             crimeId: crime.id,
             senderId: sender._id,
             location: {
@@ -117,10 +119,14 @@ const registerCrime = async (req, res) => {
           {
             to: rel.pushToken,
             sound: "default",
-            body: "Alert has been received",
+            body: `${sender.firstname} ${sender.lastname} needs your help`,
             data: {
               username: "User's name who sent the alert",
             },
+            priority: "high",
+            title: "Need Help",
+            subtitle: `${place.address && "near " + places.address}`,
+            badge: 10,
           },
         ]);
         return rel;
