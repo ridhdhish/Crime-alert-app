@@ -16,6 +16,7 @@ const registerCrime = async (req, res) => {
     return sendResponse(errors.array(), res, 400);
   }
   let userId;
+  let sender;
   const authHeader = req.get("Authorization");
   try {
     /**
@@ -33,6 +34,7 @@ const registerCrime = async (req, res) => {
       if (!user) {
         return sendResponse("Don't try to make fake alerts", res, 401);
       }
+      sender = user.value;
       userId = user.value._id;
 
       /**
@@ -49,6 +51,7 @@ const registerCrime = async (req, res) => {
           message: "Don't try to make fake alerts",
         });
       }
+      sender = await User.findById(decodedToken.user.id);
       userId = decodedToken.user.id;
     }
 
@@ -99,8 +102,9 @@ const registerCrime = async (req, res) => {
         const user = await User.findById(rel.existingUserId);
         if (user) {
           user.recentAlerts.push({
+            title: `${sender.firstname} ${sender.lastname} needs your help`,
             crimeId: crime.id,
-            userId: userId,
+            senderId: sender._id,
           });
           await user.save();
         }
@@ -136,6 +140,25 @@ const registerCrime = async (req, res) => {
   }
 };
 
+const seenCrime = async (req, res) => {
+  const { crimeId } = req.params;
+  try {
+    const user = await User.findById(req.user.id);
+    const alert = user.recentAlerts.find(
+      (alert) => alert.crimeId.toString() === crimeId
+    );
+    if (alert) {
+      alert.isSeen = true;
+      await user.save();
+      return sendResponse("Crime seen", res, 200);
+    }
+    sendResponse("No crime found", res, 200);
+  } catch (error) {
+    sendResponse(error.message, res);
+  }
+};
+
 module.exports = {
   registerCrime,
+  seenCrime,
 };

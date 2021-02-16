@@ -6,10 +6,11 @@ import { ActivityIndicator, Dimensions, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { getAroundData } from "../store/actions/crime";
 import Layout from "../components/Layout";
+import { useNotification } from "../hooks/useNotification";
 
 const PlacesScreen = (props) => {
   const cityData = useSelector((state) => state.crime.cityData);
-
+  useNotification();
   const [leftPriority, setLeftPriority] = useState([
     "Surat",
     "Vadodara",

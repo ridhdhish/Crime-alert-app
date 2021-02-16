@@ -256,7 +256,7 @@ const HomeScreen = (props) => {
               ))}
               <Circle
                 center={markerPosition}
-                radius={3000}
+                radius={3300}
                 fillColor={getCriticalColor(
                   crimePlaces.places.length,
                   crimePlaces.totalCrimes

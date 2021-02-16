@@ -29,6 +29,7 @@ import { Picker } from "@react-native-picker/picker";
 import CustomContentLoader from "../components/CustomContentLoader";
 import Layout from "../components/Layout";
 import FloatingButton from "../components/FloatingButton";
+import { useNotification } from "../hooks/useNotification";
 
 const iconColors = ["orange", "green", "lightblue"];
 
@@ -85,7 +86,7 @@ const RelativesScreen = (props) => {
     );
     setIsFormValid(() => formValid);
   };
-
+  useNotification();
   useEffect(() => {
     setIsFetching(true);
     async function getData() {
@@ -154,7 +155,7 @@ const RelativesScreen = (props) => {
             <FloatingButton
               style={{
                 right: 15,
-                top: 25,
+                bottom: 25,
               }}
               onPress={() => {
                 setModalVisible(true);

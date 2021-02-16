@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import React, { Fragment } from "react";
-import { Platform } from "react-native";
+import { Platform, Text } from "react-native";
 import { colors } from "../colors";
 import FloatingButton from "./FloatingButton";
 
@@ -20,6 +20,7 @@ const Layout = (props) => {
           color={colors.textSecondary}
         />
       </FloatingButton>
+      <Text>Hello</Text>
       {props.children}
     </Fragment>
   );

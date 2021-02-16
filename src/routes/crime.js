@@ -1,6 +1,7 @@
 const express = require("express");
 const { check } = require("express-validator");
-const { registerCrime } = require("../controllers/crime");
+const auth = require("../middlewares/auth");
+const { registerCrime, seenCrime } = require("../controllers/crime");
 const router = express.Router();
 
 /**
@@ -15,5 +16,12 @@ router.post(
     .isEmpty(),
   registerCrime
 );
+
+/**
+ * route : POST /api/crime/seenCrime/:crimeId
+ * access : Private
+ * desc: set seen crime crime
+ */
+router.put("/seenAlert/:crimeId", auth, seenCrime);
 
 exports.crimeRoute = router;
