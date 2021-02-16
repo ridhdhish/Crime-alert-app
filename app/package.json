@@ -20,6 +20,7 @@
     "@react-navigation/material-bottom-tabs": "^5.3.10",
     "@react-navigation/native": "^5.8.10",
     "@react-navigation/stack": "^5.12.8",
+    "dayjs": "^1.10.4",
     "dotenv": "^8.2.0",
     "expo": "~40.0.1",
     "expo-blur": "~8.2.2",

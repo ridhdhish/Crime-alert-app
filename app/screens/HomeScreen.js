@@ -117,6 +117,7 @@ const HomeScreen = (props) => {
               right: 20,
               top: 25,
             }}
+            onPress={() => props.navigation.navigate("Alerts")}
           >
             <Ionicons
               size={30}
@@ -149,7 +150,10 @@ const HomeScreen = (props) => {
                     color: colors.textSecondary,
                   }}
                 >
-                  {auth.user?.recentAlerts?.length}
+                  {
+                    auth.user?.recentAlerts?.filter((alert) => !alert.isSeen)
+                      .length
+                  }
                 </Text>
               </View>
             )}

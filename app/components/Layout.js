@@ -11,6 +11,7 @@ const Layout = (props) => {
         style={{
           left: 15,
           top: 25,
+          zIndex: 10101011,
         }}
         onPress={() => props.navigation.toggleDrawer()}
       >
@@ -20,7 +21,6 @@ const Layout = (props) => {
           color={colors.textSecondary}
         />
       </FloatingButton>
-      <Text>Hello</Text>
       {props.children}
     </Fragment>
   );
