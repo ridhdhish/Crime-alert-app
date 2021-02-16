@@ -6,6 +6,7 @@ import {
 import HomeNavigator from "./HomeNavigator";
 import HistoryScreenStack from "./SubStackNavigators/HistoryScreenStack";
 import SettingScreenStack from "./SubStackNavigators/SettingScreenStack";
+import AlertScreenStack from "./SubStackNavigators/AlertScreenStack";
 import { colors } from "../colors";
 import { Button, SafeAreaView, Text, View } from "react-native";
 import { logout } from "../store/actions/auth";
@@ -36,6 +37,8 @@ const RootHomeNavigator = () => {
             return <MaterialIcons size={size} color={color} name="history" />;
           } else if (route.name === "Setting") {
             iconName = "settings";
+          } else if (route.name === "Alerts") {
+            iconName = "notifications";
           }
           return (
             <Ionicons
@@ -134,6 +137,11 @@ const RootHomeNavigator = () => {
         name="Setting"
         component={SettingScreenStack}
         options={{ title: "Settings" }}
+      />
+      <RootDrawer.Screen
+        name="Alerts"
+        component={AlertScreenStack}
+        options={{ title: "Alerts" }}
       />
     </RootDrawer.Navigator>
   );

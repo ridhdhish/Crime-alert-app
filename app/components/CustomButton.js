@@ -22,7 +22,7 @@ const CustomButton = (props) => {
 
 const styles = StyleSheet.create({
   customBtn: {
-    padding: 4,
+    // padding: 4,
   },
   btnText: {
     fontSize: 15,

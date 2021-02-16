@@ -1,5 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
+import AlertScreen from "../../screens/AlertScreen";
 import HomeScreen from "../../screens/HomeScreen";
 import { stackCommonOption } from "../NavigationOptions";
 
@@ -9,13 +10,17 @@ const HomeScreenStack = () => (
   <HomeStack.Navigator
     screenOptions={({ navigation }) => ({
       ...stackCommonOption(navigation),
-      headerShown: false,
     })}
   >
     <HomeStack.Screen
       name="Home"
       component={HomeScreen}
-      options={{ title: "Map" }}
+      options={{ title: "Map", headerShown: false }}
+    />
+    <HomeStack.Screen
+      name="Alerts"
+      component={AlertScreen}
+      options={{ title: "Alerts" }}
     />
   </HomeStack.Navigator>
 );

@@ -5,6 +5,7 @@ package-lock.json
 .github
 extra
 LICENSE.MD
+git.js
 
 # Logs
 logs

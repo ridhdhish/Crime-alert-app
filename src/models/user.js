@@ -36,6 +36,14 @@ const UserSchema = new mongoose.Schema(
     },
     recentAlerts: [
       {
+        title: {
+          type: String,
+          required: true,
+        },
+        senderId: {
+          type: String,
+          required: true,
+        },
         isSeen: {
           type: Boolean,
           default: false,
@@ -43,8 +51,17 @@ const UserSchema = new mongoose.Schema(
         crimeId: {
           type: mongoose.Schema.Types.ObjectId,
         },
-        userId: {
-          type: mongoose.Schema.Types.ObjectId,
+        createdAt: {
+          type: Date,
+          default: Date.now(),
+        },
+        location: {
+          lat: {
+            type: Number,
+          },
+          long: {
+            type: Number,
+          },
         },
       },
     ],

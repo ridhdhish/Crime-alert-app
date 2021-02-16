@@ -1,12 +1,12 @@
-import React from "react";
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
-import { colors } from "../colors";
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import React from "react";
 import { Platform } from "react-native";
+import { colors } from "../colors";
+import PlacesScreen from "../screens/PlacesScreen";
 import HomeScreenStack from "./SubStackNavigators/HomeScreenStack";
-import PlaceScreenStack from "./SubStackNavigators/PlaceScreenStack";
-import RelativeScreenStack from "./SubStackNavigators/RelativeScreenStack";
 import ProfileScreenStack from "./SubStackNavigators/ProfileScreenStack";
+import RelativeScreenStack from "./SubStackNavigators/RelativeScreenStack";
 
 const HomeNavigator = () => {
   const HomeTabs = createMaterialBottomTabNavigator();
@@ -46,7 +46,7 @@ const HomeNavigator = () => {
       />
       <HomeTabs.Screen
         name="Places"
-        component={PlaceScreenStack}
+        component={PlacesScreen}
         options={{ title: "Places" }}
       />
       <HomeTabs.Screen

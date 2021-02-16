@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import React, { Fragment } from "react";
-import { Platform } from "react-native";
+import { Platform, Text } from "react-native";
 import { colors } from "../colors";
 import FloatingButton from "./FloatingButton";
 
@@ -11,6 +11,7 @@ const Layout = (props) => {
         style={{
           left: 15,
           top: 25,
+          zIndex: 1010101111,
         }}
         onPress={() => props.navigation.toggleDrawer()}
       >
