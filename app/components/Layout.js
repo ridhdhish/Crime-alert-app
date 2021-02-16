@@ -11,7 +11,7 @@ const Layout = (props) => {
         style={{
           left: 15,
           top: 25,
-          zIndex: 10101011,
+          zIndex: 1010101111,
         }}
         onPress={() => props.navigation.toggleDrawer()}
       >

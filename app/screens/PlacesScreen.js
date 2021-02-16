@@ -150,6 +150,7 @@ const PlacesScreen = (props) => {
                 style={{
                   marginVertical: 18,
                   alignItems: "center",
+                  zIndex: 10,
                 }}
               />
             </View>

@@ -105,6 +105,10 @@ const registerCrime = async (req, res) => {
             title: `${sender.firstname} ${sender.lastname} needs your help`,
             crimeId: crime.id,
             senderId: sender._id,
+            location: {
+              lat: place.location.lat,
+              long: place.location.long,
+            },
           });
           await user.save();
         }
