@@ -39,6 +39,7 @@ export const reportCrime = (crimeData) => async (dispatch, getState) => {
       payload: data,
     });
   } catch (error) {
+    console.log(error.message);
     if (
       !auth.isConnected ||
       error.message.toLowerCase().includes("network request")

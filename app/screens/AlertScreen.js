@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, ScrollView, Text, View } from "react-native";
+import { Linking, Platform, ScrollView, Text, View } from "react-native";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs";
 import RelativeTime from "dayjs/plugin/relativeTime";
@@ -14,6 +14,20 @@ const AlertScreen = (props) => {
       (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
     )
   );
+
+  const openInMaps = (alert) => {
+    const scheme = Platform.select({
+      ios: "maps:0,0?q=",
+      android: "geo:0,0?q=",
+    });
+    const latLng = `${alert.location.lat},${alert.location.lng}`;
+    const label = "Crime Location";
+    const url = Platform.select({
+      ios: `${scheme}${label}@${latLng}`,
+      android: `${scheme}${latLng}(${label})`,
+    });
+    Linking.openURL(url);
+  };
 
   return (
     <ScrollView>
@@ -102,7 +116,7 @@ const AlertScreen = (props) => {
                   textStyle={{
                     color: colors.backgroundSecondary,
                   }}
-                  onPress={() => {}}
+                  onPress={() => openInMaps(alert)}
                 />
               </View>
             </View>
