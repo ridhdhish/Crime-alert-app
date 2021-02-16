@@ -26,6 +26,11 @@ const AlertScreen = (props) => {
     )
   );
 
+  const getText = (text) => {
+    const textArray = text.toUpperCase().split(" ").slice(0, 2);
+    return `${textArray[0][0]}${textArray[1][0]}`;
+  };
+
   const openInMaps = (alert) => {
     const scheme = Platform.select({
       ios: "maps:0,0?q=",
@@ -58,8 +63,6 @@ const AlertScreen = (props) => {
           <View
             style={{
               padding: 10,
-              borderBottomColor: "rgba(0, 0, 0, 0.1)",
-              borderBottomWidth: !alert.isSeen ? 0 : 2,
               backgroundColor: !alert.isSeen
                 ? "rgba(242, 145, 60, 0.3)"
                 : "white",
@@ -85,7 +88,7 @@ const AlertScreen = (props) => {
                   color: colors.textSecondary,
                 }}
               >
-                MD
+                {getText(alert.title)}
               </Text>
             </View>
             <View
@@ -93,7 +96,7 @@ const AlertScreen = (props) => {
                 marginHorizontal: 10,
               }}
             >
-              <Text style={{ fontSize: 18 }}>{alert.title}</Text>
+              <Text style={{ fontSize: 16 }}>{alert.title}</Text>
               <Text
                 style={{
                   marginVertical: 3,
@@ -147,7 +150,14 @@ const AlertScreen = (props) => {
           </View>
         ))
       ) : (
-        <Text>No Alerts</Text>
+        <Text
+          style={{
+            textAlign: "center",
+            marginTop: 20,
+          }}
+        >
+          No Alerts
+        </Text>
       )}
     </ScrollView>
   );
