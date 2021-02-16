@@ -103,7 +103,7 @@ const registerCrime = async (req, res) => {
         if (user) {
           user.recentAlerts.push({
             title: `${sender.firstname} ${sender.lastname} needs your help ${
-              place.address && "near " + places.address
+              place.address && "near " + place.address
             }`,
             crimeId: crime.id,
             senderId: sender._id,
@@ -125,7 +125,7 @@ const registerCrime = async (req, res) => {
             },
             priority: "high",
             title: "Need Help",
-            subtitle: `${place.address && "near " + places.address}`,
+            subtitle: `${place.address && "near " + place.address}`,
             badge: 10,
           },
         ]);

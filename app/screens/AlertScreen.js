@@ -1,14 +1,25 @@
-import React from "react";
-import { Linking, Platform, ScrollView, Text, View } from "react-native";
-import { useSelector } from "react-redux";
+import React, { useState } from "react";
+import {
+  Linking,
+  Platform,
+  ScrollView,
+  Text,
+  View,
+  RefreshControl,
+} from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import dayjs from "dayjs";
 import RelativeTime from "dayjs/plugin/relativeTime";
 import { colors } from "../colors";
 import CustomButton from "../components/CustomButton";
+import { me } from "../store/actions/auth";
 
 dayjs.extend(RelativeTime);
 
 const AlertScreen = (props) => {
+  const [refreshing, setRefreshing] = useState(false);
+  const dispatch = useDispatch();
+
   const alerts = useSelector((state) =>
     state.auth.user.recentAlerts.sort(
       (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
@@ -30,7 +41,18 @@ const AlertScreen = (props) => {
   };
 
   return (
-    <ScrollView>
+    <ScrollView
+      refreshControl={
+        <RefreshControl
+          onRefresh={() => {
+            setRefreshing(true);
+            dispatch(me());
+            setRefreshing(false);
+          }}
+          refreshing={refreshing}
+        />
+      }
+    >
       {alerts.length > 0 ? (
         alerts.map((alert) => (
           <View
