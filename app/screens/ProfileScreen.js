@@ -149,6 +149,7 @@ const ProfileScreen = (props) => {
                     keyboardVerticalOffset={10}
                   >
                     <View style={styles.section}>
+                      <Text style={styles.sectionTitle}>User Details</Text>
                       {fields.map((field) => (
                         <Input
                           key={field}
@@ -235,9 +236,6 @@ const styles = StyleSheet.create({
     marginTop: 35,
     marginLeft: "4%",
     alignItems: "center",
-  },
-  input: {
-    margin: 20,
   },
   detailsContainer: {
     marginVertical: 10,

@@ -8,8 +8,7 @@ import HistoryScreenStack from "./SubStackNavigators/HistoryScreenStack";
 import SettingScreenStack from "./SubStackNavigators/SettingScreenStack";
 import AlertScreenStack from "./SubStackNavigators/AlertScreenStack";
 import { colors } from "../colors";
-import { Button, SafeAreaView, ScrollView, Text, View } from "react-native";
-import { logout } from "../store/actions/auth";
+import { SafeAreaView, ScrollView, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { toTitleCase } from "../utils/toTitleCase";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
@@ -105,19 +104,6 @@ const RootHomeNavigator = () => {
               )}
 
               <DrawerItemList {...props} />
-              <View
-                style={{
-                  margin: 20,
-                }}
-              >
-                <Button
-                  title="Logout"
-                  color={colors.backgroundExtra}
-                  onPress={() => {
-                    dispatch(logout());
-                  }}
-                />
-              </View>
             </SafeAreaView>
           </View>
         </ScrollView>

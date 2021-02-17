@@ -463,10 +463,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingHorizontal: 10,
     alignItems: "center",
-    borderRadius: 20,
+    borderRadius: 10,
     flexDirection: "row",
     backgroundColor: "white",
-    elevation: 5,
+    elevation: 2,
     zIndex: -1,
   },
   cardInfo: {

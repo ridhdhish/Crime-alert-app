@@ -11,7 +11,9 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { isAndroid } from "../utils/isAndroid";
 import { toTitleCase } from "../utils/toTitleCase";
 import { colors } from "../colors";
+import { logout } from "../store/actions/auth";
 import { useDispatch, useSelector } from "react-redux";
+import SettingOption from "../components/SettingOption";
 
 const SettingScreen = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -91,14 +93,17 @@ const SettingScreen = (props) => {
       </View>
       <View style={style.section}>
         <Text style={style.sectionTitle}>Account</Text>
-        <View style={style.userDetails}>
-          <Text style={style.value}>+91 {user.mobileNumber}</Text>
-          <TouchableOpacity
-            onPress={() => props.navigation.navigate("Profile")}
-          >
+        <TouchableOpacity
+          activeOpacity={0.6}
+          onPress={() => props.navigation.navigate("Profile")}
+        >
+          <View style={style.userDetails}>
+            <Text style={style.value}>+91 {user.mobileNumber}</Text>
+
             <Text style={style.valueTitle}>Tap to change mobile number</Text>
-          </TouchableOpacity>
-        </View>
+          </View>
+        </TouchableOpacity>
+
         <View style={style.userDetails}>
           <Text style={style.value}>{user.email}</Text>
           <Text style={style.valueTitle}>Email</Text>
@@ -110,85 +115,43 @@ const SettingScreen = (props) => {
       </View>
       <View style={style.section}>
         <Text style={style.sectionTitle}>Settings</Text>
-        <TouchableOpacity
-          style={{
-            ...style.userDetails,
-            flexDirection: "row",
-            paddingVertical: 10,
-            alignItems: "center",
-          }}
-        >
-          <Ionicons
-            name={
-              isAndroid()
-                ? "md-notifications-outline"
-                : "ios-notifications-outline"
-            }
-            size={30}
-          />
-          <Text style={style.settingOption}>Notifications</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            ...style.userDetails,
-            flexDirection: "row",
-            paddingVertical: 10,
-            alignItems: "center",
-          }}
-        >
-          <Ionicons
-            name={isAndroid() ? "md-person-outline" : "ios-person-outline"}
-            size={30}
-          />
-          <Text style={style.settingOption}>Profile</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            ...style.userDetails,
-            flexDirection: "row",
-            paddingVertical: 10,
-            alignItems: "center",
-          }}
-        >
-          <MaterialIcons name="security" size={30} />
-          <Text style={style.settingOption}>Privacy</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            ...style.userDetails,
-            flexDirection: "row",
-            paddingVertical: 10,
-            alignItems: "center",
-          }}
-        >
-          <Ionicons
-            name={
-              isAndroid() ? "md-lock-closed-outline" : "ios-lock-closed-outline"
-            }
-            size={30}
-          />
-          <Text style={style.settingOption}>Set Password</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            ...style.userDetails,
-            flexDirection: "row",
-            paddingVertical: 10,
-            alignItems: "center",
-          }}
-        >
-          <Ionicons
-            name={isAndroid() ? "md-log-out-outline" : "ios-log-out-outline"}
-            size={30}
-          />
-          <Text style={style.settingOption}>Logout</Text>
-        </TouchableOpacity>
+        <SettingOption
+          Icon={Ionicons}
+          name={
+            isAndroid()
+              ? "md-notifications-outline"
+              : "ios-notifications-outline"
+          }
+          title="Notifications"
+        />
+        <SettingOption
+          Icon={Ionicons}
+          name={isAndroid() ? "md-person-outline" : "ios-person-outline"}
+          title="Profile"
+          onPress={() => props.navigation.navigate("Profile")}
+        />
+        <SettingOption Icon={MaterialIcons} name={"security"} title="Privacy" />
+        <SettingOption
+          Icon={Ionicons}
+          name={
+            isAndroid() ? "md-lock-closed-outline" : "ios-lock-closed-outline"
+          }
+          title="Set App Password"
+        />
+        <SettingOption
+          Icon={Ionicons}
+          name={isAndroid() ? "md-log-out-outline" : "ios-log-out-outline"}
+          title="Logout"
+          onPress={() => dispatch(logout())}
+        />
       </View>
       <Text
         style={{
           textAlign: "center",
           marginVertical: 10,
+          marginBottom: 20,
           color: "rgba(0, 0, 0, 0.7)",
+          fontSize: 12,
         }}
       >
         Crime Alert App for {toTitleCase(Platform.OS)} v{Platform.Version}
