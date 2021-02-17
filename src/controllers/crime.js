@@ -146,13 +146,13 @@ const registerCrime = async (req, res) => {
 const seenCrime = async (req, res) => {
   const { crimeId } = req.params;
   try {
-    const user = await User.findById(req.user.id);
-    const alert = user.recentAlerts.find(
+    const userData = await User.findById(req.user.id);
+    const alert = await userData.recentAlerts.find(
       (alert) => alert.crimeId.toString() === crimeId
     );
     if (alert) {
       alert.isSeen = true;
-      await user.save();
+      await userData.save();
 
       const user = await User.findById(alert.senderId);
       if (user) {
@@ -164,11 +164,12 @@ const seenCrime = async (req, res) => {
           pushToken: user.pushToken,
           title: "Seen Alert",
         });
+        return sendResponse("Crime had seen", res, 200);
+      } else {
+        return sendResponse("No user found", res, 404);
       }
-
-      return sendResponse("Crime seen", res, 200);
     }
-    sendResponse("No crime found", res, 200);
+    sendResponse("No crime found", res, 404);
   } catch (error) {
     sendResponse(error.message, res);
   }

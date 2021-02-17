@@ -18,7 +18,7 @@ router.post(
 );
 
 /**
- * route : POST /api/crime/seenCrime/:crimeId
+ * route : POST /api/crime/seenAlert/:crimeId
  * access : Private
  * desc: set seen crime crime
  */

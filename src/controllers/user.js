@@ -173,7 +173,11 @@ const getUserById = async (req, res) => {
   try {
     const user = await User.findById(id);
     if (user) {
-      return sendResponse(user, res, 200);
+      return sendResponse(
+        { mobileNumber: user.mobileNumber, email: user.email },
+        res,
+        200
+      );
     }
     sendResponse("User not found", res, 404);
   } catch (error) {

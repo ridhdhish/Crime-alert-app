@@ -15,6 +15,7 @@ import CustomButton from "../components/CustomButton";
 import { me } from "../store/actions/auth";
 import BottomPopup from "../components/BottomPopup";
 import AlertDetails from "../components/AlertDetails";
+import { seenAlert } from "../store/actions/crime";
 
 dayjs.extend(RelativeTime);
 
@@ -52,9 +53,9 @@ const AlertScreen = (props) => {
     <ScrollView
       refreshControl={
         <RefreshControl
-          onRefresh={() => {
+          onRefresh={async () => {
             setRefreshing(true);
-            dispatch(me());
+            await dispatch(me());
             setRefreshing(false);
           }}
           refreshing={refreshing}
@@ -129,7 +130,12 @@ const AlertScreen = (props) => {
                   textStyle={{
                     color: colors.textSecondary,
                   }}
-                  onPress={() => openInMaps(alert)}
+                  onPress={async () => {
+                    openInMaps(alert);
+                    if (!alert.isSeen) {
+                      await dispatch(seenAlert(alert));
+                    }
+                  }}
                 />
                 <CustomButton
                   text="Details"
@@ -146,7 +152,12 @@ const AlertScreen = (props) => {
                   textStyle={{
                     color: colors.backgroundSecondary,
                   }}
-                  onPress={() => setShowDetails(true)}
+                  onPress={async () => {
+                    setShowDetails(true);
+                    if (!alert.isSeen) {
+                      await dispatch(seenAlert(alert));
+                    }
+                  }}
                 />
                 {showDetails && (
                   <BottomPopup
