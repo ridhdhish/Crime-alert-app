@@ -15,7 +15,7 @@ const StepOne = (props) => {
         style={{
           justifyContent: "flex-start",
           flexDirection: "row",
-          width: 300,
+          width: 350,
         }}
       >
         <Ionicons

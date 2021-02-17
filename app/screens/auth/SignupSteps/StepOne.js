@@ -30,7 +30,7 @@ const StepOne = (props) => {
         style={{
           justifyContent: "flex-end",
           flexDirection: "row",
-          width: 300,
+          width: 350,
         }}
       >
         <Ionicons

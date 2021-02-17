@@ -50,6 +50,11 @@ const Input = (props) => {
 
   return (
     <Fragment>
+      <Text
+        style={{ marginTop: 25, fontSize: 12, color: "rgba(0, 0, 0, 0.3)" }}
+      >
+        {props.name.charAt(0).toUpperCase() + props.name.slice(1)}
+      </Text>
       <TextInput
         value={props.value}
         onChangeText={props.handleChange}
@@ -89,11 +94,10 @@ const Input = (props) => {
 const styles = StyleSheet.create({
   input: {
     borderBottomWidth: 2,
-    paddingVertical: 8,
-    width: 300,
-    maxWidth: "90%",
+    paddingVertical: 4,
+    width: 350,
+    maxWidth: "95%",
     fontSize: 18,
-    marginTop: 16,
     borderRadius: 5,
   },
   errorText: {
