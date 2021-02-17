@@ -166,10 +166,10 @@ const seenCrime = async (req, res) => {
         });
         return sendResponse("Crime had seen", res, 200);
       } else {
-        return sendResponse("Crime seen", res, 200);
+        return sendResponse("No user found", res, 404);
       }
     }
-    sendResponse("No crime found", res, 200);
+    sendResponse("No crime found", res, 404);
   } catch (error) {
     sendResponse(error.message, res);
   }
