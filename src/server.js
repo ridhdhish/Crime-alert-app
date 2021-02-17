@@ -45,6 +45,6 @@ app.use("/api/crime", crimeRoute);
 
 app.use("/", (_, res) => {
   res.json({
-    message: "API running.",
+    message: "API not found",
   });
 });

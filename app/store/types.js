@@ -19,3 +19,5 @@ export const ADD_RELATIVE = "ADD_RELATIVE";
 export const GET_RELATIVE = "GET_RELATIVE";
 export const UPDATE_RELATIVE = "UPDATE_RELATIVE";
 export const DELETE_RELATIVE = "DELETE_RELATIVE";
+
+export const SEEN_ALERT = "SEEN_ALERT";

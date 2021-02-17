@@ -3,6 +3,7 @@ import {
   REPORT_CRIME,
   GET_AROUND_DATA,
   GET_CITY_DATA,
+  SEEN_ALERT,
 } from "../types";
 import env from "../../environment";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -162,6 +163,30 @@ export const doBackgroundSync = (userData = {}) => async (
       await clearCrimes();
       console.log("No Crimes");
     }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+export const seenAlert = (alert) => async (dispatch, getState) => {
+  try {
+    const response = await fetch(
+      `${env.API_URL}/crime/seenAlert/${alert.crimeId}`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${getState().auth.token}`,
+          Accepts: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await response.json();
+    console.log(data);
+    dispatch({
+      type: SEEN_ALERT,
+      payload: alert.crimeId,
+    });
   } catch (error) {
     console.log(error.message);
   }

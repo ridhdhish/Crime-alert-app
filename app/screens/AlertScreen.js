@@ -15,7 +15,7 @@ import CustomButton from "../components/CustomButton";
 import { me } from "../store/actions/auth";
 import BottomPopup from "../components/BottomPopup";
 import AlertDetails from "../components/AlertDetails";
-import env from "../environment";
+import { seenAlert } from "../store/actions/crime";
 
 dayjs.extend(RelativeTime);
 
@@ -23,14 +23,6 @@ const AlertScreen = (props) => {
   const [refreshing, setRefreshing] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const dispatch = useDispatch();
-
-  const seenAlert = async (alert) => {
-    const response = await fetch(
-      `${env.API_URL}/crime/seenAlert/${alert.crimeId}`
-    );
-    const data = await response.json();
-    console.log(data);
-  };
 
   const alerts = useSelector((state) =>
     state.auth.user.recentAlerts.sort(
@@ -61,9 +53,9 @@ const AlertScreen = (props) => {
     <ScrollView
       refreshControl={
         <RefreshControl
-          onRefresh={() => {
+          onRefresh={async () => {
             setRefreshing(true);
-            dispatch(me());
+            await dispatch(me());
             setRefreshing(false);
           }}
           refreshing={refreshing}
@@ -139,10 +131,10 @@ const AlertScreen = (props) => {
                     color: colors.textSecondary,
                   }}
                   onPress={async () => {
-                    if (!alert.isSeen) {
-                      await seenAlert(alert);
-                    }
                     openInMaps(alert);
+                    if (!alert.isSeen) {
+                      await dispatch(seenAlert(alert));
+                    }
                   }}
                 />
                 <CustomButton
@@ -161,10 +153,10 @@ const AlertScreen = (props) => {
                     color: colors.backgroundSecondary,
                   }}
                   onPress={async () => {
-                    if (!alert.isSeen) {
-                      await seenAlert(alert);
-                    }
                     setShowDetails(true);
+                    if (!alert.isSeen) {
+                      await dispatch(seenAlert(alert));
+                    }
                   }}
                 />
                 {showDetails && (

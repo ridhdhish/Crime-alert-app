@@ -7,6 +7,7 @@ import {
   UPDATE_USER,
   SET_CONNECTED_TO_INTERNET,
   LOADED_DATA,
+  SEEN_ALERT,
 } from "../types";
 
 const initState = {
@@ -64,7 +65,21 @@ export const authReducer = (state = initState, action) => {
         ...state,
         loadedData: payload,
       };
-
+    case SEEN_ALERT:
+      const recentAlerts = [...state.user.recentAlerts];
+      const filteredRecentAlerts = recentAlerts.map((alert) => {
+        if (alert.crimeId === payload) {
+          alert.isSeen = true;
+        }
+        return alert;
+      });
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          recentAlerts: filteredRecentAlerts,
+        },
+      };
     default:
       return state;
   }
