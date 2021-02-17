@@ -15,6 +15,7 @@ import CustomButton from "../components/CustomButton";
 import { me } from "../store/actions/auth";
 import BottomPopup from "../components/BottomPopup";
 import AlertDetails from "../components/AlertDetails";
+import env from "../environment";
 
 dayjs.extend(RelativeTime);
 
@@ -22,6 +23,14 @@ const AlertScreen = (props) => {
   const [refreshing, setRefreshing] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const dispatch = useDispatch();
+
+  const seenAlert = async (alert) => {
+    const response = await fetch(
+      `${env.API_URL}/crime/seenAlert/${alert.crimeId}`
+    );
+    const data = await response.json();
+    console.log(data);
+  };
 
   const alerts = useSelector((state) =>
     state.auth.user.recentAlerts.sort(
@@ -129,7 +138,12 @@ const AlertScreen = (props) => {
                   textStyle={{
                     color: colors.textSecondary,
                   }}
-                  onPress={() => openInMaps(alert)}
+                  onPress={async () => {
+                    if (!alert.isSeen) {
+                      await seenAlert(alert);
+                    }
+                    openInMaps(alert);
+                  }}
                 />
                 <CustomButton
                   text="Details"
@@ -146,7 +160,12 @@ const AlertScreen = (props) => {
                   textStyle={{
                     color: colors.backgroundSecondary,
                   }}
-                  onPress={() => setShowDetails(true)}
+                  onPress={async () => {
+                    if (!alert.isSeen) {
+                      await seenAlert(alert);
+                    }
+                    setShowDetails(true);
+                  }}
                 />
                 {showDetails && (
                   <BottomPopup

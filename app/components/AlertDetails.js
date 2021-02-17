@@ -6,8 +6,6 @@ import RelativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(RelativeTime);
 
 const AlertDetails = ({ alert }) => {
-  useEffect(() => {}, []);
-
   return (
     <View>
       <Text
@@ -21,7 +19,10 @@ const AlertDetails = ({ alert }) => {
         Alert Details
       </Text>
       <Text>{alert.title}</Text>
-      <Text>{dayjs(alert.createdAt).fromNow()}</Text>
+      <Text>
+        {dayjs(alert.createdAt).fromNow()} at{" "}
+        {dayjs(alert.createdAt).format("hh:mmA")}
+      </Text>
       <Text>Contact to Crime location near by police station</Text>
     </View>
   );
