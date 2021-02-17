@@ -9,6 +9,7 @@ const SettingScreenStack = () => (
   <SettingStack.Navigator
     screenOptions={({ navigation }) => ({
       ...stackCommonOption(navigation),
+      headerShown: false,
     })}
   >
     <SettingStack.Screen

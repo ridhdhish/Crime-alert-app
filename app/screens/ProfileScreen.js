@@ -21,6 +21,7 @@ import CustomHeaderButton from "../components/CustomHeaderButton";
 import CustomTouchable from "../components/CustomTouchable";
 import Input from "../components/Input";
 import { updateProfile } from "../store/actions/auth";
+import { toTitleCase } from "../utils/toTitleCase";
 
 const ProfileScreen = (props) => {
   const dispatch = useDispatch();
@@ -96,9 +97,10 @@ const ProfileScreen = (props) => {
       >
         <View
           style={{
+            ...styles.section,
             justifyContent: "center",
             flexDirection: "row",
-            paddingTop: 20,
+            padding: 20,
           }}
         >
           <View style={styles.profilePic}>
@@ -123,7 +125,6 @@ const ProfileScreen = (props) => {
             </CustomTouchable>
           </View>
         </View>
-        <View style={styles.profileSeparator}></View>
 
         {isLoading ? (
           <View style={{ marginVertical: "40%" }}>
@@ -140,14 +141,14 @@ const ProfileScreen = (props) => {
             }}
             onSubmit={async (values) => {}}
           >
-            {({ values, handleChange, handleSubmit, setFieldValue }) => {
+            {({ values, handleChange }) => {
               return isEdit ? (
                 <Fragment>
                   <KeyboardAvoidingView
                     behavior="padding"
                     keyboardVerticalOffset={10}
                   >
-                    <View>
+                    <View style={styles.section}>
                       {fields.map((field) => (
                         <Input
                           key={field}
@@ -164,13 +165,19 @@ const ProfileScreen = (props) => {
                 </Fragment>
               ) : (
                 <Fragment>
-                  <View style={{ marginTop: 10, alignItems: "center" }}>
+                  <View
+                    style={{
+                      ...styles.section,
+                      marginTop: 10,
+                    }}
+                  >
+                    <Text style={styles.sectionTitle}>User Details</Text>
                     {fields.map((field) => (
                       <View style={styles.detailsContainer} key={field}>
-                        <Text style={styles.titleText}>
-                          {field.toUpperCase()}
-                        </Text>
                         <Text style={styles.text}>{userData[field]}</Text>
+                        <Text style={styles.titleText}>
+                          {toTitleCase(field)}
+                        </Text>
                       </View>
                     ))}
                   </View>
@@ -185,16 +192,23 @@ const ProfileScreen = (props) => {
 };
 
 const styles = StyleSheet.create({
+  section: {
+    margin: 10,
+    padding: 10,
+    paddingHorizontal: 20,
+    backgroundColor: colors.textSecondary,
+    borderRadius: 10,
+    elevation: 2,
+  },
   profilePic: {
     width: 115,
     height: 115,
     backgroundColor: colors.backgroundExtra,
-    borderRadius: 57.5,
+    borderRadius: 100,
     alignItems: "center",
+    justifyContent: "center",
   },
   profilePicText: {
-    position: "absolute",
-    top: "36%",
     color: "white",
     fontSize: 22,
     fontWeight: "bold",
@@ -207,11 +221,12 @@ const styles = StyleSheet.create({
   },
   btnEdit: {
     paddingVertical: 10,
-    paddingHorizontal: 25,
     backgroundColor: colors.backgroundTertiary,
     fontSize: 16,
     fontWeight: "600",
     textAlign: "center",
+    borderRadius: 5,
+    color: colors.textSecondary,
   },
   profileSeparator: {
     width: "92%",
@@ -223,20 +238,16 @@ const styles = StyleSheet.create({
   },
   input: {
     margin: 20,
-    marginHorizontal: "13%",
   },
   detailsContainer: {
-    width: 300,
-    maxWidth: "90%",
-    paddingVertical: 10,
-    paddingLeft: 15,
-    margin: 10,
-    backgroundColor: "#fad9bb",
-    borderRadius: 10,
+    marginVertical: 10,
+    borderBottomColor: "rgba(0, 0, 0, 0.05)",
+    borderBottomWidth: 1,
   },
   titleText: {
-    fontSize: 13,
-    fontWeight: "bold",
+    fontSize: 12,
+    marginVertical: 5,
+    color: "rgba(0, 0, 0, 0.3)",
   },
   text: {
     marginTop: 4,
@@ -248,6 +259,12 @@ const styles = StyleSheet.create({
     marginLeft: 55,
     fontSize: 15,
     color: "red",
+  },
+  sectionTitle: {
+    color: colors.backgroundSecondary,
+    fontSize: 16,
+    fontWeight: "800",
+    marginBottom: 5,
   },
 });
 
