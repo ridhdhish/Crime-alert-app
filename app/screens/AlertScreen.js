@@ -13,11 +13,14 @@ import RelativeTime from "dayjs/plugin/relativeTime";
 import { colors } from "../colors";
 import CustomButton from "../components/CustomButton";
 import { me } from "../store/actions/auth";
+import BottomPopup from "../components/BottomPopup";
+import AlertDetails from "../components/AlertDetails";
 
 dayjs.extend(RelativeTime);
 
 const AlertScreen = (props) => {
   const [refreshing, setRefreshing] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
   const dispatch = useDispatch();
 
   const alerts = useSelector((state) =>
@@ -143,8 +146,18 @@ const AlertScreen = (props) => {
                   textStyle={{
                     color: colors.backgroundSecondary,
                   }}
-                  onPress={() => {}}
+                  onPress={() => setShowDetails(true)}
                 />
+                {showDetails && (
+                  <BottomPopup
+                    modalVisible={showDetails}
+                    closeModal={() => {
+                      setShowDetails(false);
+                    }}
+                  >
+                    <AlertDetails alert={alert} />
+                  </BottomPopup>
+                )}
               </View>
             </View>
           </View>

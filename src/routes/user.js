@@ -9,6 +9,7 @@ const {
   forgetPassword,
   resetPassword,
   checkFieldValueExists,
+  getUserById,
 } = require("../controllers/user");
 const { check } = require("express-validator");
 
@@ -74,5 +75,12 @@ router.post(
  * desc: Check field exists
  */
 router.get("/check/:field/:value", checkFieldValueExists);
+
+/**
+ * route : GET /api/user/:id
+ * access : Private
+ * desc: Get a user ny Id
+ */
+router.get("/:id", auth, getUserById);
 
 exports.userRouter = router;

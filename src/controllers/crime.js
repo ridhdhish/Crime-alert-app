@@ -9,6 +9,7 @@ const { sendMail } = require("../utils/sendMail");
 const keyValueDb = require("../models/keyValueDb");
 const { SECRET_TOKEN_PREFIX } = require("../config/constant");
 const { Expo } = require("expo-server-sdk");
+const { sendPushNotification } = require("../utils/sendPushNotification");
 
 const registerCrime = async (req, res) => {
   const errors = validationResult(req);
@@ -112,21 +113,15 @@ const registerCrime = async (req, res) => {
           });
           await user.save();
         }
-        const expo = new Expo({ accessToken: process.env.EXPO_ACCESS_TOKEN });
-        await expo.sendPushNotificationsAsync([
-          {
-            to: rel.pushToken,
-            sound: "default",
-            body: `${sender.firstname} ${sender.lastname} needs your help`,
-            data: {
-              username: "User's name who sent the alert",
-            },
-            priority: "high",
-            title: "Need Help",
-            subtitle: `${place.address && "near " + place.address}`,
-            badge: 10,
+        await sendPushNotification({
+          body: `${sender.firstname} ${sender.lastname} needs your help`,
+          data: {
+            username: "User's name who sent the alert",
           },
-        ]);
+          pushToken: rel.pushToken,
+          subtitle: `${place.address && "near " + place.address}`,
+          title: "Need Help",
+        });
         return rel;
       })
     );
@@ -158,6 +153,19 @@ const seenCrime = async (req, res) => {
     if (alert) {
       alert.isSeen = true;
       await user.save();
+
+      const user = await User.findById(alert.senderId);
+      if (user) {
+        await sendPushNotification({
+          body: `${user.firstname} ${user.lastname} had seen your alert`,
+          data: {
+            username: "User's name who seen the alert",
+          },
+          pushToken: user.pushToken,
+          title: "Seen Alert",
+        });
+      }
+
       return sendResponse("Crime seen", res, 200);
     }
     sendResponse("No crime found", res, 200);

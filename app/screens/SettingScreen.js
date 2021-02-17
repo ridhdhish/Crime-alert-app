@@ -28,13 +28,13 @@ const SettingScreen = (props) => {
         }}
       >
         <Ionicons
-          name={isAndroid() ? "md-arrow-back" : "ios-arrow-back"}
+          name={isAndroid() ? "md-menu" : "ios-menu"}
           size={30}
           color={colors.textSecondary}
           style={{
             margin: 10,
           }}
-          onPress={() => props.navigation.goBack()}
+          onPress={() => props.navigation.toggleDrawer()}
         />
         <View
           style={{
@@ -122,7 +122,7 @@ const SettingScreen = (props) => {
               ? "md-notifications-outline"
               : "ios-notifications-outline"
           }
-          title="Notifications"
+          title="Sound and Notification"
         />
         <SettingOption
           Icon={Ionicons}

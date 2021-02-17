@@ -168,6 +168,19 @@ const checkFieldValueExists = async (req, res) => {
   }
 };
 
+const getUserById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findById(id);
+    if (user) {
+      return sendResponse(user, res, 200);
+    }
+    sendResponse("User not found", res, 404);
+  } catch (error) {
+    sendResponse(error.message, res);
+  }
+};
+
 module.exports = {
   me,
   updateMe,
@@ -176,4 +189,5 @@ module.exports = {
   forgetPassword,
   resetPassword,
   checkFieldValueExists,
+  getUserById,
 };
