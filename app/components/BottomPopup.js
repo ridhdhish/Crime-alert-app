@@ -46,8 +46,8 @@ const BottomPopup = (props) => {
               backgroundColor: "white",
               padding: 12,
               zIndex: 10,
-              borderTopRightRadius: 12,
-              borderTopLeftRadius: 12,
+              borderTopRightRadius: 20,
+              borderTopLeftRadius: 20,
               position: "relative",
               transform: [
                 {
