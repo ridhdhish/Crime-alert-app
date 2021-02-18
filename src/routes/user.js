@@ -89,6 +89,6 @@ router.get("/:id", auth, getUserById);
  * access : Private
  * desc: Update notification setting
  */
-router.get("/notification", auth, updateNotificationSetting);
+router.put("/notification", auth, updateNotificationSetting);
 
 exports.userRouter = router;
