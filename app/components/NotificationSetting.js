@@ -69,6 +69,13 @@ const NotificationSetting = ({ close }) => {
             setNotification((prev) => ({ ...prev, onSeenAlert: value }))
           }
         />
+        <NotificationOptions
+          title="Notification on Added as Relative"
+          value={notification.onAddedAsRelative}
+          setValue={(value) =>
+            setNotification((prev) => ({ ...prev, onAddedAsRelative: value }))
+          }
+        />
       </View>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Sounds</Text>
