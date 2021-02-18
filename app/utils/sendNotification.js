@@ -8,7 +8,6 @@ export const sendNotification = async ({ title, body }) => {
     userData.user.notificationSetting.allow &&
     userData.user.notificationSetting.onSentAlert
   ) {
-    console.log(userData.user.notificationSetting);
     Notifications.scheduleNotificationAsync({
       content: {
         title,
