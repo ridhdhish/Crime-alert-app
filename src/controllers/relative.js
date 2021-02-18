@@ -57,7 +57,11 @@ const addRelative = async (req, res) => {
         { email: newRelative.email },
       ],
     });
-    if (user) {
+    if (
+      user &&
+      user.notificationSetting.allow &&
+      user.notificationSetting.onAddedAsRelative
+    ) {
       newRelative.pushToken = user.pushToken;
       newRelative.existingUserId = user.id;
 

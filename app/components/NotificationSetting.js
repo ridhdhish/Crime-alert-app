@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { sectionStyle } from "../utils/sectionStyle";
 import NotificationOptions from "./NotificationOptions";
 import CustomButton from "../components/CustomButton";
 import { colors } from "../colors";
+import { setNotificationSetting } from "../store/actions/auth";
 
-const NotificationSetting = () => {
+const NotificationSetting = ({ close }) => {
   const [notification, setNotification] = useState({
     allow: true,
     sound: true,
@@ -14,11 +15,14 @@ const NotificationSetting = () => {
     onSeenAlert: true,
     onSentAlert: true,
     onReceiveAlert: true,
+    onAddedAsRelative: true,
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const notificationSetting = useSelector(
     (state) => state.auth.user.notificationSetting
   );
+  const dispatch = useDispatch();
   useEffect(() => {
     setNotification(notificationSetting);
   }, [notificationSetting]);
@@ -84,16 +88,19 @@ const NotificationSetting = () => {
         />
       </View>
       <Pressable
-        onPress={() => {
-          console.log("Hello");
+        onPress={async () => {
+          setIsLoading(true);
+          await dispatch(setNotificationSetting(notification));
+          setIsLoading(false);
+          close();
         }}
       >
         <CustomButton
-          text={"Save"}
+          text={isLoading ? "Loading..." : "Save"}
           style={{
             padding: 5,
             backgroundColor: colors.backgroundSecondary,
-            width: 100,
+            width: 120,
             borderRadius: 10,
             marginHorizontal: 10,
             marginLeft: "auto",

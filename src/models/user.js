@@ -56,6 +56,10 @@ const UserSchema = new mongoose.Schema(
         type: Boolean,
         default: true,
       },
+      onAddedAsRelative: {
+        type: Boolean,
+        default: true,
+      },
     },
     appPassword: {
       type: String,

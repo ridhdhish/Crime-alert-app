@@ -115,15 +115,21 @@ const registerCrime = async (req, res) => {
           });
           await user.save();
         }
-        await sendPushNotification({
-          body: `${sender.firstname} ${sender.lastname} needs your help`,
-          data: {
-            username: "User's name who sent the alert",
-          },
-          pushToken: rel.pushToken,
-          subtitle: `${place.address && "near " + place.address}`,
-          title: "Need Help",
-        });
+        if (
+          user.notificationSetting.allow &&
+          user.notificationSetting.onReceiveAlert
+        ) {
+          await sendPushNotification({
+            body: `${sender.firstname} ${sender.lastname} needs your help`,
+            data: {
+              username: "User's name who sent the alert",
+            },
+            pushToken: rel.pushToken,
+            subtitle: `${place.address && "near " + place.address}`,
+            title: "Need Help",
+          });
+        }
+
         return rel;
       })
     );
@@ -157,7 +163,11 @@ const seenCrime = async (req, res) => {
       await userData.save();
 
       const user = await User.findById(alert.senderId);
-      if (user) {
+      if (
+        user &&
+        user.notificationSetting.allow &&
+        user.notificationSetting.onSeenAlert
+      ) {
         await sendPushNotification({
           body: `${user.firstname} ${user.lastname} had seen your alert`,
           data: {
