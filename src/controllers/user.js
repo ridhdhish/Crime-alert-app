@@ -185,6 +185,35 @@ const getUserById = async (req, res) => {
   }
 };
 
+const updateNotificationSetting = async (req, res) => {
+  const {
+    allow,
+    sound,
+    vibrate,
+    onSentAlert,
+    onReceiveAlert,
+    onSeenAlert,
+  } = req.body;
+  try {
+    const user = await User.findById(req.user.id);
+    if (user) {
+      user.notificationSetting.allow = allow;
+      user.notificationSetting.sound = sound;
+      user.notificationSetting.vibrate = vibrate;
+      user.notificationSetting.onSentAlert = onSentAlert;
+      user.notificationSetting.onReceiveAlert = onReceiveAlert;
+      user.notificationSetting.onSeenAlert = onSeenAlert;
+
+      await user.save();
+      return sendResponse(user.notificationSetting, res, 200);
+    } else {
+      sendResponse("User not found", 404);
+    }
+  } catch (error) {
+    sendResponse(error.message, res);
+  }
+};
+
 module.exports = {
   me,
   updateMe,
@@ -194,4 +223,5 @@ module.exports = {
   resetPassword,
   checkFieldValueExists,
   getUserById,
+  updateNotificationSetting,
 };
