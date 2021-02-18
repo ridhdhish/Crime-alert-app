@@ -38,17 +38,13 @@ const StepOne = (props) => {
           color={
             props.isAllFieldValid
               ? colors.backgroundSecondary
-              : colors.textAccent
+              : colors.textSecondary
           }
           size={54}
           onPress={props.isAllFieldValid ? props.nextStep : () => {}}
         />
       </View>
-      <Text
-        style={{ textAlign: "center", color: colors.textAccent, marginTop: 16 }}
-      >
-        Or
-      </Text>
+      <Text style={{ textAlign: "center", color: colors.textAccent }}>Or</Text>
       <View
         style={{
           flexDirection: "row",

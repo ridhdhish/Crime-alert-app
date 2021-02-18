@@ -1,21 +1,15 @@
-import React, { useState } from "react";
-import {
-  Linking,
-  Platform,
-  ScrollView,
-  Text,
-  View,
-  RefreshControl,
-} from "react-native";
-import { useDispatch, useSelector } from "react-redux";
 import dayjs from "dayjs";
 import RelativeTime from "dayjs/plugin/relativeTime";
+import React, { useState } from "react";
+import { RefreshControl, ScrollView, Text, View } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import { colors } from "../colors";
+import AlertDetails from "../components/AlertDetails";
+import BottomPopup from "../components/BottomPopup";
 import CustomButton from "../components/CustomButton";
 import { me } from "../store/actions/auth";
-import BottomPopup from "../components/BottomPopup";
-import AlertDetails from "../components/AlertDetails";
 import { seenAlert } from "../store/actions/crime";
+import { openInMaps } from "../utils/openInMap";
 
 dayjs.extend(RelativeTime);
 
@@ -33,20 +27,6 @@ const AlertScreen = (props) => {
   const getText = (text) => {
     const textArray = text.toUpperCase().split(" ").slice(0, 2);
     return `${textArray[0][0]}${textArray[1][0]}`;
-  };
-
-  const openInMaps = (alert) => {
-    const scheme = Platform.select({
-      ios: "maps:0,0?q=",
-      android: "geo:0,0?q=",
-    });
-    const latLng = `${alert.location.lat},${alert.location.long}`;
-    const label = "Crime Location";
-    const url = Platform.select({
-      ios: `${scheme}${label}@${latLng}`,
-      android: `${scheme}${latLng}(${label})`,
-    });
-    Linking.openURL(url);
   };
 
   return (
@@ -100,7 +80,7 @@ const AlertScreen = (props) => {
                 marginHorizontal: 10,
               }}
             >
-              <Text style={{ fontSize: 16 }}>{alert.title}</Text>
+              <Text style={{ fontSize: 16 }}>{alert.title.split(",")[0]}</Text>
               <Text
                 style={{
                   marginVertical: 3,

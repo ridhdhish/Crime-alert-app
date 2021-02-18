@@ -10,6 +10,7 @@ const {
   resetPassword,
   checkFieldValueExists,
   getUserById,
+  updateNotificationSetting,
 } = require("../controllers/user");
 const { check } = require("express-validator");
 
@@ -82,5 +83,12 @@ router.get("/check/:field/:value", checkFieldValueExists);
  * desc: Get a user ny Id
  */
 router.get("/:id", auth, getUserById);
+
+/**
+ * route : PUT /api/user/notification
+ * access : Private
+ * desc: Update notification setting
+ */
+router.get("/notification", auth, updateNotificationSetting);
 
 exports.userRouter = router;

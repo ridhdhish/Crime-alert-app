@@ -31,6 +31,32 @@ const UserSchema = new mongoose.Schema(
     pushToken: {
       type: String,
     },
+    notificationSetting: {
+      allow: {
+        type: Boolean,
+        default: true,
+      },
+      sound: {
+        type: Boolean,
+        default: true,
+      },
+      vibrate: {
+        type: Boolean,
+        default: true,
+      },
+      onSentAlert: {
+        type: Boolean,
+        default: true,
+      },
+      onReceiveAlert: {
+        type: Boolean,
+        default: true,
+      },
+      onSeenAlert: {
+        type: Boolean,
+        default: true,
+      },
+    },
     appPassword: {
       type: String,
     },
