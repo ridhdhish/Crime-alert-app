@@ -8,6 +8,7 @@ import {
   UPDATE_USER,
   SET_CONNECTED_TO_INTERNET,
   LOADED_DATA,
+  UPDATE_NOTIFICATION_SETTING,
 } from "../types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import env from "../../environment";
@@ -185,6 +186,33 @@ export const updateProfile = (user, expirationTime) => async (
     });
   } catch (err) {
     console.log(err);
+  }
+};
+
+export const setNotificationSetting = (settings) => async (
+  dispatch,
+  getState
+) => {
+  try {
+    const response = await fetch(`${env.API_URL}/user/notification`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accepts: "application/json",
+        Authorization: `Bearer ${getState().auth.token}`,
+      },
+      body: JSON.stringify(settings),
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message);
+    }
+    dispatch({
+      type: UPDATE_NOTIFICATION_SETTING,
+      payload: data.message,
+    });
+  } catch (error) {
+    console.log(error.message);
   }
 };
 

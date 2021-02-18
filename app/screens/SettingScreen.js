@@ -176,7 +176,7 @@ const SettingScreen = (props) => {
           setWhatToOpen("");
         }}
       >
-        <NotificationSetting />
+        <NotificationSetting close={() => setWhatToOpen("")} />
       </BottomPopup>
     </ScrollView>
   );

@@ -8,6 +8,7 @@ import {
   SET_CONNECTED_TO_INTERNET,
   LOADED_DATA,
   SEEN_ALERT,
+  UPDATE_NOTIFICATION_SETTING,
 } from "../types";
 
 const initState = {
@@ -78,6 +79,14 @@ export const authReducer = (state = initState, action) => {
         user: {
           ...state.user,
           recentAlerts: filteredRecentAlerts,
+        },
+      };
+    case UPDATE_NOTIFICATION_SETTING:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          notificationSetting: payload,
         },
       };
     default:
