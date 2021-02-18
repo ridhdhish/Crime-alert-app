@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Alert,
   ActivityIndicator,
+  Dimensions,
 } from "react-native";
 import LogoText from "../../components/LogoText";
 import { Formik } from "formik";
@@ -21,6 +22,7 @@ import { colors } from "../../colors";
 import { validations } from "../../utils/validations";
 import { useDispatch } from "react-redux";
 import { signup } from "../../store/actions/auth";
+import { LinearGradient } from "expo-linear-gradient";
 
 const SignupScreen = (props) => {
   const [step, setStep] = useState(1);
@@ -57,7 +59,7 @@ const SignupScreen = (props) => {
   }, [error]);
 
   return (
-    <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={10}>
+    <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={0}>
       <ScrollView>
         <TouchableWithoutFeedback
           onPress={() => {
@@ -65,7 +67,10 @@ const SignupScreen = (props) => {
           }}
           style={{ flex: 1 }}
         >
-          <View style={styles.screen}>
+          <LinearGradient
+            colors={[colors.backgroundSecondary, colors.backgroundAccent]}
+            style={styles.screen}
+          >
             <LogoText title="Register" style={{ marginBottom: 16 }} />
             <Formik
               initialValues={{
@@ -189,7 +194,7 @@ const SignupScreen = (props) => {
                 </Fragment>
               )}
             </Formik>
-          </View>
+          </LinearGradient>
         </TouchableWithoutFeedback>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -201,6 +206,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     paddingTop: 16,
+    height: Dimensions.get("window").height,
   },
   registerBtn: {
     marginTop: 32,

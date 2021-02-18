@@ -145,6 +145,15 @@ const SettingScreen = (props) => {
           onPress={() => dispatch(logout())}
         />
       </View>
+      <View style={style.section}>
+        <SettingOption
+          Icon={Ionicons}
+          name={isAndroid() ? "md-trash-outline" : "ios-trash-outline"}
+          title="Delete Account"
+          onPress={() => {}}
+          color="red"
+        />
+      </View>
       <Text
         style={{
           textAlign: "center",

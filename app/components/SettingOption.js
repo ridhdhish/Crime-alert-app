@@ -1,7 +1,8 @@
 import React from "react";
 import { Text, TouchableOpacity } from "react-native";
+import { colors } from "../colors";
 
-const SettingOption = ({ Icon, name, title, onPress }) => {
+const SettingOption = ({ Icon, name, title, onPress, color }) => {
   return (
     <TouchableOpacity
       style={{
@@ -14,8 +15,12 @@ const SettingOption = ({ Icon, name, title, onPress }) => {
       }}
       onPress={onPress ? onPress : () => {}}
     >
-      <Icon name={name} size={30} />
-      <Text style={{ marginLeft: 15 }}>{title}</Text>
+      <Icon name={name} size={30} color={color ? color : colors.textPrimary} />
+      <Text
+        style={{ marginLeft: 15, color: color ? color : colors.textPrimary }}
+      >
+        {title}
+      </Text>
     </TouchableOpacity>
   );
 };

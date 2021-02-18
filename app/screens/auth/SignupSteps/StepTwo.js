@@ -42,7 +42,7 @@ const StepOne = (props) => {
           color={
             props.isAllFieldValid
               ? colors.backgroundSecondary
-              : colors.textAccent
+              : colors.textSecondary
           }
           size={54}
           onPress={props.isAllFieldValid ? props.nextStep : () => {}}
