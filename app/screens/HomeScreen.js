@@ -128,7 +128,8 @@ const HomeScreen = (props) => {
               }
               color={colors.textSecondary}
             />
-            {auth.user?.recentAlerts?.length > 0 && (
+            {auth.user?.recentAlerts?.filter((alert) => !alert.isSeen).length >
+              0 && (
               <View
                 style={{
                   position: "absolute",
@@ -218,6 +219,7 @@ const HomeScreen = (props) => {
               maxZoomLevel={20}
               mapType="terrain"
               zoomEnabled
+              moveOnMarkerPress
               onPress={() => Keyboard.dismiss()}
             >
               <Marker

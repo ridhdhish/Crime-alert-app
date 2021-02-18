@@ -1,10 +1,21 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { View, Text, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  Linking,
+  TouchableOpacity,
+  Platform,
+  StyleSheet,
+} from "react-native";
 import dayjs from "dayjs";
 import RelativeTime from "dayjs/plugin/relativeTime";
 import env from "../environment";
 import { useSelector } from "react-redux";
 import { colors } from "../colors";
+import { Ionicons } from "@expo/vector-icons";
+import MapView, { Marker } from "react-native-maps";
+import { openInMaps } from "../utils/openInMap";
 
 dayjs.extend(RelativeTime);
 
@@ -47,16 +58,85 @@ const AlertDetails = ({ alert }) => {
         <ActivityIndicator size="large" color={colors.backgroundPrimary} />
       ) : (
         <Fragment>
-          <Text>{alert.title}</Text>
-          <Text>
-            {dayjs(alert.createdAt).fromNow()} at{" "}
-            {dayjs(alert.createdAt).format("hh:mmA")}
-          </Text>
-          <Text>Contact to Crime location near by police station</Text>
           {userData && (
             <Fragment>
-              <Text>{userData.mobileNumber}</Text>
-              <Text>{userData.email}</Text>
+              <Text
+                style={{
+                  fontSize: 18,
+                  textAlign: "center",
+                }}
+              >
+                {alert.title}
+              </Text>
+              <Text
+                style={{
+                  fontSize: 12,
+                  textAlign: "center",
+                }}
+              >
+                {dayjs(alert.createdAt).fromNow()} at{" "}
+                {dayjs(alert.createdAt).format("hh:mmA")}
+              </Text>
+              <MapView
+                style={{
+                  width: "90%",
+                  height: 200,
+                  marginHorizontal: "5%",
+                  marginVertical: 10,
+                  borderRadius: 10,
+                }}
+                region={{
+                  latitude: alert.location.lat,
+                  longitude: alert.location.long,
+                  latitudeDelta: 0.0922,
+                  longitudeDelta: 0.0421,
+                }}
+                maxZoomLevel={30}
+                zoomEnabled
+                mapType="terrain"
+                onPress={() => openInMaps(alert)}
+              >
+                <Marker
+                  coordinate={{
+                    latitude: alert.location.lat,
+                    longitude: alert.location.long,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
+                  }}
+                />
+              </MapView>
+              <Text
+                style={{
+                  textAlign: "center",
+                }}
+              >
+                Contact to Crime location near by police station
+              </Text>
+
+              <TouchableOpacity
+                style={styles.contactButton}
+                onPress={() =>
+                  Linking.openURL(
+                    Platform.OS === "ios"
+                      ? `telprompt:${userData.mobileNumber}`
+                      : `tel:${userData.mobileNumber}`
+                  )
+                }
+              >
+                <Text
+                  style={{
+                    color: colors.textSecondary,
+                    marginHorizontal: 5,
+                  }}
+                >
+                  Contact {alert.title.split(" ").slice(0, 2).join(" ")}
+                </Text>
+                <Ionicons
+                  size={18}
+                  name="md-call"
+                  color={colors.textSecondary}
+                />
+              </TouchableOpacity>
             </Fragment>
           )}
         </Fragment>
@@ -64,5 +144,19 @@ const AlertDetails = ({ alert }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  contactButton: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginVertical: 10,
+    padding: 10,
+    backgroundColor: colors.backgroundPrimary,
+    borderRadius: 10,
+    alignItems: "center",
+    width: "70%",
+    marginHorizontal: "15%",
+  },
+});
 
 export default AlertDetails;
