@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -14,8 +14,12 @@ import { colors } from "../colors";
 import { logout } from "../store/actions/auth";
 import { useDispatch, useSelector } from "react-redux";
 import SettingOption from "../components/SettingOption";
+import BottomPopup from "../components/BottomPopup";
+import NotificationSetting from "../components/NotificationSetting";
+import { sectionStyle } from "../utils/sectionStyle";
 
 const SettingScreen = (props) => {
+  const [whatToOpen, setWhatToOpen] = useState("");
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
 
@@ -123,6 +127,7 @@ const SettingScreen = (props) => {
               : "ios-notifications-outline"
           }
           title="Sound and Notification"
+          onPress={() => setWhatToOpen("notification")}
         />
         <SettingOption
           Icon={Ionicons}
@@ -165,30 +170,20 @@ const SettingScreen = (props) => {
       >
         Crime Alert App for {toTitleCase(Platform.OS)} v{Platform.Version}
       </Text>
+      <BottomPopup
+        modalVisible={whatToOpen === "notification"}
+        closeModal={() => {
+          setWhatToOpen("");
+        }}
+      >
+        <NotificationSetting />
+      </BottomPopup>
     </ScrollView>
   );
 };
 
 const style = StyleSheet.create({
-  section: {
-    margin: 10,
-    padding: 10,
-    paddingHorizontal: 20,
-    backgroundColor: colors.textSecondary,
-    borderRadius: 10,
-    elevation: 2,
-  },
-  userDetails: {
-    marginVertical: 5,
-    borderBottomColor: "rgba(0, 0, 0, 0.05)",
-    borderBottomWidth: 1,
-  },
-  sectionTitle: {
-    color: colors.backgroundSecondary,
-    fontSize: 16,
-    fontWeight: "800",
-    marginBottom: 5,
-  },
+  ...sectionStyle,
   value: {
     color: colors.textPrimary,
   },

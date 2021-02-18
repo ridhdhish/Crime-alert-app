@@ -3,6 +3,7 @@ const { validationResult } = require("express-validator");
 const Relative = require("../models/relative");
 const User = require("../models/user");
 const sendResponse = require("../utils/sendResponse");
+const { sendPushNotification } = require("../utils/sendPushNotification");
 
 const getRelatives = async (req, res) => {
   try {
@@ -59,18 +60,17 @@ const addRelative = async (req, res) => {
     if (user) {
       newRelative.pushToken = user.pushToken;
       newRelative.existingUserId = user.id;
+
       if (Expo.isExpoPushToken(user.pushToken)) {
-        const expo = new Expo({ accessToken: process.env.EXPO_ACCESS_TOKEN });
-        expo.sendPushNotificationsAsync([
-          {
-            to: user.pushToken,
-            sound: "default",
-            body: `${req.user.firstname} ${req.user.lastname} added you as a relative`,
-            data: {
-              username: "User's name who sent the alert",
-            },
+        await sendPushNotification({
+          body: `${req.user.firstname} ${req.user.lastname} added you as a relative`,
+          pushToken: user.pushToken,
+          data: {
+            username: "User's name who sent the alert",
           },
-        ]);
+          subtitle: "",
+          title: "Added as Relative",
+        });
       }
     }
     await newRelative.save();

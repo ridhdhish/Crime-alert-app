@@ -40,40 +40,47 @@ const BottomPopup = (props) => {
           goDown.start(() => props.closeModal());
         }}
       >
-        <Animated.View
-          style={[
-            {
-              backgroundColor: "white",
-              padding: 12,
-              zIndex: 10,
-              borderTopRightRadius: 20,
-              borderTopLeftRadius: 20,
-              position: "relative",
-              transform: [
-                {
-                  translateY: panY,
-                },
-              ],
-            },
-          ]}
+        <Pressable
+          onPress={() => {
+            console.log("Pressed outside backdrop");
+            // goDown.start(() => props.closeModal());
+          }}
         >
-          <Ionicons
-            name={Platform.OS === "android" ? "md-close" : "ios-close"}
-            size={30}
-            style={{
-              position: "absolute",
-              top: 12,
-              right: 12,
-              zIndex: 100,
-            }}
-            onPress={() => {
-              goDown.start(() => {
-                props.closeModal();
-              });
-            }}
-          />
-          {props.children}
-        </Animated.View>
+          <Animated.View
+            style={[
+              {
+                backgroundColor: "white",
+                padding: 12,
+                zIndex: 10,
+                borderTopRightRadius: 20,
+                borderTopLeftRadius: 20,
+                position: "relative",
+                transform: [
+                  {
+                    translateY: panY,
+                  },
+                ],
+              },
+            ]}
+          >
+            <Ionicons
+              name={Platform.OS === "android" ? "md-close" : "ios-close"}
+              size={30}
+              style={{
+                position: "absolute",
+                top: 12,
+                right: 12,
+                zIndex: 100,
+              }}
+              onPress={() => {
+                goDown.start(() => {
+                  props.closeModal();
+                });
+              }}
+            />
+            {props.children}
+          </Animated.View>
+        </Pressable>
       </Pressable>
     </Modal>
   );

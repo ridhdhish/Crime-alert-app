@@ -21,6 +21,7 @@ import CustomHeaderButton from "../components/CustomHeaderButton";
 import CustomTouchable from "../components/CustomTouchable";
 import Input from "../components/Input";
 import { updateProfile } from "../store/actions/auth";
+import { sectionStyle } from "../utils/sectionStyle";
 import { toTitleCase } from "../utils/toTitleCase";
 
 const ProfileScreen = (props) => {
@@ -193,14 +194,7 @@ const ProfileScreen = (props) => {
 };
 
 const styles = StyleSheet.create({
-  section: {
-    margin: 10,
-    padding: 10,
-    paddingHorizontal: 20,
-    backgroundColor: colors.textSecondary,
-    borderRadius: 10,
-    elevation: 2,
-  },
+  ...sectionStyle,
   profilePic: {
     width: 115,
     height: 115,
@@ -257,12 +251,6 @@ const styles = StyleSheet.create({
     marginLeft: 55,
     fontSize: 15,
     color: "red",
-  },
-  sectionTitle: {
-    color: colors.backgroundSecondary,
-    fontSize: 16,
-    fontWeight: "800",
-    marginBottom: 5,
   },
 });
 
