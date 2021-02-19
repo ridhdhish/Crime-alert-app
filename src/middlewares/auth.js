@@ -11,8 +11,9 @@ module.exports = async (req, res, next) => {
       message: "You need to be loggedIn NA",
     });
   }
+  console.log(authHeader);
   const token = authHeader.split(" ")[1];
-  if (!token || token === "") {
+  if (!token || token === "" || token === null) {
     return res.status(401).json({
       message: "You need to be loggedIn TK",
     });
