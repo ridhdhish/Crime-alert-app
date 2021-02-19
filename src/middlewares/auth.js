@@ -22,7 +22,7 @@ module.exports = async (req, res, next) => {
     decodedToken = jwt.verify(token, process.env.JWT_SECRET);
   } catch (error) {
     return res.status(401).json({
-      message: "You need to be loggedIn DC",
+      message: "You need to be loggedIn DC " + error.message + " " + token,
     });
   }
   if (!decodedToken) {
