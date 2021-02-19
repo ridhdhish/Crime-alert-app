@@ -17,6 +17,7 @@ const jwt = require("jsonwebtoken");
 const me = (req, res) => {
   try {
     const user = req.user;
+    console.log(user);
     return sendResponse(
       { ...user._doc, password: null, appPassword: null, pushToken: null },
       res,

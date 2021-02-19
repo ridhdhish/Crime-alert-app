@@ -24,10 +24,12 @@ export const me = () => async (dispatch, getState) => {
         "Content-Type": "application/json",
       },
     });
+    console.log(`${getState().auth.token}`);
     const data = await response.json();
     if (!response.ok) {
       throw new Error(data.message);
     }
+    console.log(data);
     const oldData = await JSON.parse(await AsyncStorage.getItem("userData"));
     AsyncStorage.setItem(
       "userData",
