@@ -78,17 +78,16 @@ router.post(
 router.get("/check/:field/:value", checkFieldValueExists);
 
 /**
- * route : GET /api/user/:id
- * access : Private
- * desc: Get a user ny Id
- */
-router.get("/:id", auth, getUserById);
-
-/**
  * route : PUT /api/user/notification
  * access : Private
  * desc: Update notification setting
  */
 router.put("/notification", auth, updateNotificationSetting);
 
+/**
+ * route : GET /api/user/:id
+ * access : Private
+ * desc: Get a user ny Id
+ */
+router.get("/:id", auth, getUserById);
 exports.userRouter = router;

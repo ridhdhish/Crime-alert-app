@@ -11,7 +11,7 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { isAndroid } from "../utils/isAndroid";
 import { toTitleCase } from "../utils/toTitleCase";
 import { colors } from "../colors";
-import { logout } from "../store/actions/auth";
+import { logout, deleteMe } from "../store/actions/auth";
 import { useDispatch, useSelector } from "react-redux";
 import SettingOption from "../components/SettingOption";
 import BottomPopup from "../components/BottomPopup";
@@ -155,7 +155,7 @@ const SettingScreen = (props) => {
           Icon={Ionicons}
           name={isAndroid() ? "md-trash-outline" : "ios-trash-outline"}
           title="Delete Account"
-          onPress={() => {}}
+          onPress={() => dispatch(deleteMe())}
           color="red"
         />
       </View>

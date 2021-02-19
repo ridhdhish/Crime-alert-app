@@ -229,3 +229,25 @@ export const setLoadedData = (isLoaded) => {
     payload: isLoaded,
   };
 };
+
+export const deleteMe = () => async (dispatch, getState) => {
+  try {
+    const response = await fetch(`${env.API_URL}/user/deleteMe`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Accepts: "application/json",
+        Authorization: `Bearer ${getState().auth.token}`,
+      },
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error();
+    }
+    console.log(data);
+    await AsyncStorage.clear();
+    dispatch(logout());
+  } catch (error) {
+    console.log(error.message);
+  }
+};
