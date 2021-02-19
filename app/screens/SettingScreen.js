@@ -17,6 +17,7 @@ import SettingOption from "../components/SettingOption";
 import BottomPopup from "../components/BottomPopup";
 import NotificationSetting from "../components/NotificationSetting";
 import { sectionStyle } from "../utils/sectionStyle";
+import SetAppPassword from "../components/SetAppPassword";
 
 const SettingScreen = (props) => {
   const [whatToOpen, setWhatToOpen] = useState("");
@@ -142,6 +143,7 @@ const SettingScreen = (props) => {
             isAndroid() ? "md-lock-closed-outline" : "ios-lock-closed-outline"
           }
           title="Set App Password"
+          onPress={() => setWhatToOpen("appPassword")}
         />
         <SettingOption
           Icon={Ionicons}
@@ -177,6 +179,14 @@ const SettingScreen = (props) => {
         }}
       >
         <NotificationSetting close={() => setWhatToOpen("")} />
+      </BottomPopup>
+      <BottomPopup
+        modalVisible={whatToOpen === "appPassword"}
+        closeModal={() => {
+          setWhatToOpen("");
+        }}
+      >
+        <SetAppPassword close={() => setWhatToOpen("")} />
       </BottomPopup>
     </ScrollView>
   );

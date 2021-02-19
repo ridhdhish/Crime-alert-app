@@ -123,7 +123,7 @@ const LoginScreen = (props) => {
                         Don't have an account ?{" "}
                         <Text
                           style={{
-                            color: colors.textAccent,
+                            color: colors.textSecondary,
                             textDecorationLine: "underline",
                           }}
                         >
