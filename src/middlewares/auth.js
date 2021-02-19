@@ -8,13 +8,13 @@ module.exports = async (req, res, next) => {
   const authHeader = req.get("Authorization");
   if (!authHeader) {
     return res.status(401).json({
-      message: "You need to be loggedIn",
+      message: "You need to be loggedIn NA",
     });
   }
   const token = authHeader.split(" ")[1];
   if (!token || token === "") {
     return res.status(401).json({
-      message: "You need to be loggedIn",
+      message: "You need to be loggedIn TK",
     });
   }
   let decodedToken;
@@ -22,12 +22,12 @@ module.exports = async (req, res, next) => {
     decodedToken = jwt.verify(token, process.env.JWT_SECRET);
   } catch (error) {
     return res.status(401).json({
-      message: "You need to be loggedIn",
+      message: "You need to be loggedIn DC",
     });
   }
   if (!decodedToken) {
     return res.status(401).json({
-      message: "You need to be loggedIn",
+      message: "You need to be loggedIn NDC",
     });
   }
   req.user = await User.findById(decodedToken.user.id).select("-password");
