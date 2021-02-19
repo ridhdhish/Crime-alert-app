@@ -14,7 +14,6 @@ import { LinearGradient } from "expo-linear-gradient";
 
 const LoadingScreen = () => {
   const dispatch = useDispatch();
-
   useEffect(() => {
     const tryLogin = async () => {
       const userData = await AsyncStorage.getItem("userData");
@@ -33,15 +32,15 @@ const LoadingScreen = () => {
         !token ||
         !user
       ) {
-        dispatch(tryAutoLogin());
+        await dispatch(tryAutoLogin());
         return;
       }
       console.log("Navigate to Home");
       const expireIn =
         new Date(expirationTime).getTime() - new Date().getTime();
-      dispatch(authUser({ user, token, expirationTime: expireIn }));
-      dispatch(me());
-      dispatch(setLoadedData(true));
+      await dispatch(authUser({ user, token, expirationTime: expireIn }));
+      await dispatch(me());
+      await dispatch(setLoadedData(true));
     };
     tryLogin();
   }, []);

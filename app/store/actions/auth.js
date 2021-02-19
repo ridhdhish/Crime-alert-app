@@ -24,20 +24,18 @@ export const me = () => async (dispatch, getState) => {
         "Content-Type": "application/json",
       },
     });
-    console.log(`${getState().auth.token}`);
     const data = await response.json();
     if (!response.ok) {
       throw new Error(data.message);
     }
-    console.log(data);
     const oldData = await JSON.parse(await AsyncStorage.getItem("userData"));
     AsyncStorage.setItem(
       "userData",
-      JSON.stringify({ ...oldData, user: data.message.user })
+      JSON.stringify({ ...oldData, user: data.message })
     );
     dispatch({
       type: REFRESH_USER_DATA,
-      payload: data.message.user,
+      payload: data.message,
     });
   } catch (error) {
     console.log(error.message);
