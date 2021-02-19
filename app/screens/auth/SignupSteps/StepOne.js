@@ -12,12 +12,18 @@ const StepOne = (props) => {
         handleChange={props.handleChange("firstname")}
         name="firstname"
         setValid={props.setValid}
+        style={{
+          marginBottom: 20,
+        }}
       />
       <Input
         value={props.values.lastname}
         handleChange={props.handleChange("lastname")}
         name="lastname"
         setValid={props.setValid}
+        style={{
+          marginBottom: 20,
+        }}
       />
       <Input
         value={props.values.email}
@@ -25,6 +31,9 @@ const StepOne = (props) => {
         name="email"
         setValid={props.setValid}
         checkExistOnServer
+        style={{
+          marginBottom: 20,
+        }}
       />
       <View
         style={{
@@ -37,31 +46,11 @@ const StepOne = (props) => {
           name="ios-arrow-forward-circle"
           color={
             props.isAllFieldValid
-              ? colors.backgroundSecondary
-              : colors.textSecondary
+              ? colors.backgroundPrimary
+              : "rgba(0, 0, 0, 0.2)"
           }
           size={54}
           onPress={props.isAllFieldValid ? props.nextStep : () => {}}
-        />
-      </View>
-      <Text style={{ textAlign: "center", color: colors.textAccent }}>Or</Text>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "center",
-        }}
-      >
-        <Ionicons
-          style={{ marginHorizontal: 8 }}
-          name="ios-logo-google"
-          size={40}
-          color={colors.danger}
-        />
-        <Ionicons
-          style={{ marginHorizontal: 8 }}
-          name="ios-logo-facebook"
-          size={40}
-          color={colors.facebookBlue}
         />
       </View>
     </Fragment>

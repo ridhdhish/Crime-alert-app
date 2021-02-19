@@ -51,7 +51,11 @@ const Input = (props) => {
   return (
     <Fragment>
       <Text
-        style={{ marginTop: 25, fontSize: 12, color: "rgba(0, 0, 0, 0.3)" }}
+        style={{
+          fontSize: 12,
+          color: "rgba(0, 0, 0, 0.5)",
+          ...props.textStyle,
+        }}
       >
         {props.name.charAt(0).toUpperCase() + props.name.slice(1)}
       </Text>
@@ -62,7 +66,9 @@ const Input = (props) => {
         style={{
           ...styles.input,
           ...{
-            borderColor: focus ? colors.backgroundAccent : colors.textAccent,
+            borderColor: focus
+              ? colors.backgroundPrimary
+              : "rgba(0, 0, 0, 0.2)",
           },
           ...props.style,
         }}
@@ -94,7 +100,7 @@ const Input = (props) => {
 const styles = StyleSheet.create({
   input: {
     borderBottomWidth: 2,
-    paddingVertical: 4,
+    padding: 5,
     width: 350,
     maxWidth: "95%",
     fontSize: 18,
@@ -102,7 +108,7 @@ const styles = StyleSheet.create({
   },
   errorText: {
     fontSize: 15,
-    color: "red",
+    color: "rgba(255, 0, 0, 0.5)",
   },
 });
 

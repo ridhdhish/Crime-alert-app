@@ -86,6 +86,9 @@ const LoginScreen = (props) => {
                       handleChange={handleChange("email")}
                       name="email"
                       type="login"
+                      style={{
+                        marginBottom: 18,
+                      }}
                     />
                     <PasswordInput
                       type="login"

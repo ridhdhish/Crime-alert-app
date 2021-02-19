@@ -135,8 +135,11 @@ const setLogoutTimer = (expirationTime) => (dispatch) => {
   }, expirationTime);
 };
 
-export const authUser = ({ user, token, expirationTime }) => (dispatch) => {
+export const authUser = ({ user, token, expirationTime }) => async (
+  dispatch
+) => {
   // dispatch(setLogoutTimer(expirationTime));
+  await AsyncStorage.setItem("appPassword", JSON.stringify(false));
   dispatch({
     type: AUTH_USER,
     payload: {
@@ -240,11 +243,11 @@ export const deleteMe = () => async (dispatch, getState) => {
         Authorization: `Bearer ${getState().auth.token}`,
       },
     });
+    console.log(data);
     const data = await response.json();
     if (!response.ok) {
       throw new Error();
     }
-    console.log(data);
     await AsyncStorage.clear();
     dispatch(logout());
   } catch (error) {

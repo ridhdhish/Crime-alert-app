@@ -17,7 +17,11 @@ const jwt = require("jsonwebtoken");
 const me = (req, res) => {
   try {
     const user = req.user;
-    return sendResponse({ user }, res, 200);
+    return sendResponse(
+      { ...user._doc, password: null, appPassword: null, pushToken: null },
+      res,
+      200
+    );
   } catch (error) {
     sendResponse(error.message, res);
   }
@@ -30,7 +34,13 @@ const updateMe = async (req, res) => {
     if (!user) {
       return sendResponse("Unable to update user", res, 404);
     }
-    res.json({ ...user._doc, ...req.body });
+    res.json({
+      ...user._doc,
+      ...req.body,
+      password: null,
+      appPassword: null,
+      pushToken: null,
+    });
   } catch (err) {
     sendResponse(err.message, res);
   }
@@ -162,6 +172,8 @@ const resetPassword = async (req, res) => {
         ...user._doc,
         password: null,
         token: jwtToken,
+        appPassword: null,
+        pushToken: null,
       },
       res,
       200
@@ -229,6 +241,25 @@ const updateNotificationSetting = async (req, res) => {
   }
 };
 
+const setAppPassword = async (req, res) => {
+  const { password } = req.body;
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return sendResponse("User not found", 404);
+    }
+    const sault = await bcrypt.genSalt(12);
+    const hashedPassword = await bcrypt.hash(password, sault);
+    user.appPassword = hashedPassword;
+
+    await user.save();
+
+    sendResponse("Password created", res, 200);
+  } catch (error) {
+    sendResponse(error.message, res);
+  }
+};
+
 module.exports = {
   me,
   updateMe,
@@ -239,4 +270,5 @@ module.exports = {
   checkFieldValueExists,
   getUserById,
   updateNotificationSetting,
+  setAppPassword,
 };

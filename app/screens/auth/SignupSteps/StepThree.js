@@ -20,7 +20,7 @@ const StepOne = (props) => {
       >
         <Ionicons
           name="ios-arrow-back-circle"
-          color={colors.backgroundSecondary}
+          color={colors.backgroundPrimary}
           size={54}
           onPress={props.previousStep}
         />
