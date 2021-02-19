@@ -86,6 +86,9 @@ const LoginScreen = (props) => {
                       handleChange={handleChange("email")}
                       name="email"
                       type="login"
+                      style={{
+                        marginBottom: 18,
+                      }}
                     />
                     <PasswordInput
                       type="login"
@@ -120,7 +123,7 @@ const LoginScreen = (props) => {
                         Don't have an account ?{" "}
                         <Text
                           style={{
-                            color: colors.textAccent,
+                            color: colors.textSecondary,
                             textDecorationLine: "underline",
                           }}
                         >

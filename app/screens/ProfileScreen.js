@@ -90,105 +90,110 @@ const ProfileScreen = (props) => {
 
   return (
     <ScrollView>
-      <TouchableWithoutFeedback
-        onPress={() => {
-          Keyboard.dismiss();
-        }}
-        style={{ flex: 1 }}
-      >
-        <View
-          style={{
-            ...styles.section,
-            justifyContent: "center",
-            flexDirection: "row",
-            padding: 20,
+      {userData && (
+        <TouchableWithoutFeedback
+          onPress={() => {
+            Keyboard.dismiss();
           }}
+          style={{ flex: 1 }}
         >
-          <View style={styles.profilePic}>
-            <Text style={styles.profilePicText}>
-              {userData.firstname[0]}
-              {userData.lastname[0]}
-            </Text>
-          </View>
-          <View style={{ paddingLeft: 35, paddingTop: 12 }}>
-            <Text style={styles.profileName}>
-              {userData.firstname} {userData.lastname}
-            </Text>
-            <CustomTouchable
-              onPress={() => {
-                setIsEdit((prevEdit) => !prevEdit);
-              }}
-            >
-              <Text style={styles.btnEdit}>
-                {" "}
-                {!isEdit ? "Edit Profile" : "Cancel"}
-              </Text>
-            </CustomTouchable>
-          </View>
-        </View>
-
-        {isLoading ? (
-          <View style={{ marginVertical: "40%" }}>
-            <ActivityIndicator size="large" color={colors.backgroundPrimary} />
-          </View>
-        ) : (
-          <Formik
-            innerRef={ref}
-            initialValues={{
-              firstname: userData.firstname,
-              lastname: userData.lastname,
-              email: userData.email,
-              mobileNumber: userData.mobileNumber.toString(),
+          <View
+            style={{
+              ...styles.section,
+              justifyContent: "center",
+              flexDirection: "row",
+              padding: 20,
             }}
-            onSubmit={async (values) => {}}
           >
-            {({ values, handleChange }) => {
-              return isEdit ? (
-                <Fragment>
-                  <KeyboardAvoidingView
-                    behavior="padding"
-                    keyboardVerticalOffset={10}
-                  >
-                    <View style={styles.section}>
+            <View style={styles.profilePic}>
+              <Text style={styles.profilePicText}>
+                {userData.firstname[0]}
+                {userData.lastname[0]}
+              </Text>
+            </View>
+            <View style={{ paddingLeft: 35, paddingTop: 12 }}>
+              <Text style={styles.profileName}>
+                {userData.firstname} {userData.lastname}
+              </Text>
+              <CustomTouchable
+                onPress={() => {
+                  setIsEdit((prevEdit) => !prevEdit);
+                }}
+              >
+                <Text style={styles.btnEdit}>
+                  {" "}
+                  {!isEdit ? "Edit Profile" : "Cancel"}
+                </Text>
+              </CustomTouchable>
+            </View>
+          </View>
+
+          {isLoading ? (
+            <View style={{ marginVertical: "40%" }}>
+              <ActivityIndicator
+                size="large"
+                color={colors.backgroundPrimary}
+              />
+            </View>
+          ) : (
+            <Formik
+              innerRef={ref}
+              initialValues={{
+                firstname: userData.firstname,
+                lastname: userData.lastname,
+                email: userData.email,
+                mobileNumber: userData.mobileNumber.toString(),
+              }}
+              onSubmit={async (values) => {}}
+            >
+              {({ values, handleChange }) => {
+                return isEdit ? (
+                  <Fragment>
+                    <KeyboardAvoidingView
+                      behavior="padding"
+                      keyboardVerticalOffset={10}
+                    >
+                      <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>User Details</Text>
+                        {fields.map((field) => (
+                          <Input
+                            key={field}
+                            style={styles.input}
+                            name={field}
+                            value={values[field]}
+                            setValid={setValid}
+                            handleChange={handleChange(field)}
+                            styleError={styles.error}
+                          />
+                        ))}
+                      </View>
+                    </KeyboardAvoidingView>
+                  </Fragment>
+                ) : (
+                  <Fragment>
+                    <View
+                      style={{
+                        ...styles.section,
+                        marginTop: 10,
+                      }}
+                    >
                       <Text style={styles.sectionTitle}>User Details</Text>
                       {fields.map((field) => (
-                        <Input
-                          key={field}
-                          style={styles.input}
-                          name={field}
-                          value={values[field]}
-                          setValid={setValid}
-                          handleChange={handleChange(field)}
-                          styleError={styles.error}
-                        />
+                        <View style={styles.detailsContainer} key={field}>
+                          <Text style={styles.text}>{userData[field]}</Text>
+                          <Text style={styles.titleText}>
+                            {toTitleCase(field)}
+                          </Text>
+                        </View>
                       ))}
                     </View>
-                  </KeyboardAvoidingView>
-                </Fragment>
-              ) : (
-                <Fragment>
-                  <View
-                    style={{
-                      ...styles.section,
-                      marginTop: 10,
-                    }}
-                  >
-                    <Text style={styles.sectionTitle}>User Details</Text>
-                    {fields.map((field) => (
-                      <View style={styles.detailsContainer} key={field}>
-                        <Text style={styles.text}>{userData[field]}</Text>
-                        <Text style={styles.titleText}>
-                          {toTitleCase(field)}
-                        </Text>
-                      </View>
-                    ))}
-                  </View>
-                </Fragment>
-              );
-            }}
-          </Formik>
-        )}
-      </TouchableWithoutFeedback>
+                  </Fragment>
+                );
+              }}
+            </Formik>
+          )}
+        </TouchableWithoutFeedback>
+      )}
     </ScrollView>
   );
 };

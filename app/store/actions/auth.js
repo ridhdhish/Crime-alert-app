@@ -31,11 +31,11 @@ export const me = () => async (dispatch, getState) => {
     const oldData = await JSON.parse(await AsyncStorage.getItem("userData"));
     AsyncStorage.setItem(
       "userData",
-      JSON.stringify({ ...oldData, user: data.message.user })
+      JSON.stringify({ ...oldData, user: data.message })
     );
     dispatch({
       type: REFRESH_USER_DATA,
-      payload: data.message.user,
+      payload: data.message,
     });
   } catch (error) {
     console.log(error.message);
@@ -135,8 +135,11 @@ const setLogoutTimer = (expirationTime) => (dispatch) => {
   }, expirationTime);
 };
 
-export const authUser = ({ user, token, expirationTime }) => (dispatch) => {
+export const authUser = ({ user, token, expirationTime }) => async (
+  dispatch
+) => {
   // dispatch(setLogoutTimer(expirationTime));
+  await AsyncStorage.setItem("appPassword", JSON.stringify(false));
   dispatch({
     type: AUTH_USER,
     payload: {
@@ -228,4 +231,26 @@ export const setLoadedData = (isLoaded) => {
     type: LOADED_DATA,
     payload: isLoaded,
   };
+};
+
+export const deleteMe = () => async (dispatch, getState) => {
+  try {
+    const response = await fetch(`${env.API_URL}/user/deleteMe`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Accepts: "application/json",
+        Authorization: `Bearer ${getState().auth.token}`,
+      },
+    });
+    console.log(data);
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error();
+    }
+    await AsyncStorage.clear();
+    dispatch(logout());
+  } catch (error) {
+    console.log(error.message);
+  }
 };

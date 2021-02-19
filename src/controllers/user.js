@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const KeyValueDb = require("../models/keyValueDb");
+const Relative = require("../models/relative");
 const sendResponse = require("../utils/sendResponse");
 const generateToken = require("../utils/generateToken");
 
@@ -7,13 +8,21 @@ const bcrypt = require("bcryptjs");
 const { v4 } = require("uuid");
 const { validationResult } = require("express-validator");
 const { sendMail } = require("../utils/sendMail");
-const { FORGET_PASSWORD_PREFIX } = require("../config/constant");
+const {
+  FORGET_PASSWORD_PREFIX,
+  SECRET_TOKEN_PREFIX,
+} = require("../config/constant");
 const jwt = require("jsonwebtoken");
 
 const me = (req, res) => {
   try {
     const user = req.user;
-    return sendResponse({ user }, res, 200);
+    return sendResponse(
+      { ...user._doc, password: null, appPassword: null, pushToken: null },
+      res,
+      200,
+      false
+    );
   } catch (error) {
     sendResponse(error.message, res);
   }
@@ -26,7 +35,13 @@ const updateMe = async (req, res) => {
     if (!user) {
       return sendResponse("Unable to update user", res, 404);
     }
-    res.json({ ...user._doc, ...req.body });
+    res.json({
+      ...user._doc,
+      ...req.body,
+      password: null,
+      appPassword: null,
+      pushToken: null,
+    });
   } catch (err) {
     sendResponse(err.message, res);
   }
@@ -38,6 +53,17 @@ const deleteMe = async (req, res) => {
 
     if (!user) {
       return sendResponse("Unable to delete user", res, 404);
+    }
+    const keyValue = await KeyValueDb.findOneAndDelete({
+      key: `${SECRET_TOKEN_PREFIX}${req.user.id}`,
+    });
+    if (!keyValue) {
+      return sendResponse("Unable to delete key value", res, 404);
+    }
+    const relative = await Relative.deleteMany({ userId: req.user.id });
+
+    if (!relative) {
+      return sendResponse("Unable to delete relatives", res, 404);
     }
     res.json({ message: "User deleted" });
   } catch (err) {
@@ -147,6 +173,8 @@ const resetPassword = async (req, res) => {
         ...user._doc,
         password: null,
         token: jwtToken,
+        appPassword: null,
+        pushToken: null,
       },
       res,
       200
@@ -214,6 +242,25 @@ const updateNotificationSetting = async (req, res) => {
   }
 };
 
+const setAppPassword = async (req, res) => {
+  const { password } = req.body;
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return sendResponse("User not found", 404);
+    }
+    const sault = await bcrypt.genSalt(12);
+    const hashedPassword = await bcrypt.hash(password, sault);
+    user.appPassword = hashedPassword;
+
+    await user.save();
+
+    sendResponse("Password created", res, 200);
+  } catch (error) {
+    sendResponse(error.message, res);
+  }
+};
+
 module.exports = {
   me,
   updateMe,
@@ -224,4 +271,5 @@ module.exports = {
   checkFieldValueExists,
   getUserById,
   updateNotificationSetting,
+  setAppPassword,
 };

@@ -11,12 +11,13 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { isAndroid } from "../utils/isAndroid";
 import { toTitleCase } from "../utils/toTitleCase";
 import { colors } from "../colors";
-import { logout } from "../store/actions/auth";
+import { logout, deleteMe } from "../store/actions/auth";
 import { useDispatch, useSelector } from "react-redux";
 import SettingOption from "../components/SettingOption";
 import BottomPopup from "../components/BottomPopup";
 import NotificationSetting from "../components/NotificationSetting";
 import { sectionStyle } from "../utils/sectionStyle";
+import SetAppPassword from "../components/SetAppPassword";
 
 const SettingScreen = (props) => {
   const [whatToOpen, setWhatToOpen] = useState("");
@@ -142,6 +143,7 @@ const SettingScreen = (props) => {
             isAndroid() ? "md-lock-closed-outline" : "ios-lock-closed-outline"
           }
           title="Set App Password"
+          onPress={() => setWhatToOpen("appPassword")}
         />
         <SettingOption
           Icon={Ionicons}
@@ -155,7 +157,7 @@ const SettingScreen = (props) => {
           Icon={Ionicons}
           name={isAndroid() ? "md-trash-outline" : "ios-trash-outline"}
           title="Delete Account"
-          onPress={() => {}}
+          onPress={() => dispatch(deleteMe())}
           color="red"
         />
       </View>
@@ -177,6 +179,14 @@ const SettingScreen = (props) => {
         }}
       >
         <NotificationSetting close={() => setWhatToOpen("")} />
+      </BottomPopup>
+      <BottomPopup
+        modalVisible={whatToOpen === "appPassword"}
+        closeModal={() => {
+          setWhatToOpen("");
+        }}
+      >
+        <SetAppPassword close={() => setWhatToOpen("")} />
       </BottomPopup>
     </ScrollView>
   );

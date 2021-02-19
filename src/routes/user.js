@@ -11,6 +11,7 @@ const {
   checkFieldValueExists,
   getUserById,
   updateNotificationSetting,
+  setAppPassword,
 } = require("../controllers/user");
 const { check } = require("express-validator");
 
@@ -78,17 +79,23 @@ router.post(
 router.get("/check/:field/:value", checkFieldValueExists);
 
 /**
- * route : GET /api/user/:id
- * access : Private
- * desc: Get a user ny Id
- */
-router.get("/:id", auth, getUserById);
-
-/**
  * route : PUT /api/user/notification
  * access : Private
  * desc: Update notification setting
  */
 router.put("/notification", auth, updateNotificationSetting);
 
+/**
+ * route : PUT /api/user/setAppPassword
+ * access : Private
+ * desc: Update setAppPassword
+ */
+router.put("/setAppPassword", auth, setAppPassword);
+
+/**
+ * route : GET /api/user/:id
+ * access : Private
+ * desc: Get a user ny Id
+ */
+router.get("/:id", auth, getUserById);
 exports.userRouter = router;

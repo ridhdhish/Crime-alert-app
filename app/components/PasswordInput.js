@@ -24,8 +24,8 @@ const PasswordInput = (props) => {
           value={showPassword}
           onValueChange={(value) => setShowPassword(value)}
           tintColors={{
-            true: colors.backgroundSecondary,
-            false: colors.backgroundSecondary,
+            true: colors.backgroundPrimary,
+            false: colors.backgroundPrimary,
           }}
         />
         <Text>Show Password</Text>
