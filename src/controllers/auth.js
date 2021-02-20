@@ -78,16 +78,16 @@ const signUp = async (req, res) => {
       relative.pushToken = pushToken;
       relative.existingUserId = newUser.id;
       relative.markModified("pushToken");
-      const user = await User.findById(relative.userId);
-      if (user) {
-        await sendPushNotification({
-          body: `Your relative ${newUser.firstname} ${newUser.lastname} joined the Crime Alert App`,
-          data: {},
-          pushToken: user.pushToken,
-          subtitle: "",
-          title: "Relative Join",
-        });
-      }
+      // const user = await User.findById(relative.userId);
+      // if (user) {
+      //   await sendPushNotification({
+      //     body: `Your relative ${newUser.firstname} ${newUser.lastname} joined the Crime Alert App`,
+      //     data: {},
+      //     pushToken: user.pushToken,
+      //     subtitle: "",
+      //     title: "Relative Join",
+      //   });
+      // }
       await relative.save();
     }
 
