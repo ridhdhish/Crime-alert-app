@@ -65,6 +65,12 @@ const deleteMe = async (req, res) => {
     if (!relative) {
       return sendResponse("Unable to delete relatives", res, 404);
     }
+    const existingRelative = await Relative.findOne({
+      existingUserId: req.user.id,
+    });
+    if (existingRelative) {
+      await existingRelative.remove();
+    }
     res.json({ message: "User deleted" });
   } catch (err) {
     sendResponse(err.message, res);
@@ -243,9 +249,9 @@ const updateNotificationSetting = async (req, res) => {
 };
 
 const setAppPassword = async (req, res) => {
-  const { password } = req.body;
+  const { password, userId } = req.body;
   try {
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(userId);
     if (!user) {
       return sendResponse("User not found", 404);
     }

@@ -41,6 +41,7 @@ const addRelative = async (req, res) => {
 
     const isRelativeExists = await Relative.findOne({
       mobileNumber: req.body.mobileNumber,
+      userId: req.user.id,
     });
     if (isRelativeExists) {
       return sendResponse(

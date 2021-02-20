@@ -90,7 +90,14 @@ router.put("/notification", auth, updateNotificationSetting);
  * access : Private
  * desc: Update setAppPassword
  */
-router.put("/setAppPassword", auth, setAppPassword);
+router.put(
+  "/setAppPassword",
+  [
+    check("password", "password is required").exists(),
+    check("userId", "userId is required").exists(),
+  ],
+  setAppPassword
+);
 
 /**
  * route : GET /api/user/:id

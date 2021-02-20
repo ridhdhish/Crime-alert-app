@@ -9,6 +9,7 @@ const { v4: generateId } = require("uuid");
 const sendResponse = require("../utils/sendResponse");
 const generateToken = require("../utils/generateToken");
 const { SECRET_TOKEN_PREFIX } = require("../config/constant");
+const { sendPushNotification } = require("../utils/sendPushNotification");
 
 const signUp = async (req, res) => {
   const errors = validationResult(req);
@@ -77,6 +78,16 @@ const signUp = async (req, res) => {
       relative.pushToken = pushToken;
       relative.existingUserId = newUser.id;
       relative.markModified("pushToken");
+      const user = await User.findById(relative.userId);
+      if (user) {
+        await sendPushNotification({
+          body: `Your relative ${newUser.firstname} ${newUser.lastname} joined the Crime Alert App`,
+          data: {},
+          pushToken: user.pushToken,
+          subtitle: "",
+          title: "Relative Join",
+        });
+      }
       await relative.save();
     }
 
@@ -101,7 +112,7 @@ const login = async (req, res) => {
     return sendResponse(errors.array(), res, 400);
   }
 
-  const { email, password } = req.body;
+  const { email, password, pushToken } = req.body;
 
   try {
     //check user with email exist or not
@@ -116,6 +127,9 @@ const login = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return sendResponse("Invalid credentials", res, 422);
+    }
+    if (pushToken) {
+      user.pushToken = pushToken;
     }
     //generate token
     const token = generateToken(user.id, jwt);

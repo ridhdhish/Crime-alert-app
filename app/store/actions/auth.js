@@ -86,6 +86,7 @@ export const signup = ({
 };
 
 export const login = ({ email, password }) => async (dispatch) => {
+  const pushToken = await JSON.parse(await AsyncStorage.getItem("pushToken"));
   const authData = {
     email,
     password,
@@ -95,7 +96,7 @@ export const login = ({ email, password }) => async (dispatch) => {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(authData),
+    body: JSON.stringify({ ...authData, pushToken }),
   });
   const body = await response.json();
   const expirationTime = new Date(
