@@ -101,7 +101,7 @@ const login = async (req, res) => {
     return sendResponse(errors.array(), res, 400);
   }
 
-  const { email, password } = req.body;
+  const { email, password, pushToken } = req.body;
 
   try {
     //check user with email exist or not
@@ -116,6 +116,9 @@ const login = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return sendResponse("Invalid credentials", res, 422);
+    }
+    if (pushToken) {
+      user.pushToken = pushToken;
     }
     //generate token
     const token = generateToken(user.id, jwt);

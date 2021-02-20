@@ -243,9 +243,9 @@ const updateNotificationSetting = async (req, res) => {
 };
 
 const setAppPassword = async (req, res) => {
-  const { password } = req.body;
+  const { password, userId } = req.body;
   try {
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(userId);
     if (!user) {
       return sendResponse("User not found", 404);
     }
