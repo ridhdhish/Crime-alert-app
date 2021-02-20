@@ -65,6 +65,12 @@ const deleteMe = async (req, res) => {
     if (!relative) {
       return sendResponse("Unable to delete relatives", res, 404);
     }
+    const existingRelative = await Relative.findOne({
+      existingUserId: req.user.id,
+    });
+    if (existingRelative) {
+      await existingRelative.remove();
+    }
     res.json({ message: "User deleted" });
   } catch (err) {
     sendResponse(err.message, res);
