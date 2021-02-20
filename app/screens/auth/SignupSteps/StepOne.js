@@ -12,8 +12,8 @@ const StepOne = (props) => {
         handleChange={props.handleChange("firstname")}
         name="firstname"
         setValid={props.setValid}
-        style={{
-          marginBottom: 20,
+        textStyle={{
+          marginTop: 20,
         }}
       />
       <Input
@@ -21,8 +21,8 @@ const StepOne = (props) => {
         handleChange={props.handleChange("lastname")}
         name="lastname"
         setValid={props.setValid}
-        style={{
-          marginBottom: 20,
+        textStyle={{
+          marginTop: 20,
         }}
       />
       <Input
@@ -31,8 +31,8 @@ const StepOne = (props) => {
         name="email"
         setValid={props.setValid}
         checkExistOnServer
-        style={{
-          marginBottom: 20,
+        textStyle={{
+          marginTop: 20,
         }}
       />
       <View

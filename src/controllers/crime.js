@@ -169,7 +169,7 @@ const seenCrime = async (req, res) => {
         user.notificationSetting.onSeenAlert
       ) {
         await sendPushNotification({
-          body: `${user.firstname} ${user.lastname} had seen your alert`,
+          body: `${userData.firstname} ${userData.lastname} had seen your alert`,
           data: {
             username: "User's name who seen the alert",
           },
