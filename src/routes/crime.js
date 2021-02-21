@@ -1,5 +1,4 @@
 const express = require("express");
-const { check } = require("express-validator");
 const auth = require("../middlewares/auth");
 const { registerCrime, seenCrime } = require("../controllers/crime");
 const router = express.Router();
@@ -9,13 +8,7 @@ const router = express.Router();
  * access : Public
  * desc: Register crime
  */
-router.post(
-  "/",
-  check("location", "Request failed due to not getting location")
-    .not()
-    .isEmpty(),
-  registerCrime
-);
+router.post("/", registerCrime);
 
 /**
  * route : POST /api/crime/seenAlert/:crimeId

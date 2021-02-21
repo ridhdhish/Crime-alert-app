@@ -12,10 +12,6 @@ const { Expo } = require("expo-server-sdk");
 const { sendPushNotification } = require("../utils/sendPushNotification");
 
 const registerCrime = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return sendResponse(errors.array(), res, 400);
-  }
   let userId;
   let sender;
   const authHeader = req.get("Authorization");
@@ -62,7 +58,7 @@ const registerCrime = async (req, res) => {
 
     const { location, city, state, address } = req.body;
     const place = new Place({
-      location,
+      location: location ? location : {},
       city: city ? city.toLowerCase() : "",
       state: state ? state.toLowerCase() : "",
       address: address ? address.toLowerCase() : "",
