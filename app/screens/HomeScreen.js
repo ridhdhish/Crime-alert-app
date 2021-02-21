@@ -2,7 +2,9 @@ import React, { Fragment, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
+  Dimensions,
   Keyboard,
+  Linking,
   Platform,
   Text,
   View,
@@ -22,6 +24,7 @@ import CustomContentLoader from "../components/CustomContentLoader";
 import { TextInput } from "react-native-gesture-handler";
 import { getCriticalColor } from "../utils/getCriticalColor";
 import Layout from "../components/Layout";
+import * as Permissions from "expo-permissions";
 
 const HomeScreen = (props) => {
   const auth = useSelector((state) => state.auth);
@@ -32,19 +35,32 @@ const HomeScreen = (props) => {
   const [markerPosition, setMarkerPosition] = useState(null);
   const [addCrimeData, setAddCrimeData] = useState(false);
   const [crimeDataText, setCrimeDataText] = useState("");
+  const [unableToLoadMap, setUnableToLoadMap] = useState(false);
   useNotification();
 
   useEffect(() => {
     async function setLocation() {
-      const crimeData = await getCrimeData();
-      setCurrentLocation({
-        latitude: crimeData.location.lat,
-        longitude: crimeData.location.long,
-      });
-      setMarkerPosition({
-        latitude: crimeData.location.lat,
-        longitude: crimeData.location.long,
-      });
+      const hasLocationPermission = await Permissions.getAsync(
+        Permissions.LOCATION
+      );
+      if (hasLocationPermission.canAskAgain) {
+        await Permissions.askAsync(Permissions.LOCATION);
+      }
+      if (hasLocationPermission.granted) {
+        console.log("Has");
+        const crimeData = await getCrimeData();
+        setCurrentLocation({
+          latitude: crimeData.location.lat,
+          longitude: crimeData.location.long,
+        });
+        setMarkerPosition({
+          latitude: crimeData.location.lat,
+          longitude: crimeData.location.long,
+        });
+      } else {
+        setAddCrimeData(true);
+        setUnableToLoadMap(true);
+      }
     }
     setLocation();
   }, []);
@@ -67,14 +83,17 @@ const HomeScreen = (props) => {
       dispatch(reportCrime({ ...crimeData, crimeData: crimeDataText }));
       setCrimeDataText("");
       setAddCrimeData(false);
-      setCurrentLocation({
-        latitude: crimeData.location.lat,
-        longitude: crimeData.location.long,
-      });
-      setMarkerPosition({
-        latitude: crimeData.location.lat,
-        longitude: crimeData.location.long,
-      });
+      console.log(crimeData);
+      if (crimeData) {
+        setCurrentLocation({
+          latitude: crimeData.location.lat,
+          longitude: crimeData.location.long,
+        });
+        setMarkerPosition({
+          latitude: crimeData.location.lat,
+          longitude: crimeData.location.long,
+        });
+      }
       if (auth.isConnected) {
         sendNotification({
           title: "Sent Notification",
@@ -191,7 +210,7 @@ const HomeScreen = (props) => {
                 top: 100,
                 left: 0,
                 marginHorizontal: "10%",
-                backgroundColor: "rgba(191, 116, 89, 0.9)",
+                backgroundColor: "rgba(0, 0, 0, 0.5)",
                 padding: 10,
                 borderRadius: 10,
               }}
@@ -225,7 +244,6 @@ const HomeScreen = (props) => {
               <Marker
                 draggable
                 onDragEnd={(event) => {
-                  // console.log(event.nativeEvent.coordinate);
                   setMarkerPosition(event.nativeEvent.coordinate);
                 }}
                 coordinate={{
@@ -270,6 +288,38 @@ const HomeScreen = (props) => {
                 strokeWidth={0}
               />
             </MapView>
+          ) : unableToLoadMap ? (
+            <View
+              style={{
+                position: "relative",
+                top: Dimensions.get("window").height / 2 - 30,
+                alignItems: "center",
+              }}
+            >
+              <Text style={{ textAlign: "center", marginHorizontal: 10 }}>
+                Unable to load Map. No Location Permission provided, open
+                setting to provide permissions
+              </Text>
+              <FloatingButton
+                style={{
+                  bottom: -60,
+                  width: 200,
+                  flexDirection: "row",
+                  elevation: 5,
+                  paddingHorizontal: 5,
+                }}
+                onPress={() => Linking.openSettings()}
+              >
+                <MaterialIcons
+                  name="settings"
+                  size={20}
+                  color={colors.textSecondary}
+                />
+                <Text style={{ color: colors.textSecondary, marginLeft: 10 }}>
+                  Open Setting
+                </Text>
+              </FloatingButton>
+            </View>
           ) : (
             <CustomContentLoader map />
           )}

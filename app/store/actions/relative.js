@@ -101,7 +101,7 @@ export const deleteRelative = (id) => async (dispatch, getState) => {
         Authorization: isAuth ? `Bearer ${auth.token}` : "",
       },
     });
-
+    const data = await response.json();
     if (!response.ok) {
       throw new Error(data.message);
     }

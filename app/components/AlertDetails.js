@@ -77,34 +77,40 @@ const AlertDetails = ({ alert }) => {
                 {dayjs(alert.createdAt).fromNow()} at{" "}
                 {dayjs(alert.createdAt).format("hh:mmA")}
               </Text>
-              <MapView
-                style={{
-                  width: "90%",
-                  height: 200,
-                  marginHorizontal: "5%",
-                  marginVertical: 10,
-                  borderRadius: 10,
-                }}
-                region={{
-                  latitude: alert.location.lat,
-                  longitude: alert.location.long,
-                  latitudeDelta: 0.0922,
-                  longitudeDelta: 0.0421,
-                }}
-                maxZoomLevel={30}
-                zoomEnabled
-                mapType="terrain"
-                onPress={() => openInMaps(alert)}
-              >
-                <Marker
-                  coordinate={{
+              {alert.location ? (
+                <MapView
+                  style={{
+                    width: "90%",
+                    height: 200,
+                    marginHorizontal: "5%",
+                    marginVertical: 10,
+                    borderRadius: 10,
+                  }}
+                  region={{
                     latitude: alert.location.lat,
                     longitude: alert.location.long,
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
                   }}
-                />
-              </MapView>
+                  maxZoomLevel={30}
+                  zoomEnabled
+                  mapType="terrain"
+                  onPress={() => openInMaps(alert)}
+                >
+                  <Marker
+                    coordinate={{
+                      latitude: alert.location.lat,
+                      longitude: alert.location.long,
+                      latitudeDelta: 0.0922,
+                      longitudeDelta: 0.0421,
+                    }}
+                  />
+                </MapView>
+              ) : (
+                <Text style={{ textAlign: "center" }}>
+                  Location of crime is not provided by your friend
+                </Text>
+              )}
               <Text
                 style={{
                   textAlign: "center",

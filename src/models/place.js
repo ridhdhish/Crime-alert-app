@@ -5,11 +5,9 @@ const PlaceSchema = new mongoose.Schema(
     location: {
       lat: {
         type: Number,
-        required: true,
       },
       long: {
         type: Number,
-        required: true,
       },
     },
     crimeStatus: [

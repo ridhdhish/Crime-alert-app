@@ -132,6 +132,12 @@ const SettingScreen = (props) => {
         />
         <SettingOption
           Icon={Ionicons}
+          name={isAndroid() ? "md-share" : "ios-share"}
+          title="Send notifications to?"
+          onPress={() => {}}
+        />
+        <SettingOption
+          Icon={Ionicons}
           name={isAndroid() ? "md-person-outline" : "ios-person-outline"}
           title="Profile"
           onPress={() => props.navigation.navigate("Profile")}
