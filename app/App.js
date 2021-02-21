@@ -13,9 +13,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import NetInfo from "@react-native-community/netinfo";
 import { initCrimeDB } from "./utils/SQLiteQueries";
 import { setConnectedToInternet } from "./store/actions/auth";
-import { doBackgroundSync } from "./store/actions/crime";
+import { doBackgroundSync, reportCrime } from "./store/actions/crime";
 import { Accelerometer } from "expo-sensors";
 import { ShakeEventExpo } from "./utils/deviceShake";
+import { getCrimeData } from "./utils/getCrimeData";
+import { sendNotification } from "./utils/sendNotification";
 
 initCrimeDB()
   .then(() => console.log("Db has been created successfully"))
@@ -42,6 +44,8 @@ export default function App() {
   const [isConnected, setIsConnected] = useState(true);
   const [user, setUser] = useState();
   const [loaded, setLoaded] = useState(false);
+  const [locationData, setLocationData] = useState(null);
+  const [sentNotification, setSentNotification] = useState(false);
 
   useEffect(() => {
     // LogBox.ignoreLogs(["Setting a timer"]);
@@ -69,22 +73,28 @@ export default function App() {
               ]
             );
           }
+        } else {
+          /**
+           * For shake event
+           */
+          const isAccelerometerAvailable = await Accelerometer.isAvailableAsync();
+          if (isAccelerometerAvailable) {
+            ShakeEventExpo.addListener(async () => {
+              const hasLocationPermission = await Permissions.getAsync(
+                Permissions.LOCATION
+              );
+              if (hasLocationPermission.granted) {
+                const crimeData = await getCrimeData();
+                setLocationData(crimeData);
+              }
+            });
+          }
         }
         /**
          * Get push token
          */
         const token = await Notifications.getExpoPushTokenAsync();
         AsyncStorage.setItem("pushToken", JSON.stringify(token.data));
-
-        /**
-         * For shake event
-         */
-        const isAccelerometerAvailable = await Accelerometer.isAvailableAsync();
-        if (isAccelerometerAvailable) {
-          ShakeEventExpo.addListener(() => {
-            console.log("Shake Shake Shake", Math.random());
-          });
-        }
       } catch (error) {
         console.log(error.message);
       }
@@ -109,6 +119,18 @@ export default function App() {
       ShakeEventExpo.removeListener();
     };
   }, []);
+
+  useEffect(() => {
+    if (locationData && !sentNotification) {
+      console.log("sent alert");
+      store.dispatch(reportCrime(locationData));
+      sendNotification({
+        title: "Sent Notification",
+        body: "Alert has be reported successfully",
+      });
+      setSentNotification(true);
+    }
+  }, [locationData]);
 
   useEffect(() => {
     if (!isConnected) {
