@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import React from "react";
 import { ActivityIndicator, Dimensions } from "react-native";
 import { colors } from "../colors";
@@ -23,11 +23,7 @@ const AlertButton = (props) => {
       {props.loading ? (
         <ActivityIndicator size="large" color={colors.textSecondary} />
       ) : (
-        <Ionicons
-          size={30}
-          name={Platform.OS === "android" ? "md-megaphone" : "ios-megaphone"}
-          color={colors.textSecondary}
-        />
+        <AntDesign size={30} name="notification" color={colors.textSecondary} />
       )}
     </FloatingButton>
   );
