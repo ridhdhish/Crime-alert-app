@@ -9,7 +9,6 @@ const CrimeSchema = new mongoose.Schema(
     },
     placeId: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
     },
     crimeData: {
       type: String,

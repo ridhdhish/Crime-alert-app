@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Alert, StatusBar, StyleSheet, View } from "react-native";
+import { Alert, StatusBar, StyleSheet, View, Linking } from "react-native";
 import { Provider } from "react-redux";
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import Thunk from "redux-thunk";
@@ -58,7 +58,10 @@ export default function App() {
               "To report crime you need to provide the location & notification Permission, you can do it by going to App settings",
               [
                 {
-                  text: "Okay",
+                  text: "Open Settings",
+                  onPress: () => {
+                    Linking.openSettings();
+                  },
                 },
               ]
             );

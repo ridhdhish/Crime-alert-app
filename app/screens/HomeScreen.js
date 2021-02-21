@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
+  Dimensions,
   Keyboard,
   Platform,
   Text,
@@ -22,6 +23,7 @@ import CustomContentLoader from "../components/CustomContentLoader";
 import { TextInput } from "react-native-gesture-handler";
 import { getCriticalColor } from "../utils/getCriticalColor";
 import Layout from "../components/Layout";
+import * as Permissions from "expo-permissions";
 
 const HomeScreen = (props) => {
   const auth = useSelector((state) => state.auth);
@@ -32,19 +34,31 @@ const HomeScreen = (props) => {
   const [markerPosition, setMarkerPosition] = useState(null);
   const [addCrimeData, setAddCrimeData] = useState(false);
   const [crimeDataText, setCrimeDataText] = useState("");
+  const [unableToLoadMap, setUnableToLoadMap] = useState(false);
   useNotification();
 
   useEffect(() => {
     async function setLocation() {
-      const crimeData = await getCrimeData();
-      setCurrentLocation({
-        latitude: crimeData.location.lat,
-        longitude: crimeData.location.long,
-      });
-      setMarkerPosition({
-        latitude: crimeData.location.lat,
-        longitude: crimeData.location.long,
-      });
+      const hasLocationPermission = await Permissions.getAsync(
+        Permissions.LOCATION
+      );
+      if (hasLocationPermission.canAskAgain) {
+        await Permissions.askAsync(Permissions.LOCATION);
+      }
+      if (hasLocationPermission.granted) {
+        console.log("Has");
+        const crimeData = await getCrimeData();
+        setCurrentLocation({
+          latitude: crimeData.location.lat,
+          longitude: crimeData.location.long,
+        });
+        setMarkerPosition({
+          latitude: crimeData.location.lat,
+          longitude: crimeData.location.long,
+        });
+      } else {
+        setUnableToLoadMap(true);
+      }
     }
     setLocation();
   }, []);
@@ -225,7 +239,6 @@ const HomeScreen = (props) => {
               <Marker
                 draggable
                 onDragEnd={(event) => {
-                  // console.log(event.nativeEvent.coordinate);
                   setMarkerPosition(event.nativeEvent.coordinate);
                 }}
                 coordinate={{
@@ -270,6 +283,35 @@ const HomeScreen = (props) => {
                 strokeWidth={0}
               />
             </MapView>
+          ) : unableToLoadMap ? (
+            <Fragment>
+              {/* <Text>
+                No Location Permission provided, open setting to provide
+                permissions
+              </Text>
+              <FloatingButton
+                style={{
+                  bottom: 30,
+                  left: Dimensions.get("window").width / 2,
+                  width: 100,
+                  flexDirection: "row",
+                  elevation: 5,
+                  borderColor: colors.textSecondary,
+                  borderWidth: 1,
+                  paddingHorizontal: 5,
+                }}
+                onPress={() => setMarkerPosition(currentLocation)}
+              >
+                <MaterialIcons
+                  name="settings"
+                  size={20}
+                  color={colors.textSecondary}
+                />
+                <Text style={{ color: colors.textSecondary }}>
+                  Open Setting
+                </Text>
+              </FloatingButton> */}
+            </Fragment>
           ) : (
             <CustomContentLoader map />
           )}
