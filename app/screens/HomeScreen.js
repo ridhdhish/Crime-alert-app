@@ -4,6 +4,7 @@ import {
   Alert,
   Dimensions,
   Keyboard,
+  Linking,
   Platform,
   Text,
   View,
@@ -57,6 +58,7 @@ const HomeScreen = (props) => {
           longitude: crimeData.location.long,
         });
       } else {
+        setAddCrimeData(true);
         setUnableToLoadMap(true);
       }
     }
@@ -81,14 +83,17 @@ const HomeScreen = (props) => {
       dispatch(reportCrime({ ...crimeData, crimeData: crimeDataText }));
       setCrimeDataText("");
       setAddCrimeData(false);
-      setCurrentLocation({
-        latitude: crimeData.location.lat,
-        longitude: crimeData.location.long,
-      });
-      setMarkerPosition({
-        latitude: crimeData.location.lat,
-        longitude: crimeData.location.long,
-      });
+      console.log(crimeData);
+      if (crimeData) {
+        setCurrentLocation({
+          latitude: crimeData.location.lat,
+          longitude: crimeData.location.long,
+        });
+        setMarkerPosition({
+          latitude: crimeData.location.lat,
+          longitude: crimeData.location.long,
+        });
+      }
       if (auth.isConnected) {
         sendNotification({
           title: "Sent Notification",
@@ -205,7 +210,7 @@ const HomeScreen = (props) => {
                 top: 100,
                 left: 0,
                 marginHorizontal: "10%",
-                backgroundColor: "rgba(191, 116, 89, 0.9)",
+                backgroundColor: "rgba(0, 0, 0, 0.5)",
                 padding: 10,
                 borderRadius: 10,
               }}
@@ -284,34 +289,37 @@ const HomeScreen = (props) => {
               />
             </MapView>
           ) : unableToLoadMap ? (
-            <Fragment>
-              {/* <Text>
-                No Location Permission provided, open setting to provide
-                permissions
+            <View
+              style={{
+                position: "relative",
+                top: Dimensions.get("window").height / 2 - 30,
+                alignItems: "center",
+              }}
+            >
+              <Text style={{ textAlign: "center", marginHorizontal: 10 }}>
+                Unable to load Map. No Location Permission provided, open
+                setting to provide permissions
               </Text>
               <FloatingButton
                 style={{
-                  bottom: 30,
-                  left: Dimensions.get("window").width / 2,
-                  width: 100,
+                  bottom: -60,
+                  width: 200,
                   flexDirection: "row",
                   elevation: 5,
-                  borderColor: colors.textSecondary,
-                  borderWidth: 1,
                   paddingHorizontal: 5,
                 }}
-                onPress={() => setMarkerPosition(currentLocation)}
+                onPress={() => Linking.openSettings()}
               >
                 <MaterialIcons
                   name="settings"
                   size={20}
                   color={colors.textSecondary}
                 />
-                <Text style={{ color: colors.textSecondary }}>
+                <Text style={{ color: colors.textSecondary, marginLeft: 10 }}>
                   Open Setting
                 </Text>
-              </FloatingButton> */}
-            </Fragment>
+              </FloatingButton>
+            </View>
           ) : (
             <CustomContentLoader map />
           )}

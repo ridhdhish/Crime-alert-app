@@ -130,6 +130,8 @@ const login = async (req, res) => {
     }
     if (pushToken) {
       user.pushToken = pushToken;
+      User.markModified("pushToken");
+      await user.save();
     }
     //generate token
     const token = generateToken(user.id, jwt);
