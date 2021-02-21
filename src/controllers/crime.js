@@ -108,6 +108,7 @@ const registerCrime = async (req, res) => {
               lat: place.location.lat,
               long: place.location.long,
             },
+            createdAt: Date.now(),
           });
           await user.save();
         }

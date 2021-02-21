@@ -58,6 +58,9 @@ export default function App() {
               "To report crime you need to provide the location & notification Permission, you can do it by going to App settings",
               [
                 {
+                  text: "Cancel",
+                },
+                {
                   text: "Open Settings",
                   onPress: () => {
                     Linking.openSettings();
@@ -65,7 +68,6 @@ export default function App() {
                 },
               ]
             );
-            return;
           }
         }
         /**

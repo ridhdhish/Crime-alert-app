@@ -89,34 +89,39 @@ const AlertScreen = (props) => {
               >
                 {dayjs(alert.createdAt).fromNow()}
               </Text>
+              {!alert.location && (
+                <Text>Location of crime is not provided.</Text>
+              )}
               <View
                 style={{
                   flexDirection: "row",
                   marginVertical: 5,
                 }}
               >
-                <CustomButton
-                  text="Crime Location"
-                  style={{
-                    backgroundColor: colors.backgroundSecondary,
-                    borderRadius: 5,
-                    marginRight: 5,
-                  }}
-                  touchableStyle={{
-                    padding: 8,
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}
-                  textStyle={{
-                    color: colors.textSecondary,
-                  }}
-                  onPress={async () => {
-                    openInMaps(alert);
-                    if (!alert.isSeen) {
-                      await dispatch(seenAlert(alert));
-                    }
-                  }}
-                />
+                {alert.location && (
+                  <CustomButton
+                    text="Crime Location"
+                    style={{
+                      backgroundColor: colors.backgroundSecondary,
+                      borderRadius: 5,
+                      marginRight: 5,
+                    }}
+                    touchableStyle={{
+                      padding: 8,
+                      flexDirection: "row",
+                      alignItems: "center",
+                    }}
+                    textStyle={{
+                      color: colors.textSecondary,
+                    }}
+                    onPress={async () => {
+                      openInMaps(alert);
+                      if (!alert.isSeen) {
+                        await dispatch(seenAlert(alert));
+                      }
+                    }}
+                  />
+                )}
                 <CustomButton
                   text="Details"
                   style={{
