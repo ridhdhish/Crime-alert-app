@@ -130,7 +130,7 @@ const login = async (req, res) => {
     }
     if (pushToken) {
       user.pushToken = pushToken;
-      User.markModified("pushToken");
+      user.markModified("pushToken");
       await user.save();
     }
     //generate token
