@@ -1,4 +1,4 @@
-# Under development
+# Under development 👨‍💻
 
 # Content
 
@@ -8,6 +8,7 @@
 - [How To Run App and API](#How_To_Run)
 - [Databases](#Databases)
 - [Env Structure](#env)
+- [Contribution Guide](#How_to_Contribute?)
 
 # Crime-alert-app
 
@@ -25,23 +26,28 @@
 
 - UI and API common
 
-  - Authentication
-  - adding close friends
-  - user profile manage
-  - sending alert to friends
-  - notifications on alert to relatives, on seen alert, on adding as relative when relative join,
-  - send alerts doesn't require to be loggedIn
+```md
+- Authentication
+- adding close friends
+- user profile manage
+- sending alert to friends
+- notifications on alert to relatives, on seen alert, on adding as relative when relative join,
+- send alerts doesn't require to be loggedIn
+```
 
 - More UI stuff less API
-  - Getting user location and showing in map
-  - settings screen
-  - recent alerts screen
-  - shake to send alerts
-  - showing area detail in map
-  - graph of particular location/month
-  - offline activity
-  - awesome loader
-  - crime history
+
+```md
+- Getting user location and showing in map
+- settings screen
+- recent alerts screen
+- shake to send alerts
+- showing area detail in map
+- graph of particular location/month
+- offline activity
+- awesome loader
+- crime history
+```
 
 # How_To_Run
 
@@ -51,7 +57,7 @@
 
 - Follow below [.env](#env) structure
 
-```
+```bash
 $ git clone https://github.com/MananDesai54/Crime-alert-app.git
 $ cd Crime-alert-app
 
@@ -64,7 +70,7 @@ $ npm start
 
 - Install Node.js and expo-cli
 
-```
+```bash
 $ git clone https://github.com/MananDesai54/Crime-alert-app.git
 $ cd Crime-alert-app
 
@@ -118,17 +124,19 @@ $ npm start
 
 ## env
 
-- NODE_ENV = development
-- DB_URI = xxxxxxxxxx
-- DB_PASSWORD = xxxxxxxxxx
-- JWT_SECRET = xxxxx
-- EMAIL_ID = xxxxx
-- EMAIL_PASSWORD = xxxxxxx
-- EXPO_ACCESS_TOKEN = xxxxxxxxx
+```js
+NODE_ENV = development;
+DB_URI = xxxxxxxxxx;
+DB_PASSWORD = xxxxxxxxxx;
+JWT_SECRET = xxxxx;
+EMAIL_ID = xxxxx;
+EMAIL_PASSWORD = xxxxxxx;
+EXPO_ACCESS_TOKEN = xxxxxxxxx;
+```
 
-## Improvements
+## How_to_Contribute?
 
-- user exist with same mobile number or check otp verification
-- change styles for IOS
-- redundant for sub-stack
-- If two person add same relative then what ?
+- Create issue for updates, bugs or improvements
+- Feel free to clone, add features and make pull requests
+
+#### Press that ⭐ to appreciate our work 💖
