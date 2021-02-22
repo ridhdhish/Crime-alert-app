@@ -6,7 +6,6 @@
 - [Tech Stack](#Technology-Stack)
 - [Features](#features)
 - [How To Run App and API](#How_To_Run)
-- [Databases](#Databases)
 - [Env Structure](#env)
 - [Contribution Guide](#How_to_Contribute?)
 
@@ -79,48 +78,6 @@ $ npm install
 
 $ npm start
 ```
-
-## DataBases
-
-- Total 5 DBs:
-  1. User
-     - First Name
-     - Last Name
-     - Email
-     - Address
-     - DOB
-     - Mobile NO.
-     - Password
-     - ID
-  2. Place
-     - Location
-       - Lat
-       - Long
-     - PlaceId
-     - CrimeStatus
-       - Level
-       - keyword
-     - State
-     - City
-     - Address
-  3. Relatives
-     - Id
-     - Firstname
-     - Lastname
-     - Mobile NO
-     - email
-     - userID
-  4. Crime
-     - UserId
-     - UserData
-     - PlaceId
-     - CrimeStatus
-       - Level
-       - keyword
-       - Type
-     - CrimeId
-     - Date
-  5. PoliceStation
 
 ## env
 
