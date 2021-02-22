@@ -7,9 +7,10 @@ import HomeNavigator from "./HomeNavigator";
 import HistoryScreenStack from "./SubStackNavigators/HistoryScreenStack";
 import SettingScreenStack from "./SubStackNavigators/SettingScreenStack";
 import AlertScreenStack from "./SubStackNavigators/AlertScreenStack";
+import PoliceScreenStack from "./SubStackNavigators/PoliceScreenStack";
 import { colors } from "../colors";
 import { SafeAreaView, ScrollView, Text, View } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { toTitleCase } from "../utils/toTitleCase";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { isAndroid } from "../utils/isAndroid";
@@ -18,7 +19,6 @@ const RootDrawer = createDrawerNavigator();
 
 const RootHomeNavigator = () => {
   const user = useSelector((state) => state.auth?.user);
-  const dispatch = useDispatch();
 
   return (
     <RootDrawer.Navigator
@@ -38,6 +38,10 @@ const RootHomeNavigator = () => {
             iconName = "settings";
           } else if (route.name === "Alerts") {
             iconName = "notifications";
+          } else if (route.name === "Police") {
+            return (
+              <MaterialIcons size={size} color={color} name="local-police" />
+            );
           }
           return (
             <Ionicons
@@ -114,6 +118,13 @@ const RootHomeNavigator = () => {
         component={HomeNavigator}
         options={{
           title: "Home",
+        }}
+      />
+      <RootDrawer.Screen
+        name={"Police"}
+        component={PoliceScreenStack}
+        options={{
+          title: "Near By PoliceStation",
         }}
       />
       <RootDrawer.Screen

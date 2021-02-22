@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import RelativeTime from "dayjs/plugin/relativeTime";
-import React, { useState } from "react";
-import { RefreshControl, ScrollView, Text, View } from "react-native";
+import React, { Fragment, useState } from "react";
+import { FlatList, RefreshControl, ScrollView, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { colors } from "../colors";
 import AlertDetails from "../components/AlertDetails";
@@ -30,81 +30,103 @@ const AlertScreen = (props) => {
   };
 
   return (
-    <ScrollView
-      refreshControl={
-        <RefreshControl
+    <Fragment>
+      {alerts.length > 0 ? (
+        <FlatList
           onRefresh={async () => {
             setRefreshing(true);
             await dispatch(me());
             setRefreshing(false);
           }}
+          keyExtractor={(item) => item.crimeId}
           refreshing={refreshing}
-        />
-      }
-    >
-      {alerts.length > 0 ? (
-        alerts.map((alert) => (
-          <View
-            style={{
-              padding: 10,
-              backgroundColor: !alert.isSeen
-                ? "rgba(242, 145, 60, 0.3)"
-                : "white",
-              flexDirection: "row",
-              margin: 5,
-              borderRadius: 10,
-            }}
-            key={alert.crimeId}
-          >
+          data={alerts}
+          renderItem={({ item: alert }) => (
             <View
               style={{
-                backgroundColor: colors.backgroundExtra,
-                width: 50,
-                height: 50,
-                borderRadius: 50,
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: 5,
+                padding: 10,
+                backgroundColor: !alert.isSeen
+                  ? "rgba(242, 145, 60, 0.3)"
+                  : "white",
+                flexDirection: "row",
+                margin: 5,
+                borderRadius: 10,
               }}
             >
-              <Text
-                style={{
-                  color: colors.textSecondary,
-                }}
-              >
-                {getText(alert.title)}
-              </Text>
-            </View>
-            <View
-              style={{
-                marginHorizontal: 10,
-              }}
-            >
-              <Text style={{ fontSize: 16 }}>{alert.title.split(",")[0]}</Text>
-              <Text
-                style={{
-                  marginVertical: 3,
-                  color: "rgba(0, 0, 0, 0.5)",
-                }}
-              >
-                {dayjs(alert.createdAt).fromNow()}
-              </Text>
-              {!alert.location && (
-                <Text>Location of crime is not provided.</Text>
-              )}
               <View
                 style={{
-                  flexDirection: "row",
-                  marginVertical: 5,
+                  backgroundColor: colors.backgroundExtra,
+                  width: 50,
+                  height: 50,
+                  borderRadius: 50,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: 5,
                 }}
               >
-                {alert.location && (
+                <Text
+                  style={{
+                    color: colors.textSecondary,
+                  }}
+                >
+                  {getText(alert.title)}
+                </Text>
+              </View>
+              <View
+                style={{
+                  marginHorizontal: 10,
+                }}
+              >
+                <Text style={{ fontSize: 16 }}>
+                  {alert.title.split(",")[0]}
+                </Text>
+                <Text
+                  style={{
+                    marginVertical: 3,
+                    color: "rgba(0, 0, 0, 0.5)",
+                  }}
+                >
+                  {dayjs(alert.createdAt).fromNow()}
+                </Text>
+                {!alert.location && (
+                  <Text>Location of crime is not provided.</Text>
+                )}
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginVertical: 5,
+                  }}
+                >
+                  {alert.location && (
+                    <CustomButton
+                      text="Crime Location"
+                      style={{
+                        backgroundColor: colors.backgroundSecondary,
+                        borderRadius: 5,
+                        marginRight: 5,
+                      }}
+                      touchableStyle={{
+                        padding: 8,
+                        flexDirection: "row",
+                        alignItems: "center",
+                      }}
+                      textStyle={{
+                        color: colors.textSecondary,
+                      }}
+                      onPress={async () => {
+                        openInMaps(alert);
+                        if (!alert.isSeen) {
+                          await dispatch(seenAlert(alert));
+                        }
+                      }}
+                    />
+                  )}
                   <CustomButton
-                    text="Crime Location"
+                    text="Details"
                     style={{
-                      backgroundColor: colors.backgroundSecondary,
+                      borderColor: colors.backgroundSecondary,
                       borderRadius: 5,
-                      marginRight: 5,
+                      borderWidth: 2,
                     }}
                     touchableStyle={{
                       padding: 8,
@@ -112,52 +134,30 @@ const AlertScreen = (props) => {
                       alignItems: "center",
                     }}
                     textStyle={{
-                      color: colors.textSecondary,
+                      color: colors.backgroundSecondary,
                     }}
                     onPress={async () => {
-                      openInMaps(alert);
+                      setShowDetails(true);
                       if (!alert.isSeen) {
                         await dispatch(seenAlert(alert));
                       }
                     }}
                   />
-                )}
-                <CustomButton
-                  text="Details"
-                  style={{
-                    borderColor: colors.backgroundSecondary,
-                    borderRadius: 5,
-                    borderWidth: 2,
-                  }}
-                  touchableStyle={{
-                    padding: 8,
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}
-                  textStyle={{
-                    color: colors.backgroundSecondary,
-                  }}
-                  onPress={async () => {
-                    setShowDetails(true);
-                    if (!alert.isSeen) {
-                      await dispatch(seenAlert(alert));
-                    }
-                  }}
-                />
-                {showDetails && (
-                  <BottomPopup
-                    modalVisible={showDetails}
-                    closeModal={() => {
-                      setShowDetails(false);
-                    }}
-                  >
-                    <AlertDetails alert={alert} />
-                  </BottomPopup>
-                )}
+                  {showDetails && (
+                    <BottomPopup
+                      modalVisible={showDetails}
+                      closeModal={() => {
+                        setShowDetails(false);
+                      }}
+                    >
+                      <AlertDetails alert={alert} />
+                    </BottomPopup>
+                  )}
+                </View>
               </View>
             </View>
-          </View>
-        ))
+          )}
+        />
       ) : (
         <Text
           style={{
@@ -168,7 +168,7 @@ const AlertScreen = (props) => {
           No Alerts
         </Text>
       )}
-    </ScrollView>
+    </Fragment>
   );
 };
 
