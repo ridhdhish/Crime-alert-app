@@ -23,21 +23,25 @@
 
 ## Features
 
-- Authentication
-- Getting user location and showing in map
-- adding close friends
-- user profile manage
-- sending alert to friends
-- notifications on alert to relatives, on seen alert, on adding as relative when relative join,
-- settings screen
-- recent alerts screen
-- shake to send alerts
-- send alerts doesn't require to be loggedIn
-- showing area detail in map
-- graph of particular location/month
-- offline activity
-- awesome loader
-- crime history
+- UI and API common
+
+  - Authentication
+  - adding close friends
+  - user profile manage
+  - sending alert to friends
+  - notifications on alert to relatives, on seen alert, on adding as relative when relative join,
+  - send alerts doesn't require to be loggedIn
+
+- More UI stuff less API
+  - Getting user location and showing in map
+  - settings screen
+  - recent alerts screen
+  - shake to send alerts
+  - showing area detail in map
+  - graph of particular location/month
+  - offline activity
+  - awesome loader
+  - crime history
 
 # How_To_Run
 
