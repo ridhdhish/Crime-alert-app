@@ -32,6 +32,7 @@
 - sending alert to friends
 - notifications on alert to relatives, on seen alert, on adding as relative when relative join,
 - send alerts doesn't require to be loggedIn
+- Police side Auth
 ```
 
 - More UI stuff less API
