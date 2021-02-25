@@ -11,13 +11,18 @@ import {
 } from "../store/actions/auth";
 import LogoText from "../components/LogoText";
 import { LinearGradient } from "expo-linear-gradient";
+import { setIsPolice } from "../store/actions/police";
 
 const LoadingScreen = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     const tryLogin = async () => {
       const userData = await AsyncStorage.getItem("userData");
+      const isPolice = await JSON.parse(await AsyncStorage.getItem("police"));
 
+      if (isPolice) {
+        dispatch(setIsPolice());
+      }
       if (!userData) {
         console.log("Navigate to Start");
         dispatch(tryAutoLogin());
