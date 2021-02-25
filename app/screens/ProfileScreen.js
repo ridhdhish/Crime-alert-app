@@ -90,7 +90,7 @@ const ProfileScreen = (props) => {
 
   return (
     <ScrollView>
-      {userData && (
+      {userData && userData.firstname && (
         <TouchableWithoutFeedback
           onPress={() => {
             Keyboard.dismiss();

@@ -65,14 +65,14 @@ const PoliceAuth = (props) => {
                   initialValues={{
                     contactNumber: "",
                     password: "",
+                    key: "",
                   }}
                   onSubmit={async (values) => {
                     setError(null);
                     setIsLoading(true);
                     try {
                       await dispatch(policeAuth(values, true));
-                      // props.navigation.navigate("Home");
-                      setIsLoading(false);
+                      // props.navigation.navigate("Police");
                     } catch (error) {
                       setError(error.message);
                       setIsLoading(false);
@@ -81,6 +81,15 @@ const PoliceAuth = (props) => {
                 >
                   {({ values, handleChange, handleSubmit }) => (
                     <View>
+                      <Input
+                        value={values.key}
+                        handleChange={handleChange("key")}
+                        name="key"
+                        type="login"
+                        style={{
+                          marginBottom: 18,
+                        }}
+                      />
                       <Input
                         value={values.contactNumber}
                         handleChange={handleChange("contactNumber")}
@@ -145,14 +154,14 @@ const PoliceAuth = (props) => {
                     password: "",
                     name: "",
                     address: "",
+                    key: "",
                   }}
                   onSubmit={async (values) => {
                     setError(null);
                     setIsLoading(true);
                     try {
                       await dispatch(policeAuth(values));
-                      // props.navigation.navigate("Home");
-                      setIsLoading(false);
+                      // props.navigation.navigate("Police");
                     } catch (error) {
                       setError(error.message);
                       setIsLoading(false);
@@ -187,6 +196,15 @@ const PoliceAuth = (props) => {
                         value={values.address}
                         handleChange={handleChange("address")}
                         name="address"
+                        style={{
+                          marginBottom: 18,
+                        }}
+                        type="login"
+                      />
+                      <Input
+                        value={values.key}
+                        handleChange={handleChange("key")}
+                        name="key"
                         style={{
                           marginBottom: 18,
                         }}

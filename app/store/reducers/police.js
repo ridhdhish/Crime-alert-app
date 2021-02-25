@@ -3,6 +3,7 @@ import { POLICE_AUTH, POLICE_LOGOUT } from "../types";
 const initState = {
   police: null,
   recentCrimes: [],
+  token: null,
 };
 
 export const policeReducer = (state = initState, action) => {
@@ -13,6 +14,7 @@ export const policeReducer = (state = initState, action) => {
         ...state,
         police: payload.police,
         recentCrimes: payload.recentCrimes,
+        token: payload.token,
       };
 
     case POLICE_LOGOUT:

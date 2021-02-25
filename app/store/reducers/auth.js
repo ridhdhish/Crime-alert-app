@@ -96,7 +96,7 @@ export const authReducer = (state = initState, action) => {
     case SET_IS_POLICE:
       return {
         ...state,
-        isPolice: true,
+        isPolice: payload,
       };
     default:
       return state;

@@ -7,8 +7,8 @@ export const policeAuth = (data, login = false) => async (dispatch) => {
   const pushToken = await JSON.parse(await AsyncStorage.getItem("pushToken"));
   const { location } = await getCrimeData();
   const url = login
-    ? `${env.API_URL}/police/auth?login=true&key=police`
-    : `${env.API_URL}/police/auth?key=police`;
+    ? `${env.API_URL}/police/auth?login=true&key=${data.key.toLowerCase()}`
+    : `${env.API_URL}/police/auth?key=${data.key.toLowerCase()}`;
 
   const response = await fetch(url, {
     method: "POST",
@@ -32,20 +32,32 @@ export const policeAuth = (data, login = false) => async (dispatch) => {
   }
   await AsyncStorage.setItem("userData", JSON.stringify({ ...body }));
   await AsyncStorage.setItem("police", JSON.stringify(true));
-  console.log(body);
   dispatch({
     type: POLICE_AUTH,
     payload: {
       police: body.user,
       recentCrimes: body.user.recentCrimes,
+      token: body.token,
     },
+  });
+  dispatch({
+    type: SET_IS_POLICE,
+    payload: true,
   });
 };
 
-export const logout = () => ({
-  type: POLICE_LOGOUT,
-});
+export const logout = () => async (dispatch) => {
+  await AsyncStorage.removeItem("userData");
+  dispatch({
+    type: POLICE_LOGOUT,
+  });
+  dispatch({
+    type: SET_IS_POLICE,
+    payload: false,
+  });
+};
 
 export const setIsPolice = () => ({
   type: SET_IS_POLICE,
+  payload: true,
 });
