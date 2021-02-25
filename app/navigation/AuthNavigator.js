@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import StartScreen from "../screens/StartScreen";
 import LoginScreen from "../screens/auth/LoginScreen";
 import SignupScreen from "../screens/auth/SignupScreen";
+import PoliceAuth from "../screens/auth/PoliceAuthScreen";
 
 const AuthNavigator = () => {
   const AuthStack = createStackNavigator();
@@ -33,6 +34,11 @@ const AuthNavigator = () => {
         name="Signup"
         component={SignupScreen}
         options={{ title: "Register" }}
+      />
+      <AuthStack.Screen
+        name="PoliceAuth"
+        component={PoliceAuth}
+        options={{ title: "PoliceAuth" }}
       />
     </AuthStack.Navigator>
   );
