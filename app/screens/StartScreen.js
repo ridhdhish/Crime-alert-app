@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { Fragment, useEffect, useState } from "react";
 import { Platform, StyleSheet, View } from "react-native";
@@ -95,6 +95,19 @@ const StartScreen = (props) => {
           />
         </CustomButton>
       )}
+      <FloatingButton
+        style={{
+          top: 25,
+          left: 25,
+        }}
+        onPress={() => props.navigation.navigate("PoliceAuth")}
+      >
+        <MaterialIcons
+          size={30}
+          color={colors.textSecondary}
+          name="local-police"
+        />
+      </FloatingButton>
       <SVG svg={WAVE_SVG} />
     </View>
   );
