@@ -7,6 +7,7 @@ import AppNavigator from "./navigation/AppNavigator";
 import { authReducer } from "./store/reducers/auth";
 import { crimeReducer } from "./store/reducers/crime";
 import { relativeReducer } from "./store/reducers/relative";
+import { policeReducer } from "./store/reducers/police";
 import * as Permissions from "expo-permissions";
 import * as Notifications from "expo-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -36,6 +37,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   crime: crimeReducer,
   relative: relativeReducer,
+  police: policeReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(Thunk));

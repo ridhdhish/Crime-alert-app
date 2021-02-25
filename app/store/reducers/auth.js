@@ -10,6 +10,7 @@ import {
   LOADED_DATA,
   SEEN_ALERT,
   UPDATE_NOTIFICATION_SETTING,
+  SET_IS_POLICE,
 } from "../types";
 
 const initState = {
@@ -18,6 +19,7 @@ const initState = {
   tryAutoLogin: false,
   isConnected: true,
   loadedData: false,
+  isPolice: false,
 };
 
 export const authReducer = (state = initState, action) => {
@@ -89,6 +91,12 @@ export const authReducer = (state = initState, action) => {
           ...state.user,
           notificationSetting: payload,
         },
+      };
+
+    case SET_IS_POLICE:
+      return {
+        ...state,
+        isPolice: payload,
       };
     default:
       return state;

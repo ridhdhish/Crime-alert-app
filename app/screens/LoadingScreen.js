@@ -11,13 +11,23 @@ import {
 } from "../store/actions/auth";
 import LogoText from "../components/LogoText";
 import { LinearGradient } from "expo-linear-gradient";
+import { setIsPolice } from "../store/actions/police";
+import { SET_IS_POLICE } from "../store/types";
 
 const LoadingScreen = () => {
   const dispatch = useDispatch();
+  dispatch({
+    type: SET_IS_POLICE,
+    payload: true,
+  });
   useEffect(() => {
     const tryLogin = async () => {
       const userData = await AsyncStorage.getItem("userData");
+      const isPolice = await JSON.parse(await AsyncStorage.getItem("police"));
 
+      if (isPolice) {
+        dispatch(setIsPolice());
+      }
       if (!userData) {
         console.log("Navigate to Start");
         dispatch(tryAutoLogin());
@@ -39,7 +49,9 @@ const LoadingScreen = () => {
       const expireIn =
         new Date(expirationTime).getTime() - new Date().getTime();
       await dispatch(authUser({ user, token, expirationTime: expireIn }));
-      await dispatch(me());
+      if (!isPolice) {
+        await dispatch(me());
+      }
       await dispatch(setLoadedData(true));
     };
     tryLogin();

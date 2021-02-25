@@ -6,7 +6,10 @@ const generateToken = require("../utils/generateToken");
 const jwt = require("jsonwebtoken");
 
 const authPolice = async (req, res) => {
-  const { login } = req.query;
+  const { login, key } = req.query;
+  if (key !== "police") {
+    return sendResponse("Verification failed as police, invalid key", res, 400);
+  }
   try {
     if (login) {
       const { contactNumber, password, pushToken } = req.body;

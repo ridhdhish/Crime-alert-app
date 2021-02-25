@@ -63,7 +63,7 @@ const RootHomeNavigator = () => {
             }}
           >
             <SafeAreaView forceInset={{ top: "always", horizontal: "never" }}>
-              {user && (
+              {user && user.firstname && (
                 <View
                   style={{
                     padding: 20,
