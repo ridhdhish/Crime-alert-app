@@ -26,6 +26,6 @@ router.put("/seenAlert/:crimeId", auth, seenCrime);
  * access : Private
  * desc: set seen police crime
  */
-router.put("/seenAlert/:crimeId/:policeId", auth, policeSeenCrime);
+router.put("/seenAlert/:crimeId/:policeId", policeSeenCrime);
 
 exports.crimeRoute = router;
