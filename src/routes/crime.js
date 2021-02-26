@@ -1,6 +1,10 @@
 const express = require("express");
 const auth = require("../middlewares/auth");
-const { registerCrime, seenCrime } = require("../controllers/crime");
+const {
+  registerCrime,
+  seenCrime,
+  policeSeenCrime,
+} = require("../controllers/crime");
 const router = express.Router();
 
 /**
@@ -13,8 +17,15 @@ router.post("/", registerCrime);
 /**
  * route : POST /api/crime/seenAlert/:crimeId
  * access : Private
- * desc: set seen crime crime
+ * desc: set seen relative crime
  */
 router.put("/seenAlert/:crimeId", auth, seenCrime);
+
+/**
+ * route : POST /api/crime/seenAlert/:crimeId/:policeId
+ * access : Private
+ * desc: set seen police crime
+ */
+router.put("/seenAlert/:crimeId/:policeId", auth, policeSeenCrime);
 
 exports.crimeRoute = router;

@@ -81,7 +81,6 @@ const registerCrime = async (req, res) => {
     /**
      * @Todo
      * bluetooth near by
-     * Send crime to police
      * send message, call to relative
      */
 
@@ -116,59 +115,83 @@ const registerCrime = async (req, res) => {
             long2: b.location.long,
           })
       );
-      console.log(sortedByDistance[0]);
+      if (sortedByDistance[0]) {
+        await sendPushNotification({
+          body: `${sender.firstname} ${sender.lastname} needs your help`,
+          data: {
+            username: "User's name who sent the alert",
+          },
+          pushToken: sortedByDistance[0].pushToken,
+          subtitle: `${place.address && "near " + place.address}`,
+          title: "Need Help",
+        });
+        const policeStation = await Police.findById(sortedByDistance[0]._id);
+        policeStation.recentAlerts.push({
+          title: `${sender.firstname} ${sender.lastname} needs your help, ${
+            crime.crimeData ? crime.crimeData : ""
+          }`,
+          crimeId: crime.id,
+          senderId: sender._id,
+          location: {
+            lat: place.location.lat,
+            long: place.location.long,
+          },
+          createdAt: Date.now(),
+        });
+        await policeStation.save();
+      }
     }
 
-    // let relatives = await Relative.find({ userId });
-    // relatives = relatives.sort((a, b) => +a.priority - +b.priority);
+    let relatives = await Relative.find({ userId });
+    relatives = relatives.sort((a, b) => +a.priority - +b.priority);
 
-    // const pushRelatives = relatives
-    //   .filter(
-    //     (relative) =>
-    //       relative.pushToken && Expo.isExpoPushToken(relative.pushToken)
-    //   )
-    //   .slice(0, 3);
-    // const mailRelatives = relatives.slice(0, 3);
+    const pushRelatives = relatives
+      .filter(
+        (relative) =>
+          relative.pushToken && Expo.isExpoPushToken(relative.pushToken)
+      )
+      .slice(0, 3);
+    const mailRelatives = relatives.slice(0, 3);
 
-    // await Promise.all(
-    //   pushRelatives.map(async (rel) => {
-    //     const user = await User.findById(rel.existingUserId);
-    //     if (user) {
-    //       user.recentAlerts.push({
-    //         title: `${sender.firstname} ${sender.lastname} needs your help, ${
-    //           crime.crimeData ? crime.crimeData : ""
-    //         }`,
-    //         crimeId: crime.id,
-    //         senderId: sender._id,
-    //         location: {
-    //           lat: place.location.lat,
-    //           long: place.location.long,
-    //         },
-    //         createdAt: Date.now(),
-    //       });
-    //       await user.save();
-    //     }
-    //     if (
-    //       user.notificationSetting.allow &&
-    //       user.notificationSetting.onReceiveAlert
-    //     ) {
-    //       await sendPushNotification({
-    //         body: `${sender.firstname} ${sender.lastname} needs your help`,
-    //         data: {
-    //           username: "User's name who sent the alert",
-    //         },
-    //         pushToken: rel.pushToken,
-    //         subtitle: `${place.address && "near " + place.address}`,
-    //         title: "Need Help",
-    //       });
-    //     }
+    await Promise.all(
+      pushRelatives.map(async (rel) => {
+        const user = await User.findById(rel.existingUserId);
+        if (user) {
+          user.recentAlerts.push({
+            title: `${sender.firstname} ${sender.lastname} needs your help, ${
+              crime.crimeData ? crime.crimeData : ""
+            }`,
+            crimeId: crime.id,
+            senderId: sender._id,
+            location: {
+              lat: place.location.lat,
+              long: place.location.long,
+            },
+            createdAt: Date.now(),
+          });
+          await user.save();
+        }
+        if (
+          user.notificationSetting.allow &&
+          user.notificationSetting.onReceiveAlert
+        ) {
+          await sendPushNotification({
+            body: `${sender.firstname} ${sender.lastname} needs your help`,
+            data: {
+              username: "User's name who sent the alert",
+            },
+            pushToken: rel.pushToken,
+            subtitle: `${place.address && "near " + place.address}`,
+            title: "Need Help",
+          });
+        }
 
-    //     return rel;
-    //   })
-    // );
-    // await Promise.all(
-    //   mailRelatives.map(async (rel) => await sendMail(rel.email))
-    // );
+        return rel;
+      })
+    );
+    await Promise.all(
+      mailRelatives.map(async (rel) => await sendMail(rel.email))
+    );
     sendResponse(
       {
         message: "Crime reported successfully",
@@ -187,7 +210,7 @@ const registerCrime = async (req, res) => {
 const seenCrime = async (req, res) => {
   const { crimeId } = req.params;
   try {
-    const userData = await User.findById(req.user.id);
+    const userData = await User(req.user.id);
     const alert = await userData.recentAlerts.find(
       (alert) => alert.crimeId.toString() === crimeId
     );
@@ -220,7 +243,40 @@ const seenCrime = async (req, res) => {
   }
 };
 
+const policeSeenCrime = async (req, res) => {
+  const { crimeId, policeId } = req.params;
+  try {
+    const userData = await Police.findById(policeId);
+    const alert = await userData.recentAlerts.find(
+      (alert) => alert.crimeId.toString() === crimeId
+    );
+    if (alert) {
+      alert.isSeen = true;
+      await userData.save();
+
+      const user = await User.findById(alert.senderId);
+      if (user) {
+        await sendPushNotification({
+          body: `${userData.name} police station had seen your alert`,
+          data: {
+            username: "User's name who seen the alert",
+          },
+          pushToken: user.pushToken,
+          title: "Seen Alert",
+        });
+        return sendResponse("Crime had seen", res, 200);
+      } else {
+        return sendResponse("No user found", res, 404);
+      }
+    }
+    sendResponse("No crime found", res, 404);
+  } catch (error) {
+    sendResponse(error.message, res);
+  }
+};
+
 module.exports = {
   registerCrime,
   seenCrime,
+  policeSeenCrime,
 };
