@@ -3,6 +3,7 @@ const Crime = require("../models/crime");
 const Place = require("../models/place");
 const Relative = require("../models/relative");
 const User = require("../models/user");
+const Police = require("../models/police");
 const sendResponse = require("../utils/sendResponse");
 const jwt = require("jsonwebtoken");
 const { sendMail } = require("../utils/sendMail");
@@ -10,6 +11,7 @@ const keyValueDb = require("../models/keyValueDb");
 const { SECRET_TOKEN_PREFIX } = require("../config/constant");
 const { Expo } = require("expo-server-sdk");
 const { sendPushNotification } = require("../utils/sendPushNotification");
+const { getDistanceFromLatLonInKm } = require("../utils/getLatLongDistance");
 
 const registerCrime = async (req, res) => {
   let userId;
@@ -63,7 +65,7 @@ const registerCrime = async (req, res) => {
       state: state ? state.toLowerCase() : "",
       address: address ? address.toLowerCase() : "",
     });
-    await place.save();
+    // await place.save();
 
     const crime = new Crime({
       userId,
@@ -74,7 +76,7 @@ const registerCrime = async (req, res) => {
       crime.crimeData = req.body.crimeData;
     }
 
-    await crime.save();
+    // await crime.save();
 
     /**
      * @Todo
@@ -83,56 +85,90 @@ const registerCrime = async (req, res) => {
      * send message, call to relative
      */
 
-    let relatives = await Relative.find({ userId });
-    relatives = relatives.sort((a, b) => +a.priority - +b.priority);
+    const policeNearBy = await Police.aggregate([
+      {
+        $match: {
+          "location.lat": {
+            $lte: +place.location.lat + 0.05,
+            $gte: +place.location.lat - 0.05,
+          },
+          "location.long": {
+            $lte: place.location.long + 0.05,
+            $gte: place.location.long - 0.05,
+          },
+        },
+      },
+    ]);
 
-    const pushRelatives = relatives
-      .filter(
-        (relative) =>
-          relative.pushToken && Expo.isExpoPushToken(relative.pushToken)
-      )
-      .slice(0, 3);
-    const mailRelatives = relatives.slice(0, 3);
+    if (policeNearBy) {
+      const sortedByDistance = policeNearBy.sort(
+        (a, b) =>
+          getDistanceFromLatLonInKm({
+            lat1: place.location.lat,
+            long1: place.location.long,
+            lat2: a.location.lat,
+            long2: a.location.long,
+          }) -
+          getDistanceFromLatLonInKm({
+            lat1: place.location.lat,
+            long1: place.location.long,
+            lat2: b.location.lat,
+            long2: b.location.long,
+          })
+      );
+      console.log(sortedByDistance[0]);
+    }
 
-    await Promise.all(
-      pushRelatives.map(async (rel) => {
-        const user = await User.findById(rel.existingUserId);
-        if (user) {
-          user.recentAlerts.push({
-            title: `${sender.firstname} ${sender.lastname} needs your help, ${
-              crime.crimeData ? crime.crimeData : ""
-            }`,
-            crimeId: crime.id,
-            senderId: sender._id,
-            location: {
-              lat: place.location.lat,
-              long: place.location.long,
-            },
-            createdAt: Date.now(),
-          });
-          await user.save();
-        }
-        if (
-          user.notificationSetting.allow &&
-          user.notificationSetting.onReceiveAlert
-        ) {
-          await sendPushNotification({
-            body: `${sender.firstname} ${sender.lastname} needs your help`,
-            data: {
-              username: "User's name who sent the alert",
-            },
-            pushToken: rel.pushToken,
-            subtitle: `${place.address && "near " + place.address}`,
-            title: "Need Help",
-          });
-        }
+    // let relatives = await Relative.find({ userId });
+    // relatives = relatives.sort((a, b) => +a.priority - +b.priority);
 
-        return rel;
-      })
-    );
-    await Promise.all(
-      mailRelatives.map(async (rel) => await sendMail(rel.email))
-    );
+    // const pushRelatives = relatives
+    //   .filter(
+    //     (relative) =>
+    //       relative.pushToken && Expo.isExpoPushToken(relative.pushToken)
+    //   )
+    //   .slice(0, 3);
+    // const mailRelatives = relatives.slice(0, 3);
+
+    // await Promise.all(
+    //   pushRelatives.map(async (rel) => {
+    //     const user = await User.findById(rel.existingUserId);
+    //     if (user) {
+    //       user.recentAlerts.push({
+    //         title: `${sender.firstname} ${sender.lastname} needs your help, ${
+    //           crime.crimeData ? crime.crimeData : ""
+    //         }`,
+    //         crimeId: crime.id,
+    //         senderId: sender._id,
+    //         location: {
+    //           lat: place.location.lat,
+    //           long: place.location.long,
+    //         },
+    //         createdAt: Date.now(),
+    //       });
+    //       await user.save();
+    //     }
+    //     if (
+    //       user.notificationSetting.allow &&
+    //       user.notificationSetting.onReceiveAlert
+    //     ) {
+    //       await sendPushNotification({
+    //         body: `${sender.firstname} ${sender.lastname} needs your help`,
+    //         data: {
+    //           username: "User's name who sent the alert",
+    //         },
+    //         pushToken: rel.pushToken,
+    //         subtitle: `${place.address && "near " + place.address}`,
+    //         title: "Need Help",
+    //       });
+    //     }
+
+    //     return rel;
+    //   })
+    // );
+    // await Promise.all(
+    //   mailRelatives.map(async (rel) => await sendMail(rel.email))
+    // );
     sendResponse(
       {
         message: "Crime reported successfully",
