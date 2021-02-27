@@ -9,6 +9,7 @@ import {
   SET_CONNECTED_TO_INTERNET,
   LOADED_DATA,
   UPDATE_NOTIFICATION_SETTING,
+  SET_IS_POLICE,
 } from "../types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import env from "../../environment";
@@ -83,6 +84,10 @@ export const signup = ({
   );
   await AsyncStorage.setItem("secretToken", JSON.stringify(body.secretToken));
   dispatch(authUser({ ...body, expirationTime }));
+  dispatch({
+    type: SET_IS_POLICE,
+    payload: false,
+  });
 };
 
 export const login = ({ email, password }) => async (dispatch) => {
@@ -113,6 +118,10 @@ export const login = ({ email, password }) => async (dispatch) => {
   );
   await AsyncStorage.setItem("secretToken", JSON.stringify(body.secretToken));
   dispatch(authUser({ ...body, expirationTime }));
+  dispatch({
+    type: SET_IS_POLICE,
+    payload: false,
+  });
 };
 
 export const logout = () => (dispatch) => {

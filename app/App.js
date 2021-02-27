@@ -128,7 +128,7 @@ export default function App() {
       store.dispatch(reportCrime(locationData));
       sendNotification({
         title: "Sent Notification",
-        body: "Alert has be reported successfully",
+        body: "Crime has be reported successfully",
       });
       setSentNotification(true);
     }

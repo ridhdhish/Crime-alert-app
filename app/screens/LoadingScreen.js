@@ -12,14 +12,9 @@ import {
 import LogoText from "../components/LogoText";
 import { LinearGradient } from "expo-linear-gradient";
 import { setIsPolice } from "../store/actions/police";
-import { SET_IS_POLICE } from "../store/types";
 
 const LoadingScreen = () => {
   const dispatch = useDispatch();
-  dispatch({
-    type: SET_IS_POLICE,
-    payload: true,
-  });
   useEffect(() => {
     const tryLogin = async () => {
       const userData = await AsyncStorage.getItem("userData");
