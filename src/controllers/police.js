@@ -73,7 +73,7 @@ const authPolice = async (req, res) => {
         contactNumber,
         address,
         location,
-        pushToken,
+        pushToken: pushToken || "none",
       });
 
       // encrypt the password
