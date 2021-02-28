@@ -65,7 +65,7 @@ const registerCrime = async (req, res) => {
       state: state ? state.toLowerCase() : "",
       address: address ? address.toLowerCase() : "",
     });
-    // await place.save();
+    await place.save();
 
     const crime = new Crime({
       userId,
@@ -76,7 +76,7 @@ const registerCrime = async (req, res) => {
       crime.crimeData = req.body.crimeData;
     }
 
-    // await crime.save();
+    await crime.save();
 
     /**
      * @Todo
