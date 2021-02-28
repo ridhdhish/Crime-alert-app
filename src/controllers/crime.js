@@ -210,7 +210,7 @@ const registerCrime = async (req, res) => {
 const seenCrime = async (req, res) => {
   const { crimeId } = req.params;
   try {
-    const userData = await User(req.user.id);
+    const userData = await User.findById(req.user.id);
     const alert = await userData.recentAlerts.find(
       (alert) => alert.crimeId.toString() === crimeId
     );
