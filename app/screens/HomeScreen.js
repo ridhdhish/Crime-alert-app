@@ -47,7 +47,6 @@ const HomeScreen = (props) => {
         await Permissions.askAsync(Permissions.LOCATION);
       }
       if (hasLocationPermission.granted) {
-        console.log("Has");
         const crimeData = await getCrimeData();
         setCurrentLocation({
           latitude: crimeData.location.lat,
@@ -97,7 +96,7 @@ const HomeScreen = (props) => {
       if (auth.isConnected) {
         sendNotification({
           title: "Sent Notification",
-          body: "Alert has be reported successfully",
+          body: "Crime has be reported successfully",
         });
       }
     } catch (error) {

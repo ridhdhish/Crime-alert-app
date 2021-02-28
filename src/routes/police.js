@@ -15,7 +15,7 @@ router.post(
     check("password", "Password is required").not().isEmpty(),
     check("address", "Address is required").not().isEmpty(),
     check("contactNumber", "contactNumber is required").not().isEmpty(),
-    check("pushToken", "pushToken is required").not().isEmpty(),
+    // check("pushToken", "pushToken is required").not().isEmpty(),
     check("location", "location is required").not().isEmpty(),
   ],
   authPolice
