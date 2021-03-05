@@ -18,11 +18,11 @@ const PoliceHomeScreen = (props) => {
   const [showDetails, setShowDetails] = useState(false);
   const dispatch = useDispatch();
 
-  const alerts = useSelector((state) =>
-    state.police.recentCrimes.sort(
-      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-    )
-  );
+  const alerts = useSelector((state) => {
+    console.log(state.police);
+    return state.police.recentCrimes;
+  });
+  console.log(alerts);
 
   const getText = (text) => {
     const textArray = text.toUpperCase().split(" ").slice(0, 2);
@@ -31,7 +31,7 @@ const PoliceHomeScreen = (props) => {
 
   return (
     <Fragment>
-      {alerts.length > 0 ? (
+      {alerts && alerts.length > 0 ? (
         <FlatList
           onRefresh={async () => {
             setRefreshing(true);

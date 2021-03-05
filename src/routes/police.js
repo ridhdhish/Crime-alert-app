@@ -28,7 +28,7 @@ router.post(
  * access : Public
  * desc: Auth Police
  */
-router.get("/", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const police = await Police.findById(req.params.id);
     if (police) {

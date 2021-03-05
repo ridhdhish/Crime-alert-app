@@ -69,13 +69,14 @@ export const setIsPolice = () => ({
 
 export const refreshPoliceData = () => async (dispatch, getState) => {
   try {
-    const response = await fetch(
-      `${env.API_URL}/police/${getState().police.police._id}`
-    );
+    const user = await JSON.parse(await AsyncStorage.getItem("userData"));
+    const id = getState().police ? getState().police._id : user._id;
+    const response = await fetch(`${env.API_URL}/police/${id}`);
     const data = await response.json();
     if (!response.ok) {
       throw new Error(data.message);
     }
+    console.log(data);
     dispatch({
       type: REFRESH_POLICE_DATA,
       payload: data.message,
