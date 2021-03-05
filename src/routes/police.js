@@ -32,7 +32,11 @@ router.get("/:id", async (req, res) => {
   try {
     const police = await Police.findById(req.params.id);
     if (police) {
-      return sendResponse(police, res, 200);
+      return sendResponse(
+        { ...police._doc, password: null, pushToken: null },
+        res,
+        200
+      );
     }
     return sendResponse("No Police Station Found", res, 404);
   } catch (error) {

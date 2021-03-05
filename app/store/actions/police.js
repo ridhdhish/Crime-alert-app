@@ -70,8 +70,7 @@ export const setIsPolice = () => ({
 export const refreshPoliceData = () => async (dispatch, getState) => {
   try {
     const user = await JSON.parse(await AsyncStorage.getItem("userData"));
-    const id = getState().police ? getState().police._id : user._id;
-    const response = await fetch(`${env.API_URL}/police/${id}`);
+    const response = await fetch(`${env.API_URL}/police/${user.user._id}`);
     const data = await response.json();
     if (!response.ok) {
       throw new Error(data.message);

@@ -24,8 +24,8 @@ export const policeReducer = (state = initState, action) => {
     case REFRESH_POLICE_DATA:
       return {
         ...state,
-        police: payload.police,
-        recentCrimes: payload.police.recentAlerts,
+        police: payload,
+        recentCrimes: payload.recentAlerts,
       };
     default:
       return state;
