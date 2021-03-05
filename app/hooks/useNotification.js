@@ -1,18 +1,23 @@
 import { useEffect } from "react";
 import * as Notifications from "expo-notifications";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { me } from "../store/actions/auth";
 import { useNavigation } from "@react-navigation/native";
+import { refreshPoliceData } from "../store/actions/police";
 
 export const useNotification = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const isPolice = useSelector((state) => state.auth.isPolice);
 
   useEffect(() => {
     const foregroundSubscription = Notifications.addNotificationReceivedListener(
       (notification) => {
-        console.log("fg notification");
-        dispatch(me());
+        if (isPolice) {
+          dispatch(refreshPoliceData());
+        } else {
+          dispatch(me());
+        }
       }
     );
 
@@ -24,8 +29,11 @@ export const useNotification = () => {
 
     const backgroundSubscription = Notifications.addNotificationResponseReceivedListener(
       (response) => {
-        console.log("Bg Notification");
-        dispatch(me());
+        if (isPolice) {
+          dispatch(refreshPoliceData());
+        } else {
+          dispatch(me());
+        }
         navigation.navigate("Alerts");
       }
     );

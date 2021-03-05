@@ -1,7 +1,12 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import env from "../../environment";
 import { getCrimeData } from "../../utils/getCrimeData";
-import { POLICE_AUTH, POLICE_LOGOUT, SET_IS_POLICE } from "../types";
+import {
+  POLICE_AUTH,
+  POLICE_LOGOUT,
+  REFRESH_POLICE_DATA,
+  SET_IS_POLICE,
+} from "../types";
 
 export const policeAuth = (data, login = false) => async (dispatch) => {
   const pushToken = await JSON.parse(await AsyncStorage.getItem("pushToken"));
@@ -61,3 +66,21 @@ export const setIsPolice = () => ({
   type: SET_IS_POLICE,
   payload: true,
 });
+
+export const refreshPoliceData = () => async (dispatch, getState) => {
+  try {
+    const response = await fetch(
+      `${env.API_URL}/police/${getState().police.police._id}`
+    );
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message);
+    }
+    dispatch({
+      type: REFRESH_POLICE_DATA,
+      payload: data.message,
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};

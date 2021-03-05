@@ -13,6 +13,7 @@ import {
 } from "../types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import env from "../../environment";
+import * as Notifications from "expo-notifications";
 
 let timer;
 
@@ -61,7 +62,12 @@ export const signup = ({
     mobileNumber,
     address,
   };
-  const pushToken = await JSON.parse(await AsyncStorage.getItem("pushToken"));
+  let pushToken = await JSON.parse(await AsyncStorage.getItem("pushToken"));
+  if (!pushToken) {
+    const token = await Notifications.getExpoPushTokenAsync();
+    AsyncStorage.setItem("pushToken", JSON.stringify(token.data));
+    pushToken = token.data;
+  }
   const response = await fetch(`${env.API_URL}/auth/signup`, {
     method: "POST",
     headers: {
@@ -92,6 +98,11 @@ export const signup = ({
 
 export const login = ({ email, password }) => async (dispatch) => {
   const pushToken = await JSON.parse(await AsyncStorage.getItem("pushToken"));
+  if (!pushToken) {
+    const token = await Notifications.getExpoPushTokenAsync();
+    AsyncStorage.setItem("pushToken", JSON.stringify(token.data));
+    pushToken = token.data;
+  }
   const authData = {
     email,
     password,

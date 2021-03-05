@@ -1,4 +1,4 @@
-import { POLICE_AUTH, POLICE_LOGOUT } from "../types";
+import { POLICE_AUTH, POLICE_LOGOUT, REFRESH_POLICE_DATA } from "../types";
 
 const initState = {
   police: null,
@@ -20,6 +20,12 @@ export const policeReducer = (state = initState, action) => {
     case POLICE_LOGOUT:
       return {
         ...initState,
+      };
+    case REFRESH_POLICE_DATA:
+      return {
+        ...state,
+        police: payload.police,
+        recentCrimes: payload.police.recentAlerts,
       };
     default:
       return state;
