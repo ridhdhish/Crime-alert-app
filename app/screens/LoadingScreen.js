@@ -33,9 +33,10 @@ const LoadingScreen = () => {
       const transformedData = JSON.parse(userData);
       const { user, token, expirationTime } = transformedData;
       if (
-        new Date(expirationTime).getTime() <= new Date().getTime() ||
-        !token ||
-        !user
+        !isPolice &&
+        (new Date(expirationTime).getTime() <= new Date().getTime() ||
+          !token ||
+          !user)
       ) {
         await dispatch(tryAutoLogin());
         return;
@@ -43,7 +44,13 @@ const LoadingScreen = () => {
       console.log("Navigate to Home");
       const expireIn =
         new Date(expirationTime).getTime() - new Date().getTime();
-      await dispatch(authUser({ user, token, expirationTime: expireIn }));
+      await dispatch(
+        authUser({
+          user,
+          token: isPolice ? null : token,
+          expirationTime: expireIn,
+        })
+      );
       if (!isPolice) {
         await dispatch(me());
       } else {

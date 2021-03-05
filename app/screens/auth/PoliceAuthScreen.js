@@ -51,7 +51,7 @@ const PoliceAuth = (props) => {
           style={styles.screen}
         >
           <LogoText
-            title={`Police ${isLogin ? "Login" : "Register"}`}
+            title={`Police Station ${isLogin ? "Login" : "Register"}`}
             textStyle={{ color: colors.textSecondary }}
             style={{ marginBottom: 16, display: "none" }}
           />

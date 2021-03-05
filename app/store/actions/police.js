@@ -37,6 +37,7 @@ export const policeAuth = (data, login = false) => async (dispatch) => {
   }
   await AsyncStorage.setItem("userData", JSON.stringify({ ...body }));
   await AsyncStorage.setItem("police", JSON.stringify(true));
+  await AsyncStorage.setItem("policeToken", JSON.stringify(body.token));
   dispatch({
     type: POLICE_AUTH,
     payload: {
@@ -70,15 +71,18 @@ export const setIsPolice = () => ({
 export const refreshPoliceData = () => async (dispatch, getState) => {
   try {
     const user = await JSON.parse(await AsyncStorage.getItem("userData"));
+    const token = await JSON.parse(await AsyncStorage.getItem("policeToken"));
     const response = await fetch(`${env.API_URL}/police/${user.user._id}`);
     const data = await response.json();
     if (!response.ok) {
       throw new Error(data.message);
     }
-    console.log(data);
     dispatch({
       type: REFRESH_POLICE_DATA,
-      payload: data.message,
+      payload: {
+        police: data.message,
+        token,
+      },
     });
   } catch (error) {
     console.log(error.message);

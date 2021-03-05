@@ -7,7 +7,7 @@ import { colors } from "../colors";
 import AlertDetails from "../components/AlertDetails";
 import BottomPopup from "../components/BottomPopup";
 import CustomButton from "../components/CustomButton";
-import { seenAlert } from "../store/actions/crime";
+import { policeSeenAlert } from "../store/actions/crime";
 import { refreshPoliceData } from "../store/actions/police";
 import { openInMaps } from "../utils/openInMap";
 
@@ -19,11 +19,8 @@ const PoliceHomeScreen = (props) => {
   const dispatch = useDispatch();
 
   const alerts = useSelector((state) => {
-    console.log(state.police);
-    return state.police.recentCrimes;
+    return state.police.police.recentAlerts;
   });
-  console.log(alerts);
-
   const getText = (text) => {
     const textArray = text.toUpperCase().split(" ").slice(0, 2);
     return `${textArray[0][0]}${textArray[1][0]}`;
@@ -116,7 +113,7 @@ const PoliceHomeScreen = (props) => {
                       onPress={async () => {
                         openInMaps(alert);
                         if (!alert.isSeen) {
-                          await dispatch(seenAlert(alert));
+                          await dispatch(policeSeenAlert(alert));
                         }
                       }}
                     />
@@ -139,7 +136,7 @@ const PoliceHomeScreen = (props) => {
                     onPress={async () => {
                       setShowDetails(true);
                       if (!alert.isSeen) {
-                        await dispatch(seenAlert(alert));
+                        await dispatch(policeSeenAlert(alert));
                       }
                     }}
                   />
