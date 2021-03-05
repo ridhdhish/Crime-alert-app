@@ -7,11 +7,12 @@ import RootHomeNavigator from "./RootHomeNavigator";
 import PoliceNavigator from "../navigation/PoliceNavigator";
 
 const AppNavigator = (props) => {
-  const isAuth = useSelector(
-    (state) => !!state.auth.token || !!state.police.token
-  );
+  const isAuth = useSelector((state) => {
+    return !!state.auth.token || !!state.police.token;
+  });
   const tryAutoLogin = useSelector((state) => state.auth.tryAutoLogin);
   const isPolice = useSelector((state) => state.auth.isPolice);
+  console.log(isAuth);
   return (
     <NavigationContainer>
       {!isAuth && !tryAutoLogin && <LoadingScreen />}

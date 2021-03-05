@@ -4,6 +4,7 @@ import {
   GET_AROUND_DATA,
   GET_CITY_DATA,
   SEEN_ALERT,
+  SEEN_ALERT_POLICE,
 } from "../types";
 import env from "../../environment";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -185,6 +186,31 @@ export const seenAlert = (alert) => async (dispatch, getState) => {
     console.log(data);
     dispatch({
       type: SEEN_ALERT,
+      payload: alert.crimeId,
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+export const policeSeenAlert = (alert) => async (dispatch, getState) => {
+  try {
+    const response = await fetch(
+      `${env.API_URL}/crime/seenAlert/${alert.crimeId}/${
+        getState().police.police._id
+      }`,
+      {
+        method: "PUT",
+        headers: {
+          Accepts: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await response.json();
+    console.log(data);
+    dispatch({
+      type: SEEN_ALERT_POLICE,
       payload: alert.crimeId,
     });
   } catch (error) {

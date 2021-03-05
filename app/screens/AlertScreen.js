@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import RelativeTime from "dayjs/plugin/relativeTime";
 import React, { Fragment, useState } from "react";
-import { FlatList, RefreshControl, ScrollView, Text, View } from "react-native";
+import { FlatList, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { colors } from "../colors";
 import AlertDetails from "../components/AlertDetails";
