@@ -2,12 +2,15 @@
 SDP_project_promise_document.docx
 CrimeAppFlow.png
 package-lock.json
-.github
+# .github
+dependabot.yaml
 extra
 LICENSE.MD
 git.js
 ejected
 pages_report_new.docx
+SDP_Activity_Diagram.png
+SDP_State_Diagram.png
 
 # Logs
 logs
