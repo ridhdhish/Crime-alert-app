@@ -2,7 +2,7 @@
 SDP_project_promise_document.docx
 CrimeAppFlow.png
 package-lock.json
-# .github
+.github
 dependabot.yaml
 extra
 LICENSE.MD
