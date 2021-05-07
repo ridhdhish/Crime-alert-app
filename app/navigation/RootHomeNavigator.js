@@ -4,7 +4,6 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 import HomeNavigator from "./HomeNavigator";
-import HistoryScreenStack from "./SubStackNavigators/HistoryScreenStack";
 import SettingScreenStack from "./SubStackNavigators/SettingScreenStack";
 import AlertScreenStack from "./SubStackNavigators/AlertScreenStack";
 import PoliceScreenStack from "./SubStackNavigators/PoliceScreenStack";
@@ -126,11 +125,6 @@ const RootHomeNavigator = () => {
         options={{
           title: "Near By PoliceStation",
         }}
-      />
-      <RootDrawer.Screen
-        name="History"
-        component={HistoryScreenStack}
-        options={{ title: "History" }}
       />
       <RootDrawer.Screen
         name="Setting"
