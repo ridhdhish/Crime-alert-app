@@ -1,5 +1,3 @@
-# Under development 👨‍💻
-
 # Content
 
 - [Details](#Crime-alert-app)
